@@ -35,7 +35,7 @@ const Login = () => {
       let data
       const auth = getAuth();
       data = await signInWithEmailAndPassword(auth, email, password);
-      console.log("로그인 데이터 =>", data);
+      console.log("로그인된 유저 데이터 =>", data);
       dispatch(setIsLoggedIn(true));
     }
     catch (error) {

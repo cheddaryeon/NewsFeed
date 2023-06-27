@@ -10,6 +10,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
   console.log("로그인 됐나요?", isLoggedIn)
+  
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [showSignUpForm, setShowSignUpForm] = useState(false);
 
@@ -39,8 +40,8 @@ const Header = () => {
           <button onClick={handleSignUpClick}>회원가입</button>
         </>
       )}
-      {showLoginForm && <Login />}
-      {showSignUpForm && <SignUp />}
+      {!isLoggedIn && showLoginForm && <Login />}
+      {!isLoggedIn && showSignUpForm && <SignUp />}
     </div>
   );
 };

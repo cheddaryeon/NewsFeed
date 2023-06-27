@@ -1,1 +1,7 @@
-// 댓글 작성, 리스트 모듈파일
+import React from "react";
+
+function comments() {
+  return <div>comments</div>;
+}
+
+export default comments;

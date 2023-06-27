@@ -1,10 +1,11 @@
-import PreviewContentsList from "components/contents/PreviewContentsList";
 import Header from "components/ui/Header";
-import React from "react";
+import PreviewContentsList from "components/contents/PreviewContentsList";
 
 const Main = () => {
+
   return (
     <>
+      <Header />
       <PreviewContentsList />
     </>
   );

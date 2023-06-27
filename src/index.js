@@ -4,9 +4,6 @@ import App from "App";
 
 import { Provider } from "react-redux";
 import store from "redux/config/configStore";
-//
-import app from "fbase";
-console.log(app);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

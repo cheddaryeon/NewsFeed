@@ -29,7 +29,7 @@ const SignUp = () => {
       let data
       const auth = getAuth();
       data = await createUserWithEmailAndPassword(auth, email, password);
-      console.log(data);
+      console.log("로그인 정보", data);
     }
     catch (error) {
       setError(error.message);

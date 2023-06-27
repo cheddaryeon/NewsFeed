@@ -1,1 +1,7 @@
-// 게시글 작성, 리스트 모듈파일
+import React from "react";
+
+function contents() {
+  return <div>contents</div>;
+}
+
+export default contents;

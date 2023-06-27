@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
 
 const Header = () => {
   return (
-    <div>Header</div>
-  )
-}
+    <div style={{ border: "solid" }}>
+      <button>로그인</button>
+      <button>회원가입</button>
+    </div>
+  );
+};
 
-export default Header
+export default Header;

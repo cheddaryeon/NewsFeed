@@ -1,4 +1,8 @@
+import { setIsLoggedIn } from "redux/modules/auth";
+
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+
 import { authService } from "fbase";
 import {
   getAuth,
@@ -8,6 +12,8 @@ import {
 } from "firebase/auth";
 
 const Login = () => {
+  const dispatch = useDispatch();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -30,6 +36,7 @@ const Login = () => {
       const auth = getAuth();
       data = await signInWithEmailAndPassword(auth, email, password);
       console.log("로그인 데이터 =>", data);
+      dispatch(setIsLoggedIn(true));
     }
     catch (error) {
       setError(error.message);
@@ -46,6 +53,7 @@ const Login = () => {
         provider = new GoogleAuthProvider();
       }
       await signInWithPopup(authService, provider);
+      dispatch(setIsLoggedIn(true));
     }
     catch (error) {
       // switch case로

@@ -1,15 +1,9 @@
-import { setIsLoggedIn } from "redux/modules/auth";
+import { setUserInfo, setAuthError } from "redux/modules/auth";
 
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { authService } from "fbase";
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -19,9 +13,7 @@ const Login = () => {
   const [error, setError] = useState("");
 
   const onChange = (event) => {
-    const {
-      target: { name, value }
-    } = event;
+    const { name, value } = event.target;
     if (name === "email") {
       setEmail(value);
     } else if (name === "password") {
@@ -32,34 +24,32 @@ const Login = () => {
   const onSubmit = async (event) => {
     event.preventDefault();
     try {
-      let data
       const auth = getAuth();
-      data = await signInWithEmailAndPassword(auth, email, password);
-      console.log("로그인된 유저 데이터 =>", data);
-      dispatch(setIsLoggedIn(true));
-    }
-    catch (error) {
+      const data = await signInWithEmailAndPassword(auth, email, password);
+      dispatch(setUserInfo(data.user));
+    } catch (error) {
       setError(error.message);
+      dispatch(setAuthError(error.message));
     }
     setEmail("");
     setPassword("");
   };
 
   const onSocialClick = async (event) => {
-    const { target: { name } } = event;
+    const { name } = event.target;
     let provider;
     try {
       if (name === "google") {
         provider = new GoogleAuthProvider();
       }
-      await signInWithPopup(authService, provider);
-      dispatch(setIsLoggedIn(true));
+      const auth = getAuth();
+      await signInWithPopup(auth, provider);
+      dispatch(setUserInfo(auth));
+    } catch (error) {
+      setError("소셜 로그인 중 에러가 발생했습니다.");
+      dispatch(setAuthError("소셜 로그인 중 에러가 발생했습니다."));
     }
-    catch (error) {
-      // switch case로
-      console.log("Caught error Popup closed", error);
-    }
-  }
+  };
 
   return (
     <div>
@@ -92,4 +82,4 @@ const Login = () => {
   );
 };
 
-export default Login
+export default Login;

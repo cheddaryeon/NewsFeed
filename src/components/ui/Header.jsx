@@ -1,14 +1,17 @@
 import Login from "components/authentication/Login";
 import SignUp from "components/authentication/SignUp";
-import { setIsLoggedIn } from "redux/modules/auth";
+import { setUserInfo } from "redux/modules/auth";
 
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { getAuth, signOut } from "firebase/auth";
+import { authService } from "fbase";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header = () => {
   const dispatch = useDispatch();
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const currentUser = useSelector((state) => state.auth.user);
+  console.log("Header.jsx의 console.log 현재 사용자 정보", useSelector((state) => state.auth.user))
+  const navigate = useNavigate();
   
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [showSignUpForm, setShowSignUpForm] = useState(false);
@@ -23,27 +26,33 @@ const Header = () => {
     setShowLoginForm(false);
   }
 
-  const auth = getAuth();
   const handleLogoutClick = () => {
     const confirmLogout = window.confirm("로그아웃 하시겠어요?")
     if (confirmLogout) {
-      signOut(auth);
-      dispatch(setIsLoggedIn(false));
+      authService.signOut();
+      dispatch(setUserInfo(null));
+      setShowLoginForm(false);
+      setShowSignUpForm(false);
+      navigate("/", { replace: true });
     }
   };
 
   return (
     <div style={{ border: "solid" }}>
-      {isLoggedIn ? (
-        <button onClick={handleLogoutClick}>로그아웃</button>
+      {currentUser !== null ? (
+        <>
+          <img src={currentUser.userPic} width="50px" height="50px" />
+          <Link to={`/profile/${currentUser.userId}`}>{currentUser.userName}</Link>님 환영합니다!
+          <button onClick={handleLogoutClick}>로그아웃</button>
+        </>
       ) : (
         <>
           <button onClick={handleLoginClick}>로그인</button>
           <button onClick={handleSignUpClick}>회원가입</button>
         </>
       )}
-      {!isLoggedIn && showLoginForm && <Login />}
-      {!isLoggedIn && showSignUpForm && <SignUp />}
+      {currentUser === null && showLoginForm && <Login />}
+      {currentUser === null && showSignUpForm && <SignUp />}
     </div>
   );
 };

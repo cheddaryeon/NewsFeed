@@ -9,7 +9,6 @@ import { getAuth, signOut } from "firebase/auth";
 const Header = () => {
   const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  console.log("로그인 됐나요?", isLoggedIn)
   
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [showSignUpForm, setShowSignUpForm] = useState(false);
@@ -26,8 +25,11 @@ const Header = () => {
 
   const auth = getAuth();
   const handleLogoutClick = () => {
-    signOut(auth);
-    dispatch(setIsLoggedIn(false));
+    const confirmLogout = window.confirm("로그아웃 하시겠어요?")
+    if (confirmLogout) {
+      signOut(auth);
+      dispatch(setIsLoggedIn(false));
+    }
   };
 
   return (

@@ -27,6 +27,11 @@ const Header = () => {
     setShowLoginForm(false);
   }
 
+  const handleCloseClick = () => {
+    setShowSignUpForm(false);
+    setShowLoginForm(false);
+  }
+
   const handleLogoutClick = () => {
     const confirmLogout = window.confirm("로그아웃 하시겠어요?")
     if (confirmLogout) {
@@ -54,8 +59,8 @@ const Header = () => {
             <UserProfile to={`/profile/${currentUser.userId}`}>
               <img src={currentUser.userPic} width="50px" height="50px"/>
               <span>{currentUser.userName}님 환영합니다!</span>
-            <Button onClick={handleLogoutClick}>로그아웃</Button>
             </UserProfile>
+            <Button onClick={handleLogoutClick}>로그아웃</Button>
           </HeaderInnerRightBox>
         </HeaderInner>
       ) : (
@@ -74,8 +79,8 @@ const Header = () => {
           </HeaderInnerRightBox>
         </HeaderInner>
       )}
-      {currentUser === null && showLoginForm && <Login />}
-      {currentUser === null && showSignUpForm && <SignUp />}
+      {currentUser === null && showLoginForm && <Login handleCloseClick={handleCloseClick}/>}
+      {currentUser === null && showSignUpForm && <SignUp handleCloseClick={handleCloseClick}/>} 
     </HeaderWrapper>
   );
 };
@@ -83,9 +88,12 @@ const Header = () => {
 const HeaderWrapper = styled.header`
 position: fixed;
   width: 100%;
+  min-width: 1000px;
   height: 100px;
   margin: 0 auto;
   background-color: #c6ebfa;
+
+  z-index: 999;
 `
 
 const HeaderInner = styled.div`
@@ -109,6 +117,7 @@ const HeaderInnerRightBox = styled.div`
   display: flex;
   gap: 10px;
   justify-content: flex-end;
+  align-items: center;
   
   width: 33.333%;
 `
@@ -119,9 +128,11 @@ const Button = styled.button`
 
   border-radius: 18px;
   border: none;
-  box-shadow: 3px 3px 3px #eee;
+
+  font-weight: 500;
+
   background-color: white;
-  color: #333;
+  color: #5798c4;
 
   transition: 0.2s;
 

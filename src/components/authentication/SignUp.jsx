@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { styled } from "styled-components";
 
-const SignUp = () => {
+const SignUp = ({handleCloseClick}) => {
   const dispatch = useDispatch();
   const [inputs, setInputs] = useState({
     email: "",
@@ -111,7 +111,7 @@ const SignUp = () => {
           <p>{inputs.pwCheck && errorCheck}</p>
           <input type="submit" value={"회원가입"} />
         </SignUpForm>
-        <button>닫기</button>
+        <button onClick={handleCloseClick}>닫기</button>
     </SignUpWrapper>
   )
 }

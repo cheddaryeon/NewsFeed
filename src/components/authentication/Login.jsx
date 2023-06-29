@@ -5,7 +5,7 @@ import { setPersistence, browserSessionPersistence, signInWithEmailAndPassword, 
 import { authService } from "fbase";
 import { styled } from "styled-components";
 
-const Login = () => {
+const Login = ({handleCloseClick}) => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -92,7 +92,7 @@ const Login = () => {
           <span>Continue with Google</span>
         </button>
       </GoogleLogin>
-      <button>닫기</button>
+      <button onClick={handleCloseClick}>닫기</button>
     </LoginWrapper>
   );
 };

@@ -11,7 +11,7 @@ const App = () => {
   // firebase 초기화 여부
   const [init, setInit] = useState(false);
   const auth = getAuth();
-  
+
   useEffect(() => {
     onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
@@ -27,7 +27,7 @@ const App = () => {
       }
       setInit(true);
     });
-  }, [auth, dispatch]);
+  },[auth, dispatch]);
 
   console.log("App.jsx console.log 현재 사용자 정보", useSelector((state)=>state.auth.user))
 

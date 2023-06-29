@@ -1,4 +1,6 @@
-import { getAuth, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { authService } from "fbase";
+import { setUserInfo, setAuthError } from "redux/modules/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
@@ -19,7 +21,6 @@ const SignUpForm = () => {
       ...prevState,
       [name]: value,
     }));
-  
     // 비밀번호 유효성검사
     const { pw } = inputs;
     if (name === "pwCheck") {
@@ -31,31 +32,31 @@ const SignUpForm = () => {
         setError(false)
       }
     }
-    
   };
 
   const onSubmit = async (e) => {
     e.preventDefault();
     console.log("SignUpForm.jsx 로그인 에러 상태", error);
-
     if (!error) {
       try {
         const { email, pw, userName } = inputs;
-  
-        const auth = getAuth();
-        const { user } = await createUserWithEmailAndPassword(auth, email, pw);
-        await updateProfile(user, {
+        const { user } = await createUserWithEmailAndPassword(authService, email, pw);
+        updateProfile(user, {
           displayName: userName,
           photoURL: "https://firebasestorage.googleapis.com/v0/b/buy-or-not-unlucky7.appspot.com/o/assets%2Fbasic_profile.jpg?alt=media&token=cbace50c-1d86-4a61-8430-713db79cef58",
         });
-  
-        dispatch(setUserInfo(user));
+        await setPersistence(authService, browserSessionPersistence);
         setInputs({
           email: "",
           userName: "",
           pw: "",
           pwCheck: "",
         });
+        dispatch(setUserInfo({
+          userId: data.user.uid,
+          userName: data.user.displayName,
+          userPic: data.user.photoURL,
+        }))
       } catch (error) {
         setError(error.message);
       }

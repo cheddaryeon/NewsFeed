@@ -1,9 +1,11 @@
 import { authService } from "fbase";
 import {
+  setPersistence,
+  browserSessionPersistence,
   GoogleAuthProvider,
   signInWithPopup,
 } from "firebase/auth";
-import SignUpForm from "./SignUpForm";
+import SignUpForm from "components/authentication/SignUpForm";
 
 const SignUp = () => {
   const onSocialClick = async (e) => {
@@ -13,6 +15,7 @@ const SignUp = () => {
       if (name === "google") {
         provider = new GoogleAuthProvider();
       }
+      await setPersistence(authService, browserSessionPersistence);
       await signInWithPopup(authService, provider);
     }
     catch (error) {

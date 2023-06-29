@@ -12,7 +12,6 @@ const Header = () => {
   const currentUser = useSelector((state) => state.auth.user);
   console.log("Header.jsx의 console.log 현재 사용자 정보", useSelector((state) => state.auth.user))
   const navigate = useNavigate();
-  
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [showSignUpForm, setShowSignUpForm] = useState(false);
 
@@ -30,9 +29,9 @@ const Header = () => {
     const confirmLogout = window.confirm("로그아웃 하시겠어요?")
     if (confirmLogout) {
       authService.signOut();
-      dispatch(setUserInfo(null));
       setShowLoginForm(false);
       setShowSignUpForm(false);
+      dispatch(setUserInfo(null));
       navigate("/", { replace: true });
     }
   };

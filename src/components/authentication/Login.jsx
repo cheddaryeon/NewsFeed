@@ -1,19 +1,17 @@
-import { setUserInfo, setAuthError } from "redux/modules/auth";
-
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-
-import { getAuth, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { setUserInfo, setAuthError } from "redux/modules/auth";
+import { setPersistence, browserSessionPersistence, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { authService } from "fbase";
 
 const Login = () => {
   const dispatch = useDispatch();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  const onChange = (event) => {
-    const { name, value } = event.target;
+  const onChange = (e) => {
+    const { name, value } = e.target;
     if (name === "email") {
       setEmail(value);
     } else if (name === "password") {
@@ -21,12 +19,18 @@ const Login = () => {
     }
   };
 
-  const onSubmit = async (event) => {
-    event.preventDefault();
+  const onSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const auth = getAuth();
-      const data = await signInWithEmailAndPassword(auth, email, password);
-      dispatch(setUserInfo(data.user));
+      // 현재의 세션이나 탭에서만 상태가 유지되며 사용자가 인증된 탭이나 창이 닫히면 삭제 (로그아웃)
+      await setPersistence(authService, browserSessionPersistence);
+      const data = await signInWithEmailAndPassword(authService, email, password);
+      // dispatch -> 로그인이 되자마자 프로필 이미지와 닉네임이 바로 반영되도록
+      dispatch(setUserInfo({
+        userId: data.user.uid,
+        userName: data.user.displayName,
+        userPic: data.user.photoURL,
+      }))
     } catch (error) {
       setError(error.message);
       dispatch(setAuthError(error.message));
@@ -35,16 +39,16 @@ const Login = () => {
     setPassword("");
   };
 
-  const onSocialClick = async (event) => {
-    const { name } = event.target;
+  const onSocialClick = async (e) => {
+    const { name } = e.target;
     let provider;
     try {
+      await setPersistence(authService, browserSessionPersistence);
       if (name === "google") {
         provider = new GoogleAuthProvider();
       }
-      const auth = getAuth();
-      await signInWithPopup(auth, provider);
-      dispatch(setUserInfo(auth));
+      await signInWithPopup(authService, provider);
+      dispatch(setUserInfo(authService));
     } catch (error) {
       setError("소셜 로그인 중 에러가 발생했습니다.");
       dispatch(setAuthError("소셜 로그인 중 에러가 발생했습니다."));

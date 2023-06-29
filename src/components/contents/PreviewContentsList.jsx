@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { collection, getDocs, query, updateDoc } from "firebase/firestore";
-import { db } from "fbase";
+import { dbService } from "fbase";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchContents } from "redux/modules/contents";
 
@@ -16,7 +16,7 @@ const PreviewContentsList = () => {
   useEffect(() => {
     const fetchData = async () => {
       //
-      const q = query(collection(db, "contents"));
+      const q = query(collection(dbService, "contents"));
       const querySnapshot = await getDocs(q);
 
       console.log({ querySnapshot });

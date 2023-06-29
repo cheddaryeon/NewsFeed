@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 //
 import CommentsList from "components/comments/CommentsList";
-import DetailContentsList from "components/contents/DetailContentsList";
 import AddComments from "components/comments/AddComments";
+import DetailContentsList from "components/contents/DetailContetsList";
 
 const Detail = () => {
   return (

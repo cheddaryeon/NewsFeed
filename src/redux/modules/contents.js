@@ -1,6 +1,6 @@
 import React from "react";
 import { addDoc, collection, getDocs, query } from "firebase/firestore";
-import { db } from "fbase";
+import { db, dbService } from "fbase";
 
 //action value
 const ADD_CONTENTS = "ADD_CONTENTS";
@@ -30,7 +30,7 @@ const contents = (state = initialState, action) => {
 
   switch (action.type) {
     case ADD_CONTENTS:
-      addDoc(collection(db, "contents"), action.payload); //이렇게만 하면, promise객체만 반환
+      addDoc(collection(dbService, "contents"), action.payload); //이렇게만 하면, promise객체만 반환
       return [...state, action.payload];
 
     case FETCH_CONTENTS:

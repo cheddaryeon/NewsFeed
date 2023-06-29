@@ -8,7 +8,6 @@ import { authService } from "fbase";
 import { Link, useNavigate } from "react-router-dom";
 
 import { styled } from "styled-components";
-import MyProfile from "pages/MyProfile";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -121,6 +120,12 @@ const Button = styled.button`
 
   box-shadow: 3px 3px 3px #ddd;
   background-color: white;
+
+  transition: 0.2s;
+
+  &:hover {
+    background-color: #efefef;
+  }
 `
 
 const UserProfile = styled(Link) `

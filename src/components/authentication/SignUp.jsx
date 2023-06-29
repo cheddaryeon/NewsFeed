@@ -1,8 +1,8 @@
 import { authService } from "fbase";
-import { setUserInfo, setAuthError } from "redux/modules/auth";
+import { setUserInfo } from "redux/modules/auth";
 import { setPersistence, browserSessionPersistence, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector} from "react-redux";
 
 const SignUp = () => {
   const dispatch = useDispatch();
@@ -12,7 +12,7 @@ const SignUp = () => {
     pw: "",
     pwCheck: "",
   });
-  const [error, setError] = useState(false);
+  const [pwError, setPwError] = useState(false);
   const [errorCheck, setErrorCheck] = useState("");
 
   const onChange = async (e) => {
@@ -26,43 +26,71 @@ const SignUp = () => {
     if (name === "pwCheck") {
       if (pw !== value) {
         setErrorCheck("비밀번호와 확인이 일치하지 않습니다.")
-        setError(true);
+        setPwError(true);
       } else {
         setErrorCheck("비밀번호와 확인이 일치합니다.");
-        setError(false)
+        setPwError(false);
       }
     }
   };
 
+  // firebase error에서 `auth/~` 부분만 추출하는 함수
+  const extractErrorCode = (error) => {
+    const regex = /\((.*?)\)/;
+    const match = error.match(regex);
+    const errorText = match ? match[1] : "";
+    return errorText;
+  };  
+
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log("SignUp.jsx 로그인 에러 상태", error);
-    if (!error) {
+    if (!pwError) {
       try {
         const { email, pw, userName } = inputs;
-        await setPersistence(authService, browserSessionPersistence);
         const { user } = await createUserWithEmailAndPassword(authService, email, pw);
         await updateProfile(user, {
           displayName: userName,
           photoURL: "https://firebasestorage.googleapis.com/v0/b/buy-or-not-unlucky7.appspot.com/o/assets%2Fbasic_profile.jpg?alt=media&token=cbace50c-1d86-4a61-8430-713db79cef58",
         });
-        dispatch(setUserInfo({
-          userId: user.uid,
-          userName: user.displayName,
-          userPic: user.photoURL,
-        }))
+        await setPersistence(authService, browserSessionPersistence);
         setInputs({
           email: "",
           userName: "",
           pw: "",
           pwCheck: "",
         });
+        dispatch(setUserInfo({
+          userId: user.uid,
+          userName: user.displayName,
+          userPic: user.photoURL,
+        }))
       } catch (error) {
-        setError(error.message);
-        alert(error);
+        const errorCode = extractErrorCode(error.message);
+        let errorMsg = "";
+
+        switch (errorCode) {
+          case "auth/email-already-in-use":
+            errorMsg = "이미 사용 중인 이메일입니다.";
+            break;
+          case "auth/weak-password":
+            errorMsg = "비밀번호는 6글자 이상이어야 합니다.";
+            break;
+          case "auth/network-request-failed":
+            errorMsg = "네트워크 연결에 실패 하였습니다.";
+            break;
+          case "auth/invalid-email":
+            errorMsg = "잘못된 이메일 형식입니다.";
+            break;
+          case "auth/internal-error":
+            errorMsg = "잘못된 요청입니다.";
+            break;
+          default:
+            errorMsg = "회원가입에 실패 하였습니다.";
+            break;
+        }
+        alert(errorMsg);
       }
-      setError(false)
-    }
+    };
   };
 
   return (
@@ -78,7 +106,6 @@ const SignUp = () => {
             value={inputs.email}
             onChange={onChange}
           />
-          <button>중복 확인</button>
           <br />
           <input
             name="userName"

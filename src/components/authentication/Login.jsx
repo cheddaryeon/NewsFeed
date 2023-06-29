@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { setUserInfo, setAuthError } from "redux/modules/auth";
+import { setUserInfo } from "redux/modules/auth";
 import { setPersistence, browserSessionPersistence, signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { authService } from "fbase";
 
@@ -19,6 +19,14 @@ const Login = () => {
     }
   };
 
+  // firebase error에서 `auth/~` 부분만 추출하는 함수
+  const extractErrorCode = (error) => {
+    const regex = /\((.*?)\)/;
+    const match = error.match(regex);
+    const errorText = match ? match[1] : "";
+    return errorText;
+  };  
+
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -33,9 +41,29 @@ const Login = () => {
         })
       );
     } catch (error) {
-      setError(error.message);
-      dispatch(setAuthError(error.message));
-    }
+        const errorCode = extractErrorCode(error.message);
+        let errorMsg = "";
+
+        switch (errorCode) {
+          case "auth/user-not-found":
+          case "auth/wrong-password":
+            errorMsg = "이메일 혹은 비밀번호가 일치하지 않습니다.";
+            break;
+          case "auth/network-request-failed":
+            errorMsg = "네트워크 연결에 실패 하였습니다.";
+            break;
+          case "auth/invalid-email":
+            errorMsg = "잘못된 이메일 형식입니다.";
+            break;
+          case "auth/internal-error":
+            errorMsg = "잘못된 요청입니다.";
+            break;
+          default:
+            errorMsg = "로그인에 실패 하였습니다.";
+            break;
+        }
+        alert(errorMsg);
+      }
     setEmail("");
     setPassword("");
   };
@@ -56,7 +84,6 @@ const Login = () => {
       );
     } catch (error) {
       setError("소셜 로그인 중 에러가 발생했습니다.");
-      dispatch(setAuthError("소셜 로그인 중 에러가 발생했습니다."));
     }
   };
 

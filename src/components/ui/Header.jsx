@@ -88,7 +88,7 @@ const Header = () => {
 const HeaderWrapper = styled.header`
 position: fixed;
   width: 100%;
-  min-width: 1000px;
+  min-width: 800px;
   height: 100px;
   margin: 0 auto;
   background-color: #c6ebfa;

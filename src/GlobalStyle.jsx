@@ -5,6 +5,7 @@ const GlobalStyle = createGlobalStyle`
   ${reset}
 
   * {
+    box-sizing: border-box;
     font-family: 'Noto Sans KR', sans-serif;
   }
 
@@ -20,8 +21,13 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
+    width: 100%;
+    min-width: 800px;
+
     font-family: 'Noto Sans KR', sans-serif;
     font-size: 16px;
+    word-break: keep-all;
+    
 
     margin: 0 auto;
     text-align: center;

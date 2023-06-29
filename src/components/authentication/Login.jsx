@@ -40,8 +40,7 @@ const Login = () => {
     setPassword("");
   };
 
-  const onSocialClick = async (e) => {
-    const { name } = e.target;
+  const onSocialClick = async () => {
     let provider;
     try {
       await setPersistence(authService, browserSessionPersistence);

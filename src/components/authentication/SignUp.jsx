@@ -1,6 +1,6 @@
 import { authService } from "fbase";
 import { setUserInfo, setAuthError } from "redux/modules/auth";
-import { setPersistence, browserSessionPersistence, createUserWithEmailAndPassword, updateProfile, signInWithEmailAndPassword } from "firebase/auth";
+import { setPersistence, browserSessionPersistence, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 

@@ -1,9 +1,13 @@
-import React from 'react'
+import Header from "components/ui/Header";
+import React from 'react';
 
 const MyProfile = () => {
   return (
-    <div>MyProfile</div>
+    <>
+      <Header />
+      <div>My Profile</div>
+    </>
   )
 }
 
-export default MyProfile
+export default MyProfile;

@@ -22,8 +22,6 @@ const Login = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      // 현재의 세션이나 탭에서만 상태가 유지되며 사용자가 인증된 탭이나 창이 닫히면 삭제 (로그아웃)
-      await setPersistence(authService, browserSessionPersistence);
       const { user } = await signInWithEmailAndPassword(authService, email, password);
       dispatch(
         setUserInfo({
@@ -43,7 +41,6 @@ const Login = () => {
   const onSocialClick = async () => {
     let provider;
     try {
-      await setPersistence(authService, browserSessionPersistence);
       provider = new GoogleAuthProvider();
       await signInWithPopup(authService, provider);
       const { user } = await signInWithPopup(authService, email, password);

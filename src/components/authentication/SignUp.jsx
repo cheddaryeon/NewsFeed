@@ -40,7 +40,6 @@ const SignUp = () => {
     if (!error) {
       try {
         const { email, pw, userName } = inputs;
-        await setPersistence(authService, browserSessionPersistence);
         const { user } = await createUserWithEmailAndPassword(authService, email, pw);
         await updateProfile(user, {
           displayName: userName,

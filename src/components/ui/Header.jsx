@@ -61,7 +61,9 @@ const Header = () => {
       ) : (
         <HeaderInner>
             <HeaderInnerLeftBox>
-              <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fpl44k%2FbtslLgoXEsh%2FpUi5OkyfnZUy9pHGJKvW61%2Fimg.png" width="auto" height="40px"/>
+              <Link to="/">
+                <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fpl44k%2FbtslLgoXEsh%2FpUi5OkyfnZUy9pHGJKvW61%2Fimg.png" width="auto" height="40px"/>
+              </Link>
             </HeaderInnerLeftBox>
             <HeaderInnerBox>
               <img src="https://file.notion.so/f/s/55e329af-aa06-4182-b826-c60d525f80eb/_%E1%84%82%E1%85%B2%E1%84%89%E1%85%B3%E1%84%91%E1%85%B5%E1%84%83%E1%85%B3%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%8C%E1%85%A6%E1%86%A8%E1%84%90%E1%85%B3_%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9-001_(1).png?id=84e41d7b-8d50-45e5-a07a-e4d8b6ad5768&table=block&spaceId=2d189cca-e623-443e-92bd-24c667dbde73&expirationTimestamp=1688112000000&signature=mD7vyCk-y7LMQmoQKbVijuDbrlv7FvxM5_c9XBjuH0I&downloadName=_%E1%84%82%E1%85%B2%E1%84%89%E1%85%B3%E1%84%91%E1%85%B5%E1%84%83%E1%85%B3%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%8C%E1%85%A6%E1%86%A8%E1%84%90%E1%85%B3+%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9-001+%281%29.png" alt="로고" width="auto" height="80px"/>
@@ -117,14 +119,16 @@ const Button = styled.button`
 
   border-radius: 18px;
   border: none;
-
-  box-shadow: 3px 3px 3px #ddd;
+  box-shadow: 3px 3px 3px #eee;
   background-color: white;
+  color: #333;
 
   transition: 0.2s;
 
   &:hover {
-    background-color: #efefef;
+    background-color: #59afd1;
+    color: #ffffff;
+    box-shadow: none;
   }
 `
 

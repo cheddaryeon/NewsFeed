@@ -1,4 +1,5 @@
-import { getAuth, onAuthStateChanged, updateProfile } from "firebase/auth";
+import { authService } from "fbase";
+import { onAuthStateChanged, updateProfile } from "firebase/auth";
 import { setUserInfo } from "redux/modules/auth";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,10 +11,9 @@ const App = () => {
 
   // firebase 초기화 여부
   const [init, setInit] = useState(false);
-  const auth = getAuth();
 
   useEffect(() => {
-    onAuthStateChanged(auth, (currentUser) => {
+    onAuthStateChanged(authService, (currentUser) => {
       if (currentUser) {
         const userInfo = {
           userId: currentUser.uid,
@@ -27,7 +27,7 @@ const App = () => {
       }
       setInit(true);
     });
-  },[auth, dispatch]);
+  },[authService, dispatch]);
 
   console.log("App.jsx console.log 현재 사용자 정보", useSelector((state)=>state.auth.user))
 

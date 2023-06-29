@@ -24,12 +24,12 @@ const Login = () => {
     try {
       // 현재의 세션이나 탭에서만 상태가 유지되며 사용자가 인증된 탭이나 창이 닫히면 삭제 (로그아웃)
       await setPersistence(authService, browserSessionPersistence);
-      const data = await signInWithEmailAndPassword(authService, email, password);
+      const { user } = await signInWithEmailAndPassword(authService, email, password);
       // dispatch -> 로그인이 되자마자 프로필 이미지와 닉네임이 바로 반영되도록
       dispatch(setUserInfo({
-        userId: data.user.uid,
-        userName: data.user.displayName,
-        userPic: data.user.photoURL,
+        userId: user.uid,
+        userName: user.displayName,
+        userPic: user.photoURL,
       }))
     } catch (error) {
       setError(error.message);

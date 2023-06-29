@@ -1,6 +1,6 @@
 import { authService } from "fbase";
 import { setUserInfo, setAuthError } from "redux/modules/auth";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { setPersistence, browserSessionPersistence, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
@@ -53,13 +53,15 @@ const SignUpForm = () => {
           pwCheck: "",
         });
         dispatch(setUserInfo({
-          userId: data.user.uid,
-          userName: data.user.displayName,
-          userPic: data.user.photoURL,
+          userId: user.uid,
+          userName: user.displayName,
+          userPic: user.photoURL,
         }))
       } catch (error) {
         setError(error.message);
+        alert(error);
       }
+      setError(false)
     }
   };
 

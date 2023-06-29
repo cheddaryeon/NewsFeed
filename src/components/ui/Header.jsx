@@ -10,7 +10,6 @@ import { Link, useNavigate } from "react-router-dom";
 const Header = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.auth.user);
-  console.log("Header.jsx의 console.log 현재 사용자 정보", useSelector((state) => state.auth.user))
   const navigate = useNavigate();
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [showSignUpForm, setShowSignUpForm] = useState(false);

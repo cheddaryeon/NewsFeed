@@ -27,7 +27,7 @@ const App = () => {
       }
       setInit(true);
     });
-  },[authService, dispatch]);
+  },[dispatch]);
 
   console.log("App.jsx console.log 현재 사용자 정보", useSelector((state)=>state.auth.user))
 

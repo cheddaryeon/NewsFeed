@@ -40,6 +40,7 @@ const Header = () => {
     <div style={{ border: "solid" }}>
       {currentUser !== null ? (
         <>
+          <Link to="/">Home</Link>
           <img src={currentUser.userPic} width="50px" height="50px" />
           <Link to={`/profile/${currentUser.userId}`}>{currentUser.userName}</Link>님 환영합니다!
           <button onClick={handleLogoutClick}>로그아웃</button>

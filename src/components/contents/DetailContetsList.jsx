@@ -8,12 +8,12 @@ const DetailContentsList = () => {
   // const params = useParams();
   // console.log({ params });
   const { contentsId } = useParams();
-  console.log("contentsId =>", contentsId);
+  // console.log("contentsId =>", contentsId);
 
   //contentsId에 해당하는 게시글 붙러와서 붙이기 시작
   const contents = useSelector((state) => state.contents);
   const targetContent = contents.filter((item) => item.id === contentsId)[0];
-  console.log("targetContent => ", targetContent);
+  // console.log("targetContent => ", targetContent);
 
   return (
     <ul className="DetailListsWrapper">

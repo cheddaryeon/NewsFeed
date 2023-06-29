@@ -19,7 +19,7 @@ const initialState = [
 
 //reducer
 const comments = (state = initialState, action) => {
-  console.log("state값", state);
+  // console.log("state값", state);
 
   switch (action.type) {
     case ADD_COMMENT:

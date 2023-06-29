@@ -26,7 +26,7 @@ const initialState = [
 
 //reducer
 const contents = (state = initialState, action) => {
-  console.log("state값", state);
+  // console.log("state값", state);
 
   switch (action.type) {
     case ADD_CONTENTS:

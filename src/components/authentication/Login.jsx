@@ -25,12 +25,13 @@ const Login = () => {
       // 현재의 세션이나 탭에서만 상태가 유지되며 사용자가 인증된 탭이나 창이 닫히면 삭제 (로그아웃)
       await setPersistence(authService, browserSessionPersistence);
       const { user } = await signInWithEmailAndPassword(authService, email, password);
-      // dispatch -> 로그인이 되자마자 프로필 이미지와 닉네임이 바로 반영되도록
-      dispatch(setUserInfo({
-        userId: user.uid,
-        userName: user.displayName,
-        userPic: user.photoURL,
-      }))
+      dispatch(
+        setUserInfo({
+          userId: user.uid,
+          userName: user.displayName,
+          userPic: user.photoURL,
+        })
+      );
     } catch (error) {
       setError(error.message);
       dispatch(setAuthError(error.message));
@@ -44,11 +45,16 @@ const Login = () => {
     let provider;
     try {
       await setPersistence(authService, browserSessionPersistence);
-      if (name === "google") {
-        provider = new GoogleAuthProvider();
-      }
+      provider = new GoogleAuthProvider();
       await signInWithPopup(authService, provider);
-      dispatch(setUserInfo(authService));
+      const { user } = await signInWithPopup(authService, email, password);
+      dispatch(
+        setUserInfo({
+          userId: user.uid,
+          userName: user.displayName,
+          userPic: user.photoURL,
+        })
+      );
     } catch (error) {
       setError("소셜 로그인 중 에러가 발생했습니다.");
       dispatch(setAuthError("소셜 로그인 중 에러가 발생했습니다."));

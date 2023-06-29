@@ -1,5 +1,5 @@
 import { authService } from "fbase";
-import { setUserInfo, setAuthError } from "redux/modules/auth";
+import { setUserInfo } from "redux/modules/auth";
 import { setPersistence, browserSessionPersistence, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -12,32 +12,44 @@ const SignUp = () => {
     pw: "",
     pwCheck: "",
   });
-  const [error, setError] = useState(false);
-  const [errorCheck, setErrorCheck] = useState("");
+  const [pwError, setPwError] = useState(false);
+  const [pwCheckTxt, setPwCheckTxt] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const onChange = async (e) => {
     const { value, name } = e.target;
-    setInputs((prevState) => ({
-      ...prevState,
+    setInputs((prevInputs) => ({
+      ...prevInputs,
       [name]: value,
     }));
-    // 비밀번호 유효성검사
-    const { pw } = inputs;
-    if (name === "pwCheck") {
-      if (pw !== value) {
-        setErrorCheck("비밀번호와 확인이 일치하지 않습니다.")
-        setError(true);
+  
+    // 비밀번호 유효성 검사
+    const { pw, pwCheck } = { ...inputs, [name]: value };
+  
+    if (name === "pwCheck" && pwCheck.length > 0) {
+      if (pw !== pwCheck) {
+        setPwCheckTxt("비밀번호와 확인이 일치하지 않습니다.");
+        setPwError(true);
       } else {
-        setErrorCheck("비밀번호와 확인이 일치합니다.");
-        setError(false)
+        setPwCheckTxt("비밀번호와 확인이 일치합니다.");
+        setPwError(false);
       }
     }
+    setErrorMsg("");
   };
+  
+
+  // firebase error에서 `auth/~` 부분만 추출하는 함수
+  const extractErrorCode = (error) => {
+    const regex = /\((.*?)\)/;
+    const match = error.match(regex);
+    const errorText = match ? match[1] : "";
+    return errorText;
+  };  
 
   const onSubmit = async (e) => {
     e.preventDefault();
-    console.log("SignUp.jsx 로그인 에러 상태", error);
-    if (!error) {
+    if (!pwError) {
       try {
         const { email, pw, userName } = inputs;
         const { user } = await createUserWithEmailAndPassword(authService, email, pw);
@@ -50,18 +62,30 @@ const SignUp = () => {
           userName: user.displayName,
           userPic: user.photoURL,
         }))
-        setInputs({
-          email: "",
-          userName: "",
-          pw: "",
-          pwCheck: "",
-        });
       } catch (error) {
-        setError(error.message);
-        alert(error);
+        const errorCode = extractErrorCode(error.message);
+        switch (errorCode) {
+          case "auth/email-already-in-use":
+            setErrorMsg("이미 사용 중인 이메일입니다.");
+            break;
+          case "auth/weak-password":
+            setErrorMsg("비밀번호는 6글자 이상이어야 합니다.");
+            break;
+          case "auth/network-request-failed":
+            setErrorMsg("네트워크 연결에 실패 하였습니다.");
+            break;
+          case "auth/invalid-email":
+            setErrorMsg("잘못된 이메일 형식입니다.");
+            break;
+          case "auth/internal-error":
+            setErrorMsg("잘못된 요청입니다.");
+            break;
+          default:
+            setErrorMsg("회원가입에 실패 하였습니다. 다시 시도해주세요.");
+            break;
+        }
       }
-      setError(false)
-    }
+    };
   };
 
   return (
@@ -71,13 +95,12 @@ const SignUp = () => {
         <form onSubmit={onSubmit}>
           <input
             name="email"
-            type="email"
+            type="text"
             placeholder="example@email.com"
             required
             value={inputs.email}
             onChange={onChange}
           />
-          <button>중복 확인</button>
           <br />
           <input
             name="userName"
@@ -106,7 +129,8 @@ const SignUp = () => {
             onChange={onChange}
           />
           <br />
-          <p>{inputs.pwCheck && errorCheck}</p>
+        <p>{inputs.pwCheck && pwCheckTxt}</p>
+        <p>{errorMsg}</p>
           <input type="submit" value={"회원가입"} />
         </form>
     </>

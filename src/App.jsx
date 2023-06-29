@@ -29,7 +29,8 @@ const App = () => {
     });
   },[dispatch]);
 
-  console.log("App.jsx console.log 현재 사용자 정보", useSelector((state)=>state.auth.user))
+  console.log("fb 서버에서 받아온 현재 사용자 데이터 => ", authService.currentUser)
+  console.log("App.jsx console.log store에 저장해 둔 현재 사용자 데이터", useSelector((state)=>state.auth.user))
 
   return (
     <>

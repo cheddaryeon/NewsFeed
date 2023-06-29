@@ -26,12 +26,12 @@ const PreviewContentsList = () => {
       querySnapshot.forEach((doc) => {
         const data = { id: doc.id, ...doc.data() }; // doc.data()를 실행하면 해당 document의 데이터를 가져올 수 있음
 
-        console.log("콘솔1", data);
+        console.log("2. getDocs로 내려지는 데이터 =>", data);
         contents_list.push(data);
       });
 
       dispatch(fetchContents(contents_list));
-      console.log({ contents_list });
+      // console.log({ contents_list });
 
       // dispatch(
       //   {
@@ -43,33 +43,6 @@ const PreviewContentsList = () => {
 
     fetchData();
   }, []);
-
-  // //❸Update
-  // const updateContents = async (event) => {
-  //   //
-  //   const contentsRef = doc(db, "contents", contents.id);
-  //   await updateDoc(contentsRef, { ...contents, isDone: !contents.isDone });
-
-  //   setContents((prev) => {
-  //     return prev.map((element) => {
-  //       if (element.id === contents.id) {
-  //         return { ...element, isDone: !element.isDone };
-  //       } else {
-  //         return element;
-  //       }
-  //     });
-  //   });
-
-  //   //
-  //   dispatch(
-  //     {
-  //       type: UPDATE_CONTENTS,
-  //       payload: contents_list
-  //     }
-  //   )
-  // };
-
-  // //❹Delete
 
   //--------------------------------------------------------------------------//
   return (

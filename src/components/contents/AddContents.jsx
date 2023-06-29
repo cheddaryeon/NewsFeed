@@ -3,6 +3,7 @@ import { addDoc, collection, getDocs, query } from "firebase/firestore";
 import { db } from "fbase";
 import { useDispatch } from "react-redux";
 import { addContents, fetchContents } from "redux/modules/contents";
+import { useNavigate } from "react-router-dom";
 
 const AddContents = () => {
   //❶Create
@@ -15,6 +16,9 @@ const AddContents = () => {
 
   //
   const dispatch = useDispatch();
+
+  //
+  const navigate = useNavigate();
 
   //
   const onClickHandler = (event) => {
@@ -43,6 +47,9 @@ const AddContents = () => {
     setWishItemText("");
     setItemPriceText("");
     setWishReasonText("");
+
+    //
+    navigate("/");
   };
 
   //------------------------------------------------//

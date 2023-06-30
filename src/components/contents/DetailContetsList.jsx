@@ -9,6 +9,7 @@ import {
   fetchContents,
   updateContents,
 } from "redux/modules/contents";
+import { styled } from "styled-components";
 
 const DetailContentsList = () => {
   //❷ Read

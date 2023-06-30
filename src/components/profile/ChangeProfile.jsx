@@ -1,13 +1,18 @@
-import { useState } from 'react';
-import { useSelector } from "react-redux";
+import { createRef, useState } from 'react';
+import { authService } from "fbase";
+import { updateProfile, updatePassword } from "firebase/auth";
+import { setUserInfo } from "redux/modules/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { styled } from "styled-components";
 
 const ChangeProfile = () => {
+  const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.auth.user);
   const [inputs, setInputs] = useState({
-    userName: "",
+    newUserName: currentUser.userName,
     newPw: "",
     newPwCheck: "",
-    userPic: "",
+    newUserPic: "",
   })
   const [pwError, setPwError] = useState(false);
   const [pwCheckTxt, setPwCheckTxt] = useState("");
@@ -45,50 +50,77 @@ const ChangeProfile = () => {
 
   const onImgFileChange = (e) => {
     const files = e.target?.files;
-
-    // filerReader API
-    // 1. input에 있는 모든 파일 중 첫번째 파일만
-    const theFile = files[0];
-    // 2. 그 파일로 reader 생성
-    const imgFileReader = new FileReader();
-    // 3. reader에 이벤트리스너 추가
-    imgFileReader.onloadend = (finishedEvent) => {
-      const { currentTarget: { result }
-        , } = finishedEvent;
-      setImgFileUrl(result);
+  
+    if (files && files.length > 0) {
+      const theFile = files[0];
+      const imgFileReader = new FileReader();
+  
+      imgFileReader.onloadend = (finishedEvent) => {
+        const { currentTarget: { result } } = finishedEvent;
+        setImgFileUrl(result);
+      };
+  
+      imgFileReader.readAsDataURL(theFile);
+    } else {
+      setImgFileUrl(currentUser.userPic);
     }
-    // 4. readAsDataURL API로 사진 이미지 얻음
-    imgFileReader.readAsDataURL(theFile);
-  }
+
+    // 이미지 firebase storage에 업데이트
+  };  
 
   const onClearImgFile = () => setImgFileUrl(currentUser.userPic);
 
+    // 프로필 사진 변경
   const handleChangeUserPic = async (e) => {
     e.preventDefault();
-    // 프로필 사진 변경
   }
 
-  const handleChangeUserName = async (e) => {
-    e.preventDefault();
-    // 닉네임 변경
-  }
-
-  const handleChangePw = async (e) => {
-    e.preventDefault();
-    // 비밀번호 변경
-    if (!pwError) {
+  // 닉네임 변경
+const handleChangeUserName = async (e) => {
+  e.preventDefault();
+  const { newUserName } = inputs;
+  if (newUserName !== currentUser.userName) {
+    const ok = window.confirm(`닉네임을 '${newUserName}'으로 변경하시겠어요?`);
+    if (ok) {
       try {
-        // firebase 서버에 변경 비밀번호 업데이트
+        await updateProfile(authService.currentUser, { displayName: newUserName });
+        dispatch(
+          setUserInfo({
+            ...currentUser,
+            userName: newUserName,
+          })
+        );
+        window.alert("닉네임이 정상적으로 변경되었습니다.");
       } catch (error) {
-        // 비밀번호 변경 실패
+        window.alert(error);
+        console.log(error);
       }
     }
+  } else {
+    alert("닉네임 변경사항이 없습니다.");
   }
+};
+
+
+  // 비밀번호 변경
+  const handleChangePw = async (e) => {
+    e.preventDefault();
+    if (!pwError) {
+      try {
+        const newPassword = inputs.newPw;
+        await updatePassword(authService.currentUser, newPassword);
+        window.alert("비밀번호가 정상적으로 변경되었습니다.");
+      } catch (error) {
+        window.alert(error);
+        console.log(error);
+      }
+    }
+  };
   
   return (
     <>
       <h2>My Profile</h2>
-      <img src={imgFileUrl} width="150px" height="150px" />
+        <UserPicPreview src={imgFileUrl} width="150px" height="150px" />
       <form onSubmit={handleChangeUserPic}>
         <label htmlFor="inUserPic">
           프로필 사진 변경
@@ -110,7 +142,7 @@ const ChangeProfile = () => {
           name="email"
           id="inUserEmail"
           type="text"
-          placeholder={currentUser.userEmail ? currentUser.userEmail : "Google"}
+          placeholder={currentUser.userEmail ? currentUser.userEmail : "Google 사용자"}
           disabled
         />
       <br />
@@ -119,12 +151,14 @@ const ChangeProfile = () => {
           닉네임
         </label>
         <input
-          name="userName"
+          name="newUserName"
           id="inUserName"
           type="text"
-          value={currentUser.userName}
+          placeholder={currentUser.userName}
+          value={inputs.newUserName}
           onChange={onChange}
         />
+        <input type="submit" value={"닉네임 변경"} />
         <br />
       </form>
       <form onSubmit={handleChangePw}>
@@ -135,25 +169,37 @@ const ChangeProfile = () => {
           name="newPw"
           id="inNewPw"
           type="password"
-          placeholder="변경할 비밀번호"
+          placeholder={currentUser.userEmail ? "변경할 비밀번호" : "Google 사용자는 비밀번호 설정 불가"}
           value={inputs.newPw}
           onChange={onChange}
+          disabled={!currentUser.userEmail}
         />
         <br />
+        <label htmlFor="inNewPwCheck">
+          비밀번호 변경 확인
+        </label>
         <input
           name="newPwCheck"
           id="inNewPwCheck"
           type="password"
-          placeholder="비밀번호 변경 확인"
+          placeholder={currentUser.userEmail ? "변경할 비밀번호 확인" : ""}
           value={inputs.newPwCheck}
           onChange={onChange}
+          disabled={!currentUser.userEmail}
         />
-        <input type="submit" value={"비밀번호 변경"} />
+        {currentUser.userEmail ? <input type="submit" value={"비밀번호 변경"} /> : ""}
       </form>
-      {inputs.newPwCheck > 0 && <p>{pwCheckTxt}</p>}
+      {inputs.newPwCheck && <p>{pwCheckTxt}</p>}
       <br />
     </>
   )
 }
 
 export default ChangeProfile;
+
+const UserPicPreview = styled.img`
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border: 1px solid lightgray;
+`;

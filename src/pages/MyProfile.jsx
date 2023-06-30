@@ -1,162 +1,78 @@
-import { useState } from 'react';
-import { useSelector, useDispatch } from "react-redux";
+import React, { useState } from 'react';
+import ChangeProfile from "components/profile/ChangeProfile";
+
+import { styled } from "styled-components";
+import MyContents from "components/profile/MyContents";
+import MyComments from "components/profile/MyComments";
 
 const MyProfile = () => {
-  const currentUser = useSelector((state) => state.auth.user);
-  const dispatch = useDispatch();
-  const [inputs, setInputs] = useState({
-    userName: "",
-    newPw: "",
-    newPwCheck: "",
-    userPic: "",
-  })
-  const [pwError, setPwError] = useState(false);
-  const [pwCheckTxt, setPwCheckTxt] = useState("");
-  const [imgFileUrl, setImgFileUrl] = useState(currentUser.userPic);
-  
-  // console.log("MyProfile.jsx => ", newProfileData);
+  const [showChangeForm, setShowChangeForm] = useState(false);
+  const [showContentsList, setShowContentsList] = useState(false);
+  const [showCommentsList, setShowCommentsList] = useState(false);
 
-  const onChange = async (e) => {
-    const { value, name } = e.target;
-    setInputs((prevInputs) => ({
-      ...prevInputs,
-      [name]: value,
-    }));
-  
-    // 비밀번호 유효성 검사
-    const { newPw, newPwCheck } = { ...inputs, [name]: value };
-  
-    if (name === "newPw" && newPwCheck.length > 0) {
-      if (newPw !== newPwCheck) {
-        setPwCheckTxt("비밀번호와 확인이 일치하지 않습니다.");
-        setPwError(true);
-      } else {
-        setPwCheckTxt("비밀번호와 확인이 일치합니다.");
-        setPwError(false);
-      }
-    } else if (name === "newPwCheck") {
-      if (newPw !== newPwCheck) {
-        setPwCheckTxt("비밀번호와 확인이 일치하지 않습니다.");
-        setPwError(true);
-      } else {
-        setPwCheckTxt("비밀번호와 확인이 일치합니다.");
-        setPwError(false);
-      }
-    }
-  };
-  
-
-  const onImgFileChange = (e) => {
-    const files = e.target?.files;
-
-    // filerReader API
-    // 1. input에 있는 모든 파일 중 첫번째 파일만
-    const theFile = files[0];
-    // 2. 그 파일로 reader 생성
-    const imgFileReader = new FileReader();
-    // 3. reader에 이벤트리스너 추가
-    imgFileReader.onloadend = (finishedEvent) => {
-      const { currentTarget: { result }
-        , } = finishedEvent;
-      setImgFileUrl(result);
-    }
-    // 4. readAsDataURL API로 사진 이미지 얻음
-    imgFileReader.readAsDataURL(theFile);
+  const handleChangeForm = () => {
+    // 내 프로필 변경 버튼 클릭하면 프로필 변경 양식 열렸다가 닫혔다가 작동
+    setShowChangeForm(!showChangeForm);
   }
 
-  const onClearImgFile = () => setImgFileUrl(currentUser.userPic);
-
-  const handleChangeUserPic = async (e) => {
-    e.preventDefault();
-    // 프로필 사진 변경
+  const onClickMyContentsList = () => {
+    setShowContentsList(true);
+    setShowCommentsList(false);
   }
 
-  const handleChangeUserName = async (e) => {
-    e.preventDefault();
-    // 닉네임 변경
+  const onClickMyCommentsList = () => {
+    setShowCommentsList(true);
+    setShowContentsList(false);
   }
 
-  const handleChangePw = async (e) => {
-    e.preventDefault();
-    // 비밀번호 변경
-    if (!pwError) {
-      try {
-        // firebase 서버에 변경 비밀번호 업데이트
-      } catch (error) {
-        // 비밀번호 변경 실패
-      }
-    }
-  }
-  
   return (
     <>
-      <h2>My Profile</h2>
-      <img src={imgFileUrl} width="150px" height="150px" />
-      <form onSubmit={handleChangeUserPic}>
-        <label htmlFor="inUserPic">
-          프로필 사진 변경
-        </label>
-        <input
-          name="userPic"
-          id="inUserPic"
-          type="file"
-          accept="image/*"
-          onChange={onImgFileChange}
-        />
-        <button onClick={onClearImgFile}>✖️</button>
-      </form>
+      {/* 위에 Header 때문에 안보여서 <br /> 폭탄이에요 나중에 다 지워도됩니당 */}
       <br />
-      <label htmlFor="inUserEmail">
-        가입 이메일 주소
-      </label>
-        <input
-          name="email"
-          id="inUserEmail"
-          type="text"
-          placeholder={currentUser.userEmail ? currentUser.userEmail : "Google"}
-          disabled
-        />
       <br />
-      <form onSubmit={handleChangeUserName}>
-        <label htmlFor="inUserName">
-          닉네임
-        </label>
-        <input
-          name="userName"
-          id="inUserName"
-          type="text"
-          value={currentUser.userName}
-          onChange={onChange}
-        />
-        <br />
-      </form>
-      <form onSubmit={handleChangePw}>
-        <label htmlFor="inNewPw">
-          비밀번호 변경
-        </label>
-        <input
-          name="newPw"
-          id="inNewPw"
-          type="password"
-          placeholder="변경할 비밀번호"
-          value={inputs.newPw}
-          onChange={onChange}
-        />
-        <br />
-        <input
-          name="newPwCheck"
-          id="inNewPwCheck"
-          type="password"
-          placeholder="비밀번호 변경 확인"
-          value={inputs.newPwCheck}
-          onChange={onChange}
-        />
-        <input type="submit" value={"비밀번호 변경"} />
-      </form>
-      {inputs.newPwCheck > 0 && <p>{pwCheckTxt}</p>}
       <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <ProfileBtn onClick={handleChangeForm}>프로필 변경하기</ProfileBtn>
+      {showChangeForm && <ChangeProfile />}
+      <br />
+      <button onClick={onClickMyContentsList}>내 작성 게시글</button>
+      <button onClick={onClickMyCommentsList}>내 작성 댓글</button>
+      {showContentsList && <MyContents />}
+      {showCommentsList && <MyComments />}
     </>
   )
 }
 
 export default MyProfile;
+
+const ProfileBtn = styled.button`
+  display: inline-block;
+  width: 150px;
+  height: 50px;
+  margin-bottom: 50px;
+
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.4px;
+  line-height: 50px;
+  text-align: center;
+  
+  border-radius: 25px;
+  box-shadow: 3px 3px 5px #ddd;
+
+  background-color: #5aceb1;
+  color: #fff;
+
+  transition: 0.2s;
+
+  &:hover {
+    transform: scale(1.05);
+    background-color: #39c4a1;
+    color: #fff;
+  }
+`;

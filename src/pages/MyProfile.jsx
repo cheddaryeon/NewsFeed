@@ -1,10 +1,5 @@
-import { storageService } from "fbase";
-import { ref, uploadString, getDownloadURL } from "firebase/firestore";
-import { updatePassword } from "firebase/auth";
 import { useState } from 'react';
 import { useSelector, useDispatch } from "react-redux";
-
-console.log()
 
 const MyProfile = () => {
   const currentUser = useSelector((state) => state.auth.user);
@@ -15,30 +10,41 @@ const MyProfile = () => {
     newPwCheck: "",
     userPic: "",
   })
-  const [error, setError] = useState(false);
-  const [errorCheck, setErrorCheck] = useState("");
+  const [pwError, setPwError] = useState(false);
+  const [pwCheckTxt, setPwCheckTxt] = useState("");
   const [imgFileUrl, setImgFileUrl] = useState(currentUser.userPic);
   
   // console.log("MyProfile.jsx => ", newProfileData);
 
   const onChange = async (e) => {
     const { value, name } = e.target;
-    setInputs((prevState) => ({
-      ...prevState,
+    setInputs((prevInputs) => ({
+      ...prevInputs,
       [name]: value,
     }));
-    // 비밀번호 유효성검사
-    const { newPw } = inputs;
-    if (name === "newPwCheck") {
-      if (newPw !== value) {
-        setErrorCheck("비밀번호와 확인이 일치하지 않습니다.")
-        setError(true);
+  
+    // 비밀번호 유효성 검사
+    const { newPw, newPwCheck } = { ...inputs, [name]: value };
+  
+    if (name === "newPw" && newPwCheck.length > 0) {
+      if (newPw !== newPwCheck) {
+        setPwCheckTxt("비밀번호와 확인이 일치하지 않습니다.");
+        setPwError(true);
       } else {
-        setErrorCheck("비밀번호와 확인이 일치합니다.");
-        setError(false)
+        setPwCheckTxt("비밀번호와 확인이 일치합니다.");
+        setPwError(false);
+      }
+    } else if (name === "newPwCheck") {
+      if (newPw !== newPwCheck) {
+        setPwCheckTxt("비밀번호와 확인이 일치하지 않습니다.");
+        setPwError(true);
+      } else {
+        setPwCheckTxt("비밀번호와 확인이 일치합니다.");
+        setPwError(false);
       }
     }
   };
+  
 
   const onImgFileChange = (e) => {
     const files = e.target?.files;
@@ -60,34 +66,25 @@ const MyProfile = () => {
 
   const onClearImgFile = () => setImgFileUrl(currentUser.userPic);
 
-  const onSubmit = async (e) => {
+  const handleChangeUserPic = async (e) => {
     e.preventDefault();
-    console.log("MyProfile.jsx 에러 상태", error);
+    // 프로필 사진 변경
+  }
+
+  const handleChangeUserName = async (e) => {
+    e.preventDefault();
     // 닉네임 변경
-    if (!error) {
+  }
+
+  const handleChangePw = async (e) => {
+    e.preventDefault();
+    // 비밀번호 변경
+    if (!pwError) {
       try {
-        const { photoURL, userName, newPw, newPwCheck } = inputs;
-        await updateProfile(user, {
-          displayName: userName,
-          photoURL,
-        });
-        await updatePassword(user,)
-        dispatch(setUserInfo({
-          userId: user.uid,
-          userName: user.displayName,
-          userPic: user.photoURL,
-        }))
-        setInputs({
-          email: "",
-          userName: "",
-          newPw: "",
-          newPwCheck: "",
-        });
+        // firebase 서버에 변경 비밀번호 업데이트
       } catch (error) {
-        setError(error.message);
-        alert(error);
+        // 비밀번호 변경 실패
       }
-      setError(false)
     }
   }
   
@@ -95,7 +92,7 @@ const MyProfile = () => {
     <>
       <h2>My Profile</h2>
       <img src={imgFileUrl} width="150px" height="150px" />
-      <form>
+      <form onSubmit={handleChangeUserPic}>
         <label htmlFor="inUserPic">
           프로필 사진 변경
         </label>
@@ -112,7 +109,6 @@ const MyProfile = () => {
       <label htmlFor="inUserEmail">
         가입 이메일 주소
       </label>
-      <form>
         <input
           name="email"
           id="inUserEmail"
@@ -120,7 +116,8 @@ const MyProfile = () => {
           placeholder={currentUser.userEmail ? currentUser.userEmail : "Google"}
           disabled
         />
-        <br />
+      <br />
+      <form onSubmit={handleChangeUserName}>
         <label htmlFor="inUserName">
           닉네임
         </label>
@@ -131,36 +128,32 @@ const MyProfile = () => {
           value={currentUser.userName}
           onChange={onChange}
         />
-        </form>
-      <br />
-      <form>
-        <label htmlFor="innewPw">
+        <br />
+      </form>
+      <form onSubmit={handleChangePw}>
+        <label htmlFor="inNewPw">
           비밀번호 변경
         </label>
         <input
           name="newPw"
-          id="innewPw"
+          id="inNewPw"
           type="password"
-          placeholder="변경할 비밀번호를 입력하세요."
+          placeholder="변경할 비밀번호"
           value={inputs.newPw}
           onChange={onChange}
         />
-          <br />
-        <label htmlFor="innewPwCheck">
-          비밀번호 변경 확인
-        </label>
+        <br />
         <input
-          name="newPw"
-          id="innewPwCheck"
+          name="newPwCheck"
+          id="inNewPwCheck"
           type="password"
-          placeholder="변경할 비밀번호를 입력하세요."
-          value={inputs.newPw}
+          placeholder="비밀번호 변경 확인"
+          value={inputs.newPwCheck}
           onChange={onChange}
         />
-          <br />
-          <p>{inputs.newPwCheck && errorCheck}</p>
-          <input type="submit" value={"프로필 변경"} />
-        </form>
+        <input type="submit" value={"비밀번호 변경"} />
+      </form>
+      {inputs.newPwCheck > 0 && <p>{pwCheckTxt}</p>}
       <br />
     </>
   )

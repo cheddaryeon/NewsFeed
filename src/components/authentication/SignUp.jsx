@@ -27,7 +27,15 @@ const SignUp = ({handleCloseClick}) => {
     // 비밀번호 유효성 검사
     const { pw, pwCheck } = { ...inputs, [name]: value };
   
-    if (name === "pwCheck" && pwCheck.length > 0) {
+    if (name === "pw" && pwCheck.length > 0) {
+      if (pw !== pwCheck) {
+        setPwCheckTxt("비밀번호와 확인이 일치하지 않습니다.");
+        setPwError(true);
+      } else {
+        setPwCheckTxt("비밀번호와 확인이 일치합니다.");
+        setPwError(false);
+      }
+    } else if (name === "pwCheck") {
       if (pw !== pwCheck) {
         setPwCheckTxt("비밀번호와 확인이 일치하지 않습니다.");
         setPwError(true);

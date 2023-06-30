@@ -82,7 +82,7 @@ const PreviewContentsList = () => {
             <ContentsList>
               <ContentPreview key={content?.id}>
                 <p>{} 0000년 0월 0일 결재 요청건</p>
-                <p>결재요청자: <span>{content.wishItemText}</span></p>
+                <p>결재요청자: <span>{content.contentsWriterName}</span></p>
                 <p>결재 품목: <span>{content.itemPriceText}</span></p>
                 <p>결재 요청 사유: <span>{content.wishReasonText}</span></p>
                 <p>결재를 검토하시겠습니까?</p>

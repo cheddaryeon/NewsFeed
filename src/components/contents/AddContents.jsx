@@ -214,6 +214,7 @@ const InputForm = styled.form`
     border-radius: 10px;
 
     font-size: 16px;
+    line-height: 1.6;
     color: #666;
 
     overflow: auto;

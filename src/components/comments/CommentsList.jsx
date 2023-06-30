@@ -21,6 +21,7 @@ const CommentsList = () => {
   return filteredComments.map((comment) => {
     return (
       <div key={comment?.contentsId}>
+        <p>{comment.selectedOption}</p>
         <p>결재내용: {comment.commentsBody}</p>
         <button>수정</button>
         <button>삭제</button>

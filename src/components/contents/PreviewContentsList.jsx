@@ -6,20 +6,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchContents } from "redux/modules/contents";
 
 const PreviewContentsList = () => {
-  //
+  //(리듀서에서 가져옴)
   const contents = useSelector((state) => state.contents);
 
   //
   const dispatch = useDispatch();
 
   //❷Read
+  // 1.useEffect(()=>{}, [])로 인해, 메인페이지 처음 로드될 때는 fetchData()를 무조건 실행
   useEffect(() => {
     const fetchData = async () => {
       //
       const q = query(collection(dbService, "contents"));
       const querySnapshot = await getDocs(q);
 
-      console.log({ querySnapshot });
+      console.log("querySnapshot =>", querySnapshot);
 
       const contents_list = [];
 
@@ -31,7 +32,7 @@ const PreviewContentsList = () => {
       });
 
       dispatch(fetchContents(contents_list));
-      // console.log({ contents_list });
+      // 2.상세페이지에서 리듀서 업데이트 하는 부분을 주석처리했는데도 fB 업데이트뿐만 아니라 화면 업데이트도 되는 이유는, fetchContents(contents_list)가 화면 로드시 실행되어서.
 
       // dispatch(
       //   {
@@ -41,8 +42,11 @@ const PreviewContentsList = () => {
       // )
     };
 
+    //fetchData() 호출해서, DB 데이터 클라이언트쪽으로 가져오기
     fetchData();
   }, []);
+
+  // []을 안해주면 메인페이지는 무한로딩이 될 것.
 
   //--------------------------------------------------------------------------//
   return (
@@ -78,14 +82,17 @@ const PreviewContentsList = () => {
           </div>
         </li>
 
-        {/* 붙여넣기 시작 */}
+        {/* 가져온 DB data 클라이언트쪽에 보여주기 */}
         {contents.map((content) => {
           return (
-            <li style={{ border: "solid", marginTop: "20px", padding: "20px" }}>
-              <div key={content.id}>
+            <li
+              style={{ border: "solid", marginTop: "20px", padding: "20px" }}
+              key={content?.id}
+            >
+              <div>
                 {/* <p>{} 결제 요청건</p> */}
-                <p>결제요청자: {content.wishItemText}</p>
-                <p>결제 품목: {content.itemPriceText}</p>
+                <p>결제 품목: {content.wishItemText}</p>
+                <p>가격: {content.itemPriceText}</p>
                 <p>결제 요청 사유: {content.wishReasonText}</p>
               </div>
               <div style={{ marginTop: "20px" }}>

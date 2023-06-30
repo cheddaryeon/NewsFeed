@@ -76,7 +76,7 @@ const ChangeProfile = () => {
     if (imgFileUrl !== currentUser.userPic) {
       const ok = window.confirm("프로필 이미지를 변경하시겠어요?");
       if (ok) {
-        const changedImgRef = ref(storageService, `${currentUser.userId}/${uuid()}`);
+        const changedImgRef = ref(storageService, `profile_img/${uuid()}`);
         const response = await uploadString(changedImgRef, imgFileUrl, "data_url");
         imageUrl = await getDownloadURL(response.ref);
       }

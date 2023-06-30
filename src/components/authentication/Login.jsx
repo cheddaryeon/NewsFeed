@@ -31,7 +31,7 @@ const Login = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { user } = await signInWithEmailAndPassword(authService, email, password);
+      const { user } = await signInWithEmailAndPassword(authService, inputs.email, inputs.password);
       dispatch(
         setUserInfo({
           userId: user.uid,
@@ -75,7 +75,7 @@ const Login = () => {
       provider = new GoogleAuthProvider();
       await signInWithPopup(authService, provider);
       // sign in 이후 user 정보를 받아와서 store에 전달
-      const { user } = await signInWithPopup(authService, email, password);
+      const { user } = await signInWithPopup(authService, inputs.email, inputs.password);
       dispatch(
         setUserInfo({
           userId: user.uid,

@@ -85,12 +85,6 @@ const DetailContentsList = () => {
                 <p>가격: {targetContent?.newItemPriceText}</p>
                 <p>결제 요청 사유: {targetContent?.newWishReasonText}</p>
               </div>
-              {/* <div>
-            <button onClick={editModeHandler}>수정</button>
-            <button onClick={() => deleteHandler(targetContent?.id)}>
-              삭제
-            </button>
-          </div> */}
             </li>
           </ul>
         ) : (

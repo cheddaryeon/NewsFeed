@@ -76,33 +76,6 @@ const PreviewContentsList = () => {
     <Container>
       <NewContentButton onClick={onAddContentsClick}>새로운 결재 요청하기</NewContentButton>
       <ul>
-        <ContentsList>
-          <ContentPreview>
-           <p>2023.06.26 결재 요청건</p>
-            <p>결재요청자: <span>언럭키세븐</span></p>
-            <p>결재 품목: <span>이어폰(20,000원)</span></p>
-            <p>결재 요청 사유: <span>그냥</span></p>
-            <p>결재를 검토하시겠습니까?</p>
-            <DetailContentButton>결재 검토하기</DetailContentButton>
-          </ContentPreview>
-          <ContentPreview>
-          <p>2023.06.26 결재 요청건</p>
-            <p>결재요청자: <span>언럭키세븐</span></p>
-            <p>결재 품목: <span>이어폰(20,000원)</span></p>
-            <p>결재 요청 사유: <span>그냥</span></p>
-            <p>결재를 검토하시겠습니까?</p>
-            <DetailContentButton>결재 검토하기</DetailContentButton>
-          </ContentPreview>
-          <ContentPreview>
-            <p>2023.06.26 결재 요청건</p>
-            <p>결재요청자: <span>언럭키세븐</span></p>
-            <p>결재 품목: <span>이어폰(20,000원)</span></p>
-            <p>결재 요청 사유: <span>그냥</span></p>
-            <p>결재를 검토하시겠습니까?</p>
-            <DetailContentButton>결재 검토하기</DetailContentButton>
-          </ContentPreview>
-        </ContentsList>
-
         {/* 가져온 DB data 클라이언트쪽에 보여주기 */}
         {contents.map((content) => {
           return (
@@ -131,7 +104,7 @@ const Container = styled.section`
   text-align: center;
 `
 
-const NewContentButton = styled(Link)`
+const NewContentButton = styled.button`
   display: inline-block;
   width: 250px;
   height: 50px;

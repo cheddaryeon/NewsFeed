@@ -68,30 +68,6 @@ const contents = (state = initialState, action) => {
     //     }
     //   });
 
-    case DELETE_CONTENTS:
-      const left_contents_list = state.filter(
-        (element) => element.id !== action.payload
-      );
-      return left_contents_list;
-
-    // case UPDATE_CONTENTS:
-    //   //fB document들 중, id가 수정버튼 클릭한 게시물의 id와 일치하는 것만 map으로 return
-
-    //   state.map((element) => {
-    //     if (element.id === action.payload.id) {
-    //       return [
-    //         ...element,
-    //         {
-    //           itemPriceText: newItemPriceText,
-    //           wishItemText: newWishItemText,
-    //           wishReasonText: newWishReasonText,
-    //         },
-    //       ];
-    //     } else {
-    //       return element;
-    //     }
-    //   });
-
     default:
       return state;
   }

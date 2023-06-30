@@ -7,7 +7,7 @@ import MyComments from "components/profile/MyComments";
 
 const MyProfile = () => {
   const [showChangeForm, setShowChangeForm] = useState(false);
-  const [showContentsList, setShowContentsList] = useState(false);
+  const [showContentsList, setShowContentsList] = useState(true);
   const [showCommentsList, setShowCommentsList] = useState(false);
 
   const handleChangeForm = () => {

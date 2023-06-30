@@ -104,7 +104,7 @@ const CommentWrapper = styled.div`
   flex-direction: column;
   gap: 20px;
   width: 70%;
-  margin: 0 auto 30px;
+  margin: 0 auto 50px;
   padding: 50px 100px;
   border-radius: 30px;
   background-color: #fadcd0;

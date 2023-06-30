@@ -143,6 +143,9 @@ const NewContentButton = styled.button`
 `
 
 const ContentsList = styled.li`
+  &:last-child {
+    margin-bottom: 100px;
+  }
 `
 
 const ContentPreview = styled.div`

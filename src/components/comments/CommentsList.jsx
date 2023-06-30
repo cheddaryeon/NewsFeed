@@ -22,13 +22,13 @@ const CommentsList = () => {
   return filteredComments.map((comment) => {
     return (
         <CommentsWrapper key={comment?.contentsId}>
-        <span>결재자: <span>결재자이름삽입</span></span>
-        <p>결재: <span>{comment.selectedOption}</span></p>
-        <p>결재 의견: <span>{comment.commentsBody}</span></p>
-        <ButtonBox>
-          <button>수정</button>
-          <button>삭제</button>
-        </ButtonBox>
+          <span>결재자: <span>결재자이름삽입</span></span>
+          <p>결재: <span>{comment.selectedOption}</span></p>
+          <p>결재 의견: <span>{comment.commentsBody}</span></p>
+          <ButtonBox>
+            <button>수정</button>
+            <button>삭제</button>
+          </ButtonBox>
        </CommentsWrapper>
     );
   });
@@ -46,8 +46,8 @@ const CommentsWrapper = styled.div`
   border-radius: 30px;
   background-color: #ffeee6;
 
-  &:last-child {
-    margin-bottom: 100px;
+  &:last-of-type {
+    margin-bottom: 50px;
   }
 
   & > span {

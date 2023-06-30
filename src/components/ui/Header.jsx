@@ -52,7 +52,7 @@ const Header = () => {
             </Link>
             </HeaderInnerLeftBox>
           <HeaderInnerBox>
-            <img src="https://file.notion.so/f/s/55e329af-aa06-4182-b826-c60d525f80eb/_%E1%84%82%E1%85%B2%E1%84%89%E1%85%B3%E1%84%91%E1%85%B5%E1%84%83%E1%85%B3%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%8C%E1%85%A6%E1%86%A8%E1%84%90%E1%85%B3_%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9-001_(1).png?id=84e41d7b-8d50-45e5-a07a-e4d8b6ad5768&table=block&spaceId=2d189cca-e623-443e-92bd-24c667dbde73&expirationTimestamp=1688112000000&signature=mD7vyCk-y7LMQmoQKbVijuDbrlv7FvxM5_c9XBjuH0I&downloadName=_%E1%84%82%E1%85%B2%E1%84%89%E1%85%B3%E1%84%91%E1%85%B5%E1%84%83%E1%85%B3%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%8C%E1%85%A6%E1%86%A8%E1%84%90%E1%85%B3+%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9-001+%281%29.png" alt="로고" width="auto" height="80px"/>
+            <img src="https://firebasestorage.googleapis.com/v0/b/buy-or-not-unlucky7.appspot.com/o/assets%2Fbuyornot_logo.png?alt=media&token=d92ac44f-a857-4f76-a2e2-d9c03c41c371" alt="로고" width="auto" height="80px"/>
           </HeaderInnerBox>
           <HeaderInnerRightBox>
             <UserProfile to={`/profile/${currentUser.userId}`}>
@@ -70,7 +70,7 @@ const Header = () => {
               </Link>
             </HeaderInnerLeftBox>
             <HeaderInnerBox>
-              <img src="https://file.notion.so/f/s/55e329af-aa06-4182-b826-c60d525f80eb/_%E1%84%82%E1%85%B2%E1%84%89%E1%85%B3%E1%84%91%E1%85%B5%E1%84%83%E1%85%B3%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%8C%E1%85%A6%E1%86%A8%E1%84%90%E1%85%B3_%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9-001_(1).png?id=84e41d7b-8d50-45e5-a07a-e4d8b6ad5768&table=block&spaceId=2d189cca-e623-443e-92bd-24c667dbde73&expirationTimestamp=1688112000000&signature=mD7vyCk-y7LMQmoQKbVijuDbrlv7FvxM5_c9XBjuH0I&downloadName=_%E1%84%82%E1%85%B2%E1%84%89%E1%85%B3%E1%84%91%E1%85%B5%E1%84%83%E1%85%B3%E1%84%91%E1%85%B3%E1%84%85%E1%85%A9%E1%84%8C%E1%85%A6%E1%86%A8%E1%84%90%E1%85%B3+%E1%84%85%E1%85%A9%E1%84%80%E1%85%A9-001+%281%29.png" alt="로고" width="auto" height="80px"/>
+              <img src="https://firebasestorage.googleapis.com/v0/b/buy-or-not-unlucky7.appspot.com/o/assets%2Fbuyornot_logo.png?alt=media&token=d92ac44f-a857-4f76-a2e2-d9c03c41c371" alt="로고" width="auto" height="80px"/>
               </HeaderInnerBox>
           <HeaderInnerRightBox>
             <Button onClick={handleLoginClick}>로그인</Button>

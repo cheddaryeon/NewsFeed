@@ -1,11 +1,11 @@
 import { authService } from "fbase";
 import { setUserInfo } from "redux/modules/auth";
-import { setPersistence, browserSessionPersistence, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { styled } from "styled-components";
 
-const SignUp = () => {
+const SignUp = ({handleCloseClick}) => {
   const dispatch = useDispatch();
   const [inputs, setInputs] = useState({
     email: "",
@@ -131,7 +131,7 @@ const SignUp = () => {
             onChange={onChange}
           />
           <br />
-          <p>{inputs.pwCheck && errorCheck}</p>
+          <p>{inputs.pwCheck && pwCheckTxt}</p>
           <p>{errorMsg}</p>
           <input type="submit" value={"회원가입"} />
         </SignUpForm>

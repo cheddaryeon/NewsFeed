@@ -4,6 +4,7 @@ import { collection, getDocs, query, updateDoc } from "firebase/firestore";
 import { dbService } from "fbase";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchContents } from "redux/modules/contents";
+import { styled } from "styled-components";
 
 const PreviewContentsList = () => {
   //
@@ -44,6 +45,10 @@ const PreviewContentsList = () => {
     fetchData();
   }, []);
 
+  const handleScrollToTop = () => {
+    window.scrollTo({top:0, behavior: 'smooth'});
+  };
+
   // //❸Update
   // const updateContents = async (event) => {
   //   //
@@ -73,59 +78,186 @@ const PreviewContentsList = () => {
 
   //--------------------------------------------------------------------------//
   return (
-    <div className="container" style={{ border: "solid", marginTop: "20px" }}>
-      <header
-        style={{
-          border: "solid",
-          marginTop: "20px",
-          padding: "20px",
-          backgroundColor: "lightgray",
-        }}
-      >
-        <Link to={"/contentsForm"}>새로운 결제 요청하기</Link>
-      </header>
-
-      <ul className="PreviewListsWrapper">
-        <li
-          style={{
-            border: "solid",
-            marginTop: "20px",
-            padding: "20px",
-            backgroundColor: "lightgray",
-          }}
-        >
-          <div>
-            <p>2023.06.26 결제 요청건</p>
-            <p>결제요청자: 언럭키세븐</p>
-            <p>결제 품목: 이어폰(20,000원)에 대한 결제요청건이 있습니다.</p>
-          </div>
-          <div style={{ marginTop: "20px" }}>
-            <p>결제를 검토하시겠습니까?</p>
-            <button>결제 검토하기</button>
-          </div>
-        </li>
+    <Container>
+      <NewContentButton to={"/contentsForm"}>
+        새로운 결재 요청하기
+      </NewContentButton>
+      <ul>
+        <ContentsList>
+          <ContentPreview>
+           <p>2023.06.26 결재 요청건</p>
+            <p>결재요청자: <span>언럭키세븐</span></p>
+            <p>결재 품목: <span>이어폰(20,000원)</span></p>
+            <p>결재 요청 사유: <span>그냥</span></p>
+            <p>결재를 검토하시겠습니까?</p>
+            <DetailContentButton>결재 검토하기</DetailContentButton>
+          </ContentPreview>
+          <ContentPreview>
+          <p>2023.06.26 결재 요청건</p>
+            <p>결재요청자: <span>언럭키세븐</span></p>
+            <p>결재 품목: <span>이어폰(20,000원)</span></p>
+            <p>결재 요청 사유: <span>그냥</span></p>
+            <p>결재를 검토하시겠습니까?</p>
+            <DetailContentButton>결재 검토하기</DetailContentButton>
+          </ContentPreview>
+          <ContentPreview>
+            <p>2023.06.26 결재 요청건</p>
+            <p>결재요청자: <span>언럭키세븐</span></p>
+            <p>결재 품목: <span>이어폰(20,000원)</span></p>
+            <p>결재 요청 사유: <span>그냥</span></p>
+            <p>결재를 검토하시겠습니까?</p>
+            <DetailContentButton>결재 검토하기</DetailContentButton>
+          </ContentPreview>
+        </ContentsList>
 
         {/* 붙여넣기 시작 */}
         {contents.map((content) => {
           return (
-            <li style={{ border: "solid", marginTop: "20px", padding: "20px" }}>
-              <div key={content.id}>
-                {/* <p>{} 결제 요청건</p> */}
-                <p>결제요청자: {content.wishItemText}</p>
-                <p>결제 품목: {content.itemPriceText}</p>
-                <p>결제 요청 사유: {content.wishReasonText}</p>
-              </div>
-              <div style={{ marginTop: "20px" }}>
-                <p>결제를 검토하시겠습니까?</p>
-                {/* <Link to={"/detail/:contentsId"}>결제 검토하기</Link> */}
-                <Link to={`/detail/${content.id}`}>결제 검토하기</Link>
-              </div>
-            </li>
+            <ContentsList>
+              <ContentPreview key={content.id}>
+                <p>{} 0000년 0월 0일 결재 요청건</p>
+                <p>결재요청자: <span>{content.wishItemText}</span></p>
+                <p>결재 품목: <span>{content.itemPriceText}</span></p>
+                <p>결재 요청 사유: <span>{content.wishReasonText}</span></p>
+                <p>결재를 검토하시겠습니까?</p>
+                <DetailContentButton to={`/detail/${content.id}`}>결재 검토하기</DetailContentButton>
+              </ContentPreview>
+            </ContentsList>
           );
         })}
       </ul>
-    </div>
+      <TopButton onClick={handleScrollToTop}> ▲ </TopButton>
+    </Container>
   );
 };
+
+const Container = styled.section`
+  padding-top: 150px;
+  width: 60%;
+  margin: 0 auto;
+  text-align: center;
+`
+
+const NewContentButton = styled(Link)`
+  display: inline-block;
+  width: 250px;
+  height: 50px;
+  margin-bottom: 50px;
+
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: -0.4px;
+  line-height: 50px;
+  text-align: center;
+  
+  border-radius: 25px;
+  box-shadow: 3px 3px 5px #ddd;
+
+  background-color: #5aceb1;
+  color: #fff;
+
+  transition: 0.2s;
+
+  &:hover {
+    transform: scale(1.05);
+    background-color: #39c4a1;
+    color: #fff;
+  }
+`
+
+const ContentsList = styled.li`
+`
+
+const ContentPreview = styled.div`
+  padding: 30px 50px;
+  margin-bottom: 50px;
+
+  border-radius: 30px;
+  background-color: aliceblue;
+  
+  box-shadow: 5px 5px 10px #eee;
+
+  transition: 0.2s;
+
+  &:hover {
+    transform: scale(1.03);
+  }
+
+  & > p {
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.7px;
+  }
+
+  & > p:first-child {
+    margin-bottom: 30px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #182646; 
+  }
+
+  & > p:nth-child(4) {
+    margin-bottom: 50px;
+  }
+
+  & > p > span {
+    margin-left: 5px;
+    font-size: 19px;
+    font-weight: 600;
+    color: #244eaa;
+  }
+`
+const DetailContentButton = styled(Link)`
+  display: inline-block;
+  width: 150px;
+  height: 40px;
+
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: -0.4px;
+  line-height: 40px;
+  text-align: center;
+  
+  border-radius: 20px;
+  box-shadow: 3px 3px 5px #ddd;
+
+  background-color: #4c6db6;
+  color: #fff;
+
+  transition: 0.2s;
+
+  &:hover {
+    transform: scale(1.05);
+    background-color: #2950a3;
+    color: #fff;
+  }
+`
+
+const TopButton = styled.button`
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+
+  width: 70px;
+  height: 70px;
+
+  border-radius: 50%;
+  box-shadow: 3px 3px 3px #ddd;
+
+  font-size: 25px;
+  font-weight: 800;
+  line-height: 65px;
+
+  background-color: rgb(201, 232, 255);
+  color: #517a99;
+
+  transition: 0.2s;
+
+  &:hover {
+    transform: scale(1.1);
+    background-color: rgb(163, 207, 240);
+  }
+`
 
 export default PreviewContentsList;

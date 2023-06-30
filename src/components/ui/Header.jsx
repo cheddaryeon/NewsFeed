@@ -10,7 +10,6 @@ import { Link, useNavigate } from "react-router-dom";
 const Header = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.auth.user);
-  console.log("Header.jsx의 console.log 현재 사용자 정보", useSelector((state) => state.auth.user))
   const navigate = useNavigate();
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [showSignUpForm, setShowSignUpForm] = useState(false);
@@ -40,7 +39,8 @@ const Header = () => {
     <div style={{ border: "solid" }}>
       {currentUser !== null ? (
         <>
-          <img src={currentUser.userPic} width="50px" height="50px" />
+          <Link to="/">Home</Link>
+          { currentUser.userPic && <img src={currentUser.userPic} alt="프로필 이미지" width="50px" height="50px" /> }
           <Link to={`/profile/${currentUser.userId}`}>{currentUser.userName}</Link>님 환영합니다!
           <button onClick={handleLogoutClick}>로그아웃</button>
         </>

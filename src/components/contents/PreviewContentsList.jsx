@@ -19,19 +19,18 @@ const PreviewContentsList = () => {
       const q = query(collection(dbService, "contents"));
       const querySnapshot = await getDocs(q);
 
-      console.log({ querySnapshot });
+      // console.log("쿼리스냅샷", { querySnapshot });
 
       const contents_list = [];
 
       querySnapshot.forEach((doc) => {
         const data = { id: doc.id, ...doc.data() }; // doc.data()를 실행하면 해당 document의 데이터를 가져올 수 있음
 
-        console.log("콘솔1", data);
         contents_list.push(data);
       });
 
       dispatch(fetchContents(contents_list));
-      console.log({ contents_list });
+      // console.log({ contents_list });
 
       // dispatch(
       //   {

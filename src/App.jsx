@@ -1,5 +1,5 @@
 import { authService } from "fbase";
-import { onAuthStateChanged, updateProfile } from "firebase/auth";
+import { setPersistence, browserSessionPersistence, onAuthStateChanged, updateProfile } from "firebase/auth";
 import { setUserInfo } from "redux/modules/auth";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,6 +13,7 @@ const App = () => {
   const [init, setInit] = useState(false);
 
   useEffect(() => {
+    setPersistence(authService, browserSessionPersistence);
     onAuthStateChanged(authService, (currentUser) => {
       if (currentUser) {
         const userInfo = {
@@ -27,7 +28,7 @@ const App = () => {
       }
       setInit(true);
     });
-  },[authService, dispatch]);
+  },[dispatch]);
 
   console.log("App.jsx console.log 현재 사용자 정보", useSelector((state)=>state.auth.user))
 

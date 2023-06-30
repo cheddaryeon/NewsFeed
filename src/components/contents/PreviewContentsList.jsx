@@ -1,16 +1,20 @@
+import Login from "components/authentication/Login";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { collection, getDocs, query, updateDoc } from "firebase/firestore";
 import { dbService } from "fbase";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchContents } from "redux/modules/contents";
 
 const PreviewContentsList = () => {
+  //hooks
+  const currentUser = useSelector((state) => state.auth.user);
   //(리듀서에서 가져옴)
   const contents = useSelector((state) => state.contents);
 
   //
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   //❷Read
   // 1.useEffect(()=>{}, [])로 인해, 메인페이지 처음 로드될 때는 fetchData()를 무조건 실행
@@ -47,6 +51,17 @@ const PreviewContentsList = () => {
 
   // []을 안해주면 메인페이지는 무한로딩이 될 것.
 
+  const onAddContentsClick = () => {
+    if (currentUser) {
+      // AddContents page
+      // <Link to={"/contentsForm"}>새로운 결제 요청하기</Link>;
+      navigate("/contentsForm");
+    } else {
+      alert("로그인 해주세요!");
+      // 로그인 창 띄우기 추가
+    }
+  };
+
   //--------------------------------------------------------------------------//
   return (
     <div className="container" style={{ border: "solid", marginTop: "20px" }}>
@@ -58,7 +73,7 @@ const PreviewContentsList = () => {
           backgroundColor: "lightgray",
         }}
       >
-        <Link to={"/contentsForm"}>새로운 결제 요청하기</Link>
+        <button onClick={onAddContentsClick}>새로운 결재 요청하기</button>
       </header>
 
       <ul className="PreviewListsWrapper">

@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { addDoc, collection, getDocs, query } from "firebase/firestore";
 import { db, dbService } from "fbase";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addContents, fetchContents } from "redux/modules/contents";
 import { useNavigate } from "react-router-dom";
 
 const AddContents = () => {
+  const currentUser = useSelector((state) => state.auth.user);
+  console.log("Add Contents User => ", currentUser);
   //❶Create
+
+  //
+  const [contentsWriterId, setContentsWriterId] = useState(currentUser.userId);
+  const [contentsWriterName, setContentsWriterName] = useState(
+    currentUser.userName
+  );
+  const [contentsDate, setContentsDate] = useState(new Date());
 
   //
   const [wishItemText, setWishItemText] = useState("");
   const [itemPriceText, setItemPriceText] = useState("");
   const [wishReasonText, setWishReasonText] = useState("");
-  //
 
   //
   const dispatch = useDispatch();
@@ -27,6 +35,9 @@ const AddContents = () => {
 
     //
     const newContents = {
+      contentsWriterId,
+      contentsWriterName,
+      contentsDate,
       wishItemText,
       itemPriceText,
       wishReasonText,
@@ -43,6 +54,9 @@ const AddContents = () => {
         wishItemText,
         itemPriceText,
         wishReasonText,
+        contentsWriterId,
+        contentsWriterName,
+        contentsDate,
       })
     );
 

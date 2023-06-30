@@ -17,6 +17,7 @@ const App = () => {
       if (currentUser) {
         const userInfo = {
           userId: currentUser.uid,
+          userEmail: currentUser.email,
           userName: currentUser.displayName,
           userPic: currentUser.photoURL,
           updateProfile: (args) => updateProfile(currentUser, args),

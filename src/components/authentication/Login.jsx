@@ -28,6 +28,7 @@ const Login = () => {
       dispatch(
         setUserInfo({
           userId: user.uid,
+          userEmail: user.email,
           userName: user.displayName,
           userPic: user.photoURL,
         })

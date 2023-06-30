@@ -57,7 +57,7 @@ const Header = () => {
           <HeaderInnerRightBox>
             <UserProfile to={`/profile/${currentUser.userId}`}>
               { currentUser.userPic &&<img src={currentUser.userPic} width="50px" height="50px"/>}
-              <Link to={`/profile/${currentUser.userId}`}>{currentUser.userName}</Link>님 환영합니다!
+              <Link to={`/profile/${currentUser.userId}`}>{currentUser.userName}님 환영합니다!</Link>
             </UserProfile>
             <Button onClick={handleLogoutClick}>로그아웃</Button>
           </HeaderInnerRightBox>

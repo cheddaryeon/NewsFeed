@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import comments, { addComment } from "redux/modules/comments";
+import styled from "styled-components";
 
 const AddComments = () => {
   //❶Create
@@ -21,6 +22,7 @@ const AddComments = () => {
 
     dispatch(
       addComment({
+        selectedOption,
         commentsBody,
         contentsId,
       })
@@ -38,6 +40,17 @@ const AddComments = () => {
     setCommentsBody("");
   };
 
+  //select
+  const options = ["그뤠잇", "스튜핏"];
+
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(null);
+
+  const handleOptionClick = (option) => {
+    setSelectedOption(option);
+    setIsOpen(false);
+  };
+
   return (
     <div>
       <h2 style={{ backgroundColor: "gray" }}>결재 의견 남기기</h2>
@@ -52,6 +65,31 @@ const AddComments = () => {
         ></input>
         <p>여기에 SELECT추가</p> */}
         <p>결재내용</p>
+        <div>
+          <DropdownWrapper>
+            <DropdownHeader
+              onClick={() => {
+                setIsOpen((prev) => !prev);
+              }}
+            >
+              {selectedOption || "그뤠잇/스튜핏 v"}
+            </DropdownHeader>
+            {isOpen && (
+              <DropdownList>
+                {options.map((option) => (
+                  <DropdownItem
+                    key={option}
+                    onClick={() => {
+                      handleOptionClick(option);
+                    }}
+                  >
+                    {option}
+                  </DropdownItem>
+                ))}
+              </DropdownList>
+            )}
+          </DropdownWrapper>
+        </div>
         <input
           name="내용"
           value={commentsBody}
@@ -66,3 +104,30 @@ const AddComments = () => {
 };
 
 export default AddComments;
+
+const DropdownWrapper = styled.div`
+  width: 150px;
+  border: 1px solid black;
+`;
+
+const DropdownHeader = styled.div`
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const DropdownList = styled.div`
+  width: 150px;
+  border: 1px solid black;
+  position: absolute;
+  background-color: white;
+`;
+
+const DropdownItem = styled.div`
+  padding: 10px;
+  cursor: pointer;
+  &:hover {
+    background-color: #100d0d;
+  }
+`;

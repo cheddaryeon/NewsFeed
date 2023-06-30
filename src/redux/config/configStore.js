@@ -1,11 +1,11 @@
 import { createStore } from "redux";
 import { combineReducers } from "redux";
-import { authReducer } from "redux/modules/auth";
+import { auth } from "redux/modules/auth";
 import comments from "redux/modules/comments";
 import contents from "redux/modules/contents";
 
 const rootReducer = combineReducers({
-  auth: authReducer,
+  auth,
   comments: comments,
   contents: contents,
 });

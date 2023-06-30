@@ -1,10 +1,15 @@
 import React from "react";
-import { addDoc, collection, getDocs, query } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  getDocs,
+  query,
+} from "firebase/firestore";
 import { dbService } from "fbase";
 
 //action value
 const ADD_COMMENT = "ADD_COMMENT";
-
 //action creator
 export const addComment = (payload) => {
   return { type: ADD_COMMENT, payload };

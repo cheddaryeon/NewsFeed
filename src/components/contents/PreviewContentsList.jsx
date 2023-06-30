@@ -89,7 +89,8 @@ const PreviewContentsList = () => {
           return (
             <ContentsList>
               <ContentPreview key={content?.id}>
-                <p>{} 0000년 0월 0일 결재 요청건</p>
+                <p>새로운 결재요청건</p>
+                <p>결재 요청 일시: <span>{content.contentsDate}</span></p>
                 <p>결재요청자: <span>{content.wishItemText}</span></p>
                 <p>결재 품목: <span>{content.itemPriceText}</span></p>
                 <p>결재 요청 사유: <span>{content.wishReasonText}</span></p>
@@ -165,13 +166,11 @@ const ContentPreview = styled.div`
   }
 
   & > p:first-child {
-    margin-bottom: 30px;
+    margin-bottom: 40px;
     font-size: 22px;
-    font-weight: 600;
-    color: #182646; 
+    font-weight: 600
   }
-
-  & > p:nth-child(4) {
+  & > p:nth-child(5) {
     margin-bottom: 50px;
   }
 

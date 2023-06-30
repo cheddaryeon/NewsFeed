@@ -101,6 +101,20 @@ const Container = styled.div`
   text-align: center;
 `
 
+const InputFormWrapper = styled.div`
+  padding: 50px 100px;
+
+  border-radius: 30px;
+  background-color: #caf0d4;
+  
+  box-shadow: 5px 5px 10px #eee;
+   & > p {
+    margin-bottom: 40px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #30924a;
+  }
+`
 const InputForm = styled.form`
   display: flex;
   flex-direction: column;
@@ -165,22 +179,6 @@ const InputForm = styled.form`
     }
   }
 `
-
-const InputFormWrapper = styled.div`
-  padding: 50px 100px;
-
-  border-radius: 30px;
-  background-color: #caf0d4;
-  
-  box-shadow: 5px 5px 10px #eee;
-   & > p {
-    margin-bottom: 40px;
-    font-size: 24px;
-    font-weight: 600;
-    color: #30924a;
-  }
-`
-
 const ButtonBox = styled.form`
   margin-top: 50px;
 

@@ -1,10 +1,11 @@
 import { authService } from "fbase";
 import { setUserInfo } from "redux/modules/auth";
-import { setPersistence, browserSessionPersistence, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { styled } from "styled-components";
 
-const SignUp = () => {
+const SignUp = ({handleCloseClick}) => {
   const dispatch = useDispatch();
   const [inputs, setInputs] = useState({
     email: "",
@@ -89,18 +90,19 @@ const SignUp = () => {
   };
 
   return (
-    <>
-      <h2>알뜰살뜰 살말에 처음이세요?</h2>
-        <span>이메일로 가입하기</span>
-        <form onSubmit={onSubmit}>
+    <SignUpWrapper>
+      <p>알뜰살뜰 살말에 처음이세요?</p>
+      {/* <span>이메일로 가입하기</span> */}
+        <SignUpForm onSubmit={onSubmit}>
           <input
             name="email"
-            type="text"
-            placeholder="example@email.com"
+            type="email"
+            placeholder="이메일 (example@email.com)"
             required
             value={inputs.email}
             onChange={onChange}
           />
+          <button>중복 확인</button>
           <br />
           <input
             name="userName"
@@ -129,12 +131,88 @@ const SignUp = () => {
             onChange={onChange}
           />
           <br />
-        <p>{inputs.pwCheck && pwCheckTxt}</p>
-        <p>{errorMsg}</p>
+          <p>{inputs.pwCheck && pwCheckTxt}</p>
+          <p>{errorMsg}</p>
           <input type="submit" value={"회원가입"} />
-        </form>
-    </>
+        </SignUpForm>
+        <button onClick={handleCloseClick}>닫기</button>
+    </SignUpWrapper>
   )
 }
+
+
+const SignUpWrapper = styled.div`
+  width: 100%;
+  padding: 50px 0 30px;
+  background-color: #fff;
+  box-shadow: 3px 3px 10px #eee;
+
+  & > p {
+    margin-bottom: 30px;
+    font-size: 18px;
+    color: #1a7aa0;
+  }
+
+  & > span {
+    font-size: 14px;
+  }
+
+  & > button {
+    width: 100px;
+    height: 50px;
+    margin-top: 30px;
+    background-color: transparent;
+    
+    &:hover {
+      color: #999;
+    }
+  }
+`
+
+const SignUpForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 15px auto 0;
+
+  & > input {
+    width: 200px;
+    height: 30px;
+    margin-bottom: 10px;
+  }
+
+  & > button {
+    margin-top: 5px;
+    border-radius: 10px;
+    background-color: #eee;
+    transition: 0.2s;
+
+    &:hover {
+      background-color: #bcbcbc;
+    }
+  }
+
+  & > input:last-child {
+    width: 150px;
+    height: 40px;
+    margin-top: 20px;
+
+    background-color: #fff;
+    color: #333;
+
+    border: 1px solid #eee;
+    border-radius: 20px;
+    box-shadow: 2px 2px 5px #ddd;
+
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+    background-color: #59afd1;
+    color: #ffffff;
+    box-shadow: none;
+  }
+}
+`
 
 export default SignUp

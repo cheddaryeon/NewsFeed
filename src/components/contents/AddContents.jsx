@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { addDoc, collection, getDocs, query } from "firebase/firestore";
-import { db } from "fbase";
+import { db, dbService } from "fbase";
 import { useDispatch } from "react-redux";
 import { addContents, fetchContents } from "redux/modules/contents";
+import { useNavigate } from "react-router-dom";
 
 const AddContents = () => {
   //❶Create
@@ -17,12 +18,28 @@ const AddContents = () => {
   const dispatch = useDispatch();
 
   //
-  const onClickHandler = (event) => {
+  const navigate = useNavigate();
+
+  //
+  const onClickHandler = async (event) => {
+    //
     event.preventDefault();
+
+    //
+    const newContents = {
+      wishItemText,
+      itemPriceText,
+      wishReasonText,
+    };
+
+    //
+    const collectionRef = collection(dbService, "contents");
+    const { id } = await addDoc(collectionRef, newContents); //fB에서 가져온 데이터의 속성 중, 구조분해할당으로 id값만 따로 받겠다는 뜻
 
     //
     dispatch(
       addContents({
+        id,
         wishItemText,
         itemPriceText,
         wishReasonText,
@@ -43,6 +60,9 @@ const AddContents = () => {
     setWishItemText("");
     setItemPriceText("");
     setWishReasonText("");
+
+    //
+    navigate("/");
   };
 
   //------------------------------------------------//

@@ -7,16 +7,16 @@ import { useParams } from "react-router-dom";
 const CommentsList = () => {
   //
   const { contentsId } = useParams();
-  console.log("contentsId2 =>", contentsId);
+  // console.log("contentsId2 =>", contentsId);
 
   //
   const comments = useSelector((state) => state.comments);
-  console.log("state.comments의 값", comments);
+  // console.log("state.comments의 값", comments);
 
   const filteredComments = comments.filter((comment) => {
     return comment.contentsId === contentsId;
   });
-  console.log("흠", filteredComments);
+  // console.log("흠", filteredComments);
 
   return filteredComments.map((comment) => {
     return (

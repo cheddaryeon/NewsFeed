@@ -22,6 +22,7 @@ const CommentsList = () => {
     return (
       <div key={comment?.contentsId}>
         <p>결재내용: {comment.commentsBody}</p>
+        <p>{comment.selectedOption}</p>
         <button>수정</button>
         <button>삭제</button>
       </div>

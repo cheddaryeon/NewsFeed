@@ -71,13 +71,13 @@ const PreviewContentsList = () => {
     }
   };
 
-  const onAddCommentsClick = (content) => {
-    if (currentUser) {
-      navigate(`/detail/${content.id}`);
-    } else {
-      alert("로그인 해주세요!");
-    }
-  };
+  // const onAddCommentsClick = () => {
+  //   if (currentUser) {
+  //     navigate(`/detail/${content.id}`);
+  //   } else {
+  //     alert("로그인 해주세요!");
+  //   }
+  // };
 
   //--------------------------------------------------------------------------//
   return (
@@ -91,11 +91,13 @@ const PreviewContentsList = () => {
               <ContentPreview key={content?.id}>
                 <p>새로운 결재요청건</p>
                 <p>결재 요청 일시: <span>{content.contentsDate}</span></p>
-                <p>결재요청자: <span>{content.wishItemText}</span></p>
-                <p>결재 품목: <span>{content.itemPriceText}</span></p>
+                <p>결재요청자: <span>{content.contentsWriterName}</span></p>
+                <p>결재 품목: <span>{content.wishItemText}</span></p>
+                <p>가격: <span>{content.itemPriceText}</span></p>
                 <p>결재 요청 사유: <span>{content.wishReasonText}</span></p>
                 <p>결재를 검토하시겠습니까?</p>
-                <DetailContentButton onClick={onAddCommentsClick}>결재 검토하기</DetailContentButton>
+                {/* <DetailContentButton onClick={onAddCommentsClick}>결재 검토하기</DetailContentButton> */}
+                <DetailContentButton to={`/detail/${content.id}`}>결재 검토하기</DetailContentButton>
               </ContentPreview>
             </ContentsList>
           );
@@ -170,7 +172,7 @@ const ContentPreview = styled.div`
     font-size: 22px;
     font-weight: 600
   }
-  & > p:nth-child(5) {
+  & > p:nth-child(6) {
     margin-bottom: 50px;
   }
 
@@ -181,7 +183,8 @@ const ContentPreview = styled.div`
     color: #244eaa;
   }
 `
-const DetailContentButton = styled.button`
+// const DetailContentButton = styled.button`
+const DetailContentButton = styled(Link)`
   display: inline-block;
   width: 150px;
   height: 40px;

@@ -44,6 +44,7 @@ const Login = ({handleCloseClick}) => {
       dispatch(
         setUserInfo({
           userId: user.uid,
+          userEmail: user.email,
           userName: user.displayName,
           userPic: user.photoURL,
         })
@@ -82,16 +83,13 @@ const Login = ({handleCloseClick}) => {
     let provider;
     try {
       provider = new GoogleAuthProvider();
-      await signInWithPopup(authService, provider);
+      const result = await signInWithPopup(authService, provider);
       // sign in 이후 user 정보를 받아와서 store에 전달
-      const { user } = await signInWithPopup(
-        authService,
-        inputs.email,
-        inputs.password
-      );
+      const { user } = result;
       dispatch(
         setUserInfo({
           userId: user.uid,
+          userEmail: user.email,
           userName: user.displayName,
           userPic: user.photoURL,
         })

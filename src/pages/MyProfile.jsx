@@ -37,7 +37,7 @@ const MyProfile = () => {
       <br />
       <br />
       <br />
-      <ProfileBtn onClick={handleChangeForm}>프로필 변경하기</ProfileBtn>
+      <ProfileBtn onClick={handleChangeForm}>프로필 변경하기 ▼</ProfileBtn>
       {showChangeForm && <ChangeProfile />}
       <br />
       <button onClick={onClickMyContentsList}>내 작성 게시글</button>

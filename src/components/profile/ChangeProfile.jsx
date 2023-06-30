@@ -1,9 +1,11 @@
-import { createRef, useState } from 'react';
-import { authService } from "fbase";
+import uuid from "react-uuid";
+import { useState } from 'react';
+import { authService, storageService } from "fbase";
 import { updateProfile, updatePassword } from "firebase/auth";
 import { setUserInfo } from "redux/modules/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { styled } from "styled-components";
+import { ref, uploadString, getDownloadURL } from "firebase/storage";
 
 const ChangeProfile = () => {
   const dispatch = useDispatch();
@@ -17,6 +19,8 @@ const ChangeProfile = () => {
   const [pwError, setPwError] = useState(false);
   const [pwCheckTxt, setPwCheckTxt] = useState("");
   const [imgFileUrl, setImgFileUrl] = useState(currentUser.userPic);
+
+  console.log("ChangeProfile.jsx 현재 img url state => ", imgFileUrl);
 
   const onChange = async (e) => {
     const { value, name } = e.target;
@@ -46,32 +50,53 @@ const ChangeProfile = () => {
       }
     }
   };
-  
+
+  // '파일 선택' img file 변경감지
   const onImgFileChange = (e) => {
+    // Uncaught TypeError: Failed to execute 'readAsDataURL' on 'FileReader': parameter 1 is not of type 'Blob'. 오류 발생
     const files = e.target?.files;
-  
-    if (files && files.length > 0) {
-      const theFile = files[0];
-      const imgFileReader = new FileReader();
-  
-      imgFileReader.onloadend = (finishedEvent) => {
-        const { currentTarget: { result } } = finishedEvent;
-        setImgFileUrl(result);
-      };
-  
-      imgFileReader.readAsDataURL(theFile);
-    } else {
-      setImgFileUrl(currentUser.userPic);
+
+    // fileReader API
+    const theFile = files[0];
+    const imgFileReader = new FileReader();
+    imgFileReader.onloadend = (finishedEvent) => {
+      const { currentTarget: { result }
+        , } = finishedEvent;
+      setImgFileUrl(result);
     }
-
-    // 이미지 firebase storage에 업데이트
-  };
-
+    // 4. readAsDataURL API로 사진을 얻는다.
+    imgFileReader.readAsDataURL(theFile);
+  }
   const onClearImgFile = () => setImgFileUrl(currentUser.userPic);
 
-  // 프로필 사진 변경
+  // 변경된 프로필 사진 등록
   const handleChangeUserPic = async (e) => {
     e.preventDefault();
+    let imageUrl = "";
+    if (imgFileUrl !== currentUser.userPic) {
+      const ok = window.confirm("프로필 이미지를 변경하시겠어요?");
+      if (ok) {
+        const changedImgRef = ref(storageService, `${currentUser.userId}/${uuid()}`);
+        const response = await uploadString(changedImgRef, imgFileUrl, "data_url");
+        imageUrl = await getDownloadURL(response.ref);
+      }
+      try {
+        await updateProfile(authService.currentUser, { photoURL: imageUrl });
+        dispatch(
+          setUserInfo({
+            ...currentUser,
+            userPic: imageUrl,
+          })
+        );
+        window.alert("프로필 이미지가 정상적으로 변경되었습니다.");
+        setImgFileUrl(imageUrl);
+      } catch (error) {
+        console.log("Profile img update error => ", error);
+        window.alert("프로필 이미지 업데이트에 실패했습니다. 다시 시도해주세요. 🥲");
+      }
+    } else {
+      window.alert("변경할 프로필 이미지를 선택해주세요!");
+    }
   };
 
   // 닉네임 변경
@@ -129,6 +154,8 @@ const ChangeProfile = () => {
           onChange={onImgFileChange}
         />
         <button onClick={onClearImgFile}>✖️</button>
+        {/* 아래 닉네임 변경 input은 button으로 바꾸셔도 됩니다! */}
+        <input type="submit" value={"이미지 변경"} />
       </form>
       <br />
       <label htmlFor="inUserEmail">가입 이메일 주소</label>
@@ -150,6 +177,7 @@ const ChangeProfile = () => {
           value={inputs.newUserName}
           onChange={onChange}
         />
+        {/* 아래 닉네임 변경 input은 button으로 바꾸셔도 됩니다! */}
         <input type="submit" value={"닉네임 변경"} />
         <br />
       </form>
@@ -178,7 +206,8 @@ const ChangeProfile = () => {
               placeholder="변경할 비밀번호 확인"
               value={inputs.newPwCheck}
               onChange={onChange}
-            />
+              />
+            {/* 아래 닉네임 변경 input은 button으로 바꾸셔도 됩니다! */}
             <input type="submit" value={"비밀번호 변경"} />
           </form>
           {inputs.newPwCheck && <span>{pwCheckTxt}</span>}

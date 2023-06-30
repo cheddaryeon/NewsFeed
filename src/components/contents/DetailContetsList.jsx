@@ -16,7 +16,7 @@ const DetailContentsList = () => {
   // const params = useParams();
   // console.log({ params });
   const { contentsId } = useParams();
-  console.log("contentsId =>", contentsId);
+  // console.log("contentsId =>", contentsId);
 
   //contentsId에 해당하는 게시글을 이제부터 targetContent라고 하겠습니다.
   const contents = useSelector((state) => state.contents);
@@ -64,6 +64,8 @@ const DetailContentsList = () => {
 
     navigate("/");
   };
+
+
 
   return (
     <>

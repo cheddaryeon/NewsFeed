@@ -20,8 +20,6 @@ const PreviewContentsList = () => {
       const q = query(collection(dbService, "contents"));
       const querySnapshot = await getDocs(q);
 
-      console.log("querySnapshot =>", querySnapshot);
-
       const contents_list = [];
 
       querySnapshot.forEach((doc) => {
@@ -32,6 +30,7 @@ const PreviewContentsList = () => {
       });
 
       dispatch(fetchContents(contents_list));
+
       // 2.상세페이지에서 리듀서 업데이트 하는 부분을 주석처리했는데도 fB 업데이트뿐만 아니라 화면 업데이트도 되는 이유는, fetchContents(contents_list)가 화면 로드시 실행되어서.
 
       // dispatch(

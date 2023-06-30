@@ -138,6 +138,10 @@ const SignUpWrapper = styled.div`
     height: 50px;
     margin-top: 30px;
     background-color: transparent;
+    
+    &:hover {
+      color: #999;
+    }
   }
 `
 

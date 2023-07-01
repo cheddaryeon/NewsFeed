@@ -40,8 +40,8 @@ const MyProfile = () => {
       <ProfileBtn onClick={handleChangeForm}>프로필 변경하기 ▼</ProfileBtn>
       {showChangeForm && <ChangeProfile />}
       <br />
-      <button onClick={onClickMyContentsList}>내가 쓴 글</button>
-      <button onClick={onClickMyCommentsList}>내가 쓴 댓글</button>
+      <ListBtn onClick={onClickMyContentsList}>내가 요청한 결재 목록</ListBtn>
+      <ListBtn onClick={onClickMyCommentsList}>내가 작성한 댓글</ListBtn>
       {showContentsList && <MyContents />}
       {showCommentsList && <MyComments />}
     </>
@@ -55,6 +55,33 @@ const ProfileBtn = styled.button`
   width: 150px;
   height: 50px;
   margin-bottom: 50px;
+
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: -0.4px;
+  line-height: 50px;
+  text-align: center;
+  
+  border-radius: 25px;
+  box-shadow: 3px 3px 5px #ddd;
+
+  background-color: #5aceb1;
+  color: #fff;
+
+  transition: 0.2s;
+
+  &:hover {
+    transform: scale(1.05);
+    background-color: #39c4a1;
+    color: #fff;
+  }
+`;
+
+const ListBtn = styled.button`
+  display: inline-block;
+  width: 150px;
+  height: 50px;
+  margin: 20px;
 
   font-size: 14px;
   font-weight: 500;

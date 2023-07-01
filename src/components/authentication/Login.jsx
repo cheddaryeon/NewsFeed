@@ -119,8 +119,8 @@ const Login = ({ handleCloseClick }) => {
           value={inputs.password}
           onChange={onChange}
         />
+        {errorMsg ? <ErrorMsg>{errorMsg}</ErrorMsg> : ""}
         <input type="submit" value={"로그인"} />
-        <ErrorMsg>{errorMsg}</ErrorMsg>
       </EmailLoginForm>
       <GoogleLogin>
         <span>다른 방법으로 로그인하기</span>
@@ -180,7 +180,7 @@ const EmailLoginForm = styled.form`
   & > input:last-child {
     width: 100px;
     height: 40px;
-    margin-top: 10px;
+    margin-top: 20px;
 
     background-color: #fff;
     color: #333;

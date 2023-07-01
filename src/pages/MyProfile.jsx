@@ -25,6 +25,10 @@ const MyProfile = () => {
     setShowContentsList(false);
   }
 
+  const handleScrollToTop = () => {
+    window.scrollTo({top:0, behavior: 'smooth'});
+  };
+
   return (
     <ProfileWrapper>
       <ProfileInner>
@@ -36,6 +40,7 @@ const MyProfile = () => {
         {showContentsList && <MyContents />}
         {showCommentsList && <MyComments />}
       </ProfileInner>
+      <TopButton onClick={handleScrollToTop}> ▲ </TopButton>
     </ProfileWrapper>
   )
 }
@@ -43,7 +48,7 @@ const MyProfile = () => {
 export default MyProfile;
 
 const ProfileWrapper = styled.div `
-  margin: 0 auto;
+  margin: 0 auto 50px;
   padding-top: 150px;
 `
 
@@ -84,4 +89,30 @@ const ProfileBtn = styled.button`
     background-color: #39c4a1;
     color: #fff;
   }
-`;
+`
+
+const TopButton = styled.button`
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+
+  width: 60px;
+  height: 60px;
+
+  border-radius: 50%;
+  box-shadow: 3px 3px 3px #acaf6d;
+
+  font-size: 25px;
+  font-weight: 800;
+  line-height: 55px;
+
+  background-color: #f8e9a5;
+  color: #c2a421;
+
+  transition: 0.2s;
+
+  &:hover {
+    transform: scale(1.1);
+    background-color: #f1df8f;
+  }
+`

@@ -179,10 +179,10 @@ const ChangeProfile = () => {
   };
   
   return (
-    <>
-      <h2>My Profile</h2>
+    <ChangeProfileWrapper>
+      <MyProfileTitle>My Profile</MyProfileTitle>
       <UserPicPreview src={imgFileUrl} width="150px" height="150px" />
-      <form onSubmit={handleChangeUserPic}>
+      <ProfileImgForm onSubmit={handleChangeUserPic}>
         <label htmlFor="inUserPic">프로필 사진 변경</label>
         <input
           name="userPic"
@@ -193,19 +193,21 @@ const ChangeProfile = () => {
         />
         <button onClick={onClearImgFile}>✖️</button>
         {/* 아래 닉네임 변경 input은 button으로 바꾸셔도 됩니다! */}
-        <input type="submit" value={"이미지 변경"} />
-      </form>
-      <br />
-      <label htmlFor="inUserEmail">가입 이메일 주소</label>
-      <input
-        name="email"
-        id="inUserEmail"
-        type="text"
-        placeholder={currentUser.userEmail ? currentUser.userEmail : "Google 사용자"}
-        disabled
-      />
-      <br />
-      <form onSubmit={handleChangeUserName}>
+        <input type="submit" value={"변경된 이미지 등록"} />
+      </ProfileImgForm>
+
+      <EmailForm>
+        <label htmlFor="inUserEmail">가입 이메일 주소</label>
+        <input
+          name="email"
+          id="inUserEmail"
+          type="text"
+          placeholder={currentUser.userEmail ? currentUser.userEmail : "Google 사용자"}
+          disabled
+        />
+      </EmailForm>
+
+      <UserNameForm onSubmit={handleChangeUserName}>
         <label htmlFor="inUserName">닉네임</label>
         <input
           name="newUserName"
@@ -217,15 +219,14 @@ const ChangeProfile = () => {
         />
         {/* 아래 닉네임 변경 input은 button으로 바꾸셔도 됩니다! */}
         <input type="submit" value={"닉네임 변경"} />
-        <br />
-      </form>
+      </UserNameForm>
       {authService.currentUser.providerData.some(
         (userInfo) => userInfo.providerId === "google.com"
       ) ? (
         ""
       ) : (
         <>
-            <form onSubmit={handleChangePw}>
+          <PassWordFrom onSubmit={handleChangePw}>
             <label htmlFor="inPw">현재 비밀번호</label>
             <input
               name="currentPw"
@@ -235,7 +236,6 @@ const ChangeProfile = () => {
               value={inputs.currentPw}
               onChange={onChange}
             />
-            <br />
             <label htmlFor="inNewPw">비밀번호 변경</label>
             <input
               name="newPw"
@@ -245,7 +245,6 @@ const ChangeProfile = () => {
               value={inputs.newPw}
               onChange={onChange}
             />
-            <br />
             <label htmlFor="inNewPwCheck">비밀번호 변경 확인</label>
             <input
               name="newPwCheck"
@@ -257,19 +256,166 @@ const ChangeProfile = () => {
               />
             {/* 아래 닉네임 변경 input은 button으로 바꾸셔도 됩니다! */}
             <input type="submit" value={"비밀번호 변경"} />
-          </form>
+          </PassWordFrom>
           {inputs.newPwCheck && <span>{pwCheckTxt}</span>}
         </>
       )}
-    </>
+    </ChangeProfileWrapper>
   );  
 }
 
 export default ChangeProfile;
 
+const ChangeProfileWrapper = styled.div`
+box-sizing: content-box;
+  width: 300px;
+  padding: 50px 70px;
+  border-radius: 30px;
+  box-shadow: 5px 5px 10px #c6dfd8;
+  
+  background-color: #fff;
+`
+
+const MyProfileTitle = styled.p`
+  margin-bottom: 30px;
+  font-size: 32px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  color: #1b8d67;
+`
+
 const UserPicPreview = styled.img`
   width: 150px;
   height: 150px;
-  object-fit: cover;
-  border: 1px solid lightgray;
+  margin-bottom: 20px;
+  border-radius: 50%;
 `;
+
+const ProfileImgForm = styled.form`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 50px;
+
+  & > label {
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.5px;
+  }
+
+  & > input {
+    font-weight: 400;
+    transition: 0.3s;
+  }
+
+  & > input:last-of-type {
+    margin-top: 10px;
+    padding: 5px;
+    font-size: 14px;
+    font-weight: 400;
+    border: 1px solid #999;
+    border-radius: 20px;
+    box-shadow: 3px 3px 3px #ddd;
+    cursor: pointer;
+    
+    &:hover {
+      background-color: #e1e1e1;
+    }
+  }
+
+  & > button {
+    position: absolute;
+    top: 50px;
+    right: 0px;
+    font-size: 10px;
+    line-height: 20px;
+    border-radius: 3px;
+    border: 1px solid #666;
+    background-color: #eee;
+    transition: 0.2s;
+    z-index: 99;
+
+    &:hover {
+      background-color: #ddd;
+    }
+  }
+`
+
+const EmailForm = styled.div`
+  margin-bottom: 50px;
+
+  & > label {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.5px;
+  }
+
+  & > input {
+    width: 100%;
+    margin-top: 15px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: 1px solid #999;
+  }
+`
+
+const UserNameForm  = styled.form`
+  display: flex;
+  flex-direction: column;
+
+  & > label {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.5px;
+  }
+
+  & > input {
+    width: 100%;
+    margin-top: 15px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: 1px solid #999;
+  }
+
+  & > input:last-of-type {
+    width: 120px;
+    margin: 15px auto 0;
+    cursor: pointer;
+    box-shadow: 3px 3px 3px #ddd;
+  }
+`
+
+const PassWordFrom = styled.form`
+  display: flex;
+  flex-direction: column;
+  margin-top: 50px;
+
+  & > label {
+    display: block;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: -0.5px;
+  }
+
+  & > input {
+    width: 100%;
+    margin: 15px auto 20px;
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: 1px solid #999;
+  }
+
+  & > input:last-of-type {
+    width: 120px;
+    cursor: pointer;
+    box-shadow: 3px 3px 3px #ddd;
+  }
+`

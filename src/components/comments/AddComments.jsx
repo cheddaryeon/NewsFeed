@@ -1,42 +1,44 @@
+import uuid from "react-uuid";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+
+import { dbService, storageService } from "fbase";
+import { addDoc, collection } from "firebase/firestore";
+
 import comments, { addComment } from "redux/modules/comments";
 import styled from "styled-components";
 
 const AddComments = () => {
-  //❶Create
-
-  //
   const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.auth.user);
+  const { contentsId } = useParams();
 
-  // const [commentsWriter, setCommentsWriter] = useState("");
   const [commentsBody, setCommentsBody] = useState("");
 
-  const { contentsId } = useParams();
-  console.log("contentsId2 =>", contentsId);
+  console.log("AddComments.jsx 현재 로그인 유저 => ", currentUser)
+  console.log("AddComments.jsx 게시글 id => ", contentsId);
 
-  //
-  const onSubmitHandler = (e) => {
+  const onSubmitComment = async (e) => {
     e.preventDefault();
-
-    dispatch(
-      addComment({
-        selectedOption,
-        commentsBody,
-        contentsId,
-      })
-    );
-
-    // dispatch({
-    //   type: "ADD_COMMENT",
-    //   payload: {
-    //     commentsWriter,
-    //     commentsBody,
-    //     // contentsId,
-    //   },
-    // });
-
+    const ok = window.confirm("댓글을 등록하시겠어요?");
+    if (ok) {
+      try {
+        // 댓글 등록 -> fb firestore 서버에 전송
+        // 순서대로 댓글작성자 uid, 닉네임, 댓글내용, 작성시간
+        await addDoc(collection(dbService, "comments"), {
+          contentsId,
+          commentsWriterId: currentUser.userId,
+          commentsWriter: currentUser.userName,
+          commentsOpinion: selectedOption,
+          commentsBody,
+          commentsDate: Date.now(),
+        })
+      } catch (error) {
+        alert("댓글이 정상적으로 등록되지 않았습니다. 다시 시도해주세요.")
+        console.log("댓글 등록 에러 : ", error);
+      }
+    }
     setCommentsBody("");
   };
 
@@ -54,7 +56,7 @@ const AddComments = () => {
   return (
     <CommentWrapper>
       <label>결재 의견 등록하기</label>
-      <CommentInner onSubmit={onSubmitHandler}>
+      <CommentInner onSubmit={onSubmitComment}>
         {/* <p>결재자</p>
         <input
           name="이름"
@@ -65,8 +67,12 @@ const AddComments = () => {
         ></input>
         <p>여기에 SELECT추가</p> */}
           <DropdownWrapper>
-            <DropdownHeader onClick={() => {setIsOpen((prev)=> !prev);}}>
-              {selectedOption || "결재 의견 선택▼"}
+            <DropdownHeader
+              onClick={() => {
+                setIsOpen((prev) => !prev);
+              }}
+            >
+              {selectedOption || "그뤠잇/스튜핏 v"}
             </DropdownHeader>
             {isOpen && (
               <DropdownList>

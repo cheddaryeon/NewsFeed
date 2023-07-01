@@ -5,14 +5,8 @@ import ChangeProfile from "components/profile/ChangeProfile";
 import { styled } from "styled-components";
 
 const MyProfile = () => {
-  const [showChangeForm, setShowChangeForm] = useState(false);
   const [showContentsList, setShowContentsList] = useState(true);
   const [showCommentsList, setShowCommentsList] = useState(false);
-
-  const handleChangeForm = () => {
-    // 내 프로필 변경 버튼 클릭하면 프로필 변경 양식 열렸다가 닫혔다가 작동
-    setShowChangeForm(!showChangeForm);
-  }
 
   const onClickMyContentsList = () => {
     setShowContentsList(true);
@@ -31,11 +25,11 @@ const MyProfile = () => {
   return (
     <ProfileWrapper>
       <ProfileInner>
-        <ProfileBtn onClick={handleChangeForm}>프로필 변경하기 ▼</ProfileBtn>
-        {/* 뭔가 버튼 없어도 괜찮을 것 같은 느낌!! */}
-        {showChangeForm && <ChangeProfile />}
-        <button onClick={onClickMyContentsList}>내가 쓴 글</button>
-        <button onClick={onClickMyCommentsList}>내가 쓴 댓글</button>
+        <ChangeProfile />
+        <ProfileBtnContainer>
+          <ProfileBtn onClick={onClickMyContentsList}>내가 쓴 글</ProfileBtn>
+          <ProfileBtn onClick={onClickMyCommentsList}>내가 쓴 댓글</ProfileBtn>
+        </ProfileBtnContainer>
         {showContentsList && <MyContents />}
         {showCommentsList && <MyComments />}
       </ProfileInner>
@@ -62,11 +56,17 @@ const ProfileInner = styled.div `
   box-shadow: 5px 5px 10px #b7d6ce;
   background-color: #cae9e1;
 `
+
+const ProfileBtnContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-top: 100px;
+`;
+
 const ProfileBtn = styled.button`
   display: inline-block;
-  width: 150px;
+  width: 120px;
   height: 50px;
-  margin-bottom: 50px;
 
   font-size: 14px;
   font-weight: 500;

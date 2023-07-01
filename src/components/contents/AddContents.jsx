@@ -25,6 +25,7 @@ const AddContents = () => {
   const [contentsWriterName, setContentsWriterName] = useState(
     currentUser.userName
   );
+
   const [imageUpload, setImageUpload] = useState(null);
   const [imageList, setImageList] = useState([]);
   const [downloadURL, setDownloadURL] = useState([null]);
@@ -252,6 +253,7 @@ const InputForm = styled.form`
     border-radius: 10px;
 
     font-size: 16px;
+    line-height: 1.6;
     color: #666;
 
     overflow: auto;

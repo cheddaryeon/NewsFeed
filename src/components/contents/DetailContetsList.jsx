@@ -11,6 +11,7 @@ import {
 } from "redux/modules/contents";
 import { styled } from "styled-components";
 
+
 const DetailContentsList = () => {
   //❷ Read
   //contentsId값 잘 넘어오고 있나 확인
@@ -88,43 +89,40 @@ const DetailContentsList = () => {
         newItemPriceText &&
         newWishReasonText &&
         showUpdatedContent ? (
-          <ul className="updated_DetailListsWrapper">
-            <li style={{ border: "solid", marginTop: "30px", padding: "20px" }}>
-              <div>
-                <p>
-                  결재요청자: <span>{targetContent?.contentsWriterName}</span>
-                </p>
+          <DetailListsWrapper>
+            <RequestTitle>요청된 결재건</RequestTitle>
+            <DetailListsInner>
+              <DetailList>
+                <p>결재 요청자: <span>{targetContent?.contentsWriterName}</span></p>
                 <p>요청일시: {targetContent?.contentsDate}</p>
-                <p>결제 품목: {targetContent?.newWishItemText}</p>
-                <p>가격: {targetContent?.newItemPriceText}</p>
-                <p>결제 요청 사유: {targetContent?.newWishReasonText}</p>
-              </div>
-            </li>
-          </ul>
+                <p>결재 품목: <span>{targetContent?.newWishItemText}</span></p>
+                <p>가격: <span>{targetContent?.newItemPriceText}</span></p>
+                <p>결재 요청 사유: <span>{targetContent?.newWishReasonText}</span></p>
+              </DetailList>
+            </DetailListsInner>
+          </DetailListsWrapper>
         ) : (
-          <ul className="DetailListsWrapper">
-            <li style={{ border: "solid", marginTop: "30px", padding: "20px" }}>
-              <div>
-                <p>
-                  결재요청자: <span>{targetContent?.contentsWriterName}</span>
-                </p>
+          <DetailListsWrapper>
+            <RequestTitle>요청된 결재건</RequestTitle>
+            <DetailListsInner>
+              <DetailList>
+                <p>결재 요청자: <span>{targetContent?.contentsWriterName}</span></p>
                 <p>요청일시: {targetContent?.contentsDate}</p>
-
                 {/* 이미지 태그 */}
                 <img src={targetContent?.downloadURL} alt="이미지 없음" />
                 {/*  */}
-                <p>결제 품목: {targetContent?.wishItemText}</p>
-                <p>가격: {targetContent?.itemPriceText}</p>
-                <p>결제 요청 사유: {targetContent?.wishReasonText}</p>
-              </div>
-              <div>
+                <p>결재 품목: <span>{targetContent?.wishItemText}</span></p>
+                <p>가격: <span>{targetContent?.itemPriceText}</span></p>
+                <p>결재 요청 사유: <span>{targetContent?.wishReasonText}</span></p>
+              </DetailList>
+              <ButtonBox>
                 <button onClick={editModeHandler}>수정</button>
                 <button onClick={() => deleteHandler(targetContent?.id)}>
                   삭제
                 </button>
-              </div>
-            </li>
-          </ul>
+              </ButtonBox>
+            </DetailListsInner>
+          </DetailListsWrapper>
         )}
       </>
 
@@ -132,26 +130,30 @@ const DetailContentsList = () => {
       <div>
         {editing ? (
           <>
-            <form>
-              결재품목 :{" "}
+            <EditInputForm>
+              <p>글 수정하기</p>
+              <label>결재 품목</label>
               <input
                 type="text"
+                placeholder={targetContent?.wishItemText}
                 value={newWishItemText}
                 onChange={(e) => {
                   setNewWishItemText(e.target.value);
                 }}
               />
-              결재 가격 :{" "}
+              <label>가격</label>
               <input
                 type="text"
+                placeholder={targetContent?.itemPriceText}
                 value={newItemPriceText}
                 onChange={(e) => {
                   setNewItemPriceText(e.target.value);
                 }}
               />
-              결재 요청 사유 :{" "}
-              <input
+              <label>결재 요청 사유</label>
+              <textarea
                 type="text"
+                placeholder={targetContent?.wishReasonText}
                 value={newWishReasonText}
                 onChange={(e) => {
                   setNewWishReasonText(e.target.value);
@@ -177,7 +179,7 @@ const DetailContentsList = () => {
                   await updateDoc(targetContentRef, {
                     itemPriceText: newItemPriceText,
                     wishItemText: newWishItemText,
-                    wishReasonText: newWishItemText,
+                    wishReasonText: newWishReasonText,
                   });
 
                   // 수정완료 버튼 클릭 시 수정 결과물을 렌더링하도록 상태 값 업데이트
@@ -187,14 +189,179 @@ const DetailContentsList = () => {
                   navigate("/");
                 }}
               >
-                수정 완료
+                완료
               </button>
-            </form>
+            </EditInputForm>
           </>
         ) : null}
       </div>
     </>
   );
 };
+
+const DetailListsWrapper = styled.ul`
+  padding: 150px 0 50px;
+  width: 70%;
+  margin: 0 auto;
+  text-align: center;
+`
+
+const RequestTitle = styled.p`
+  margin-bottom: 50px;
+  font-size: 24px;
+  font-weight: 600;
+  color: #1d7735;
+
+`
+
+const DetailListsInner = styled.li`
+  padding: 50px 100px;
+
+  border-radius: 30px;
+  background-color: #caf0d4;
+
+  box-shadow: 5px 5px 10px #eee;
+
+  & > p {
+    margin-bottom: 40px;
+    font-size: 24px;
+    font-weight: 600;
+    color: #30924a;
+  }
+`
+
+const DetailList = styled.div`
+  & > p {
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.7px;
+    color: #333;
+  }
+
+  & > p > span {
+    margin-left: 5px;
+    font-size: 19px;
+    font-weight: 600;
+    color: #1d7735;
+  }
+  & > img {
+    width: 400px;
+    height: auto;
+    margin-bottom: 30px;
+    border-radius: 10px;
+  }
+`
+
+const ButtonBox = styled.div`
+  margin-top: 50px;
+
+  & > button {
+    width: 100px;
+    height: 35px;
+
+    border-radius: 18px;
+
+    font-size: 16px;
+    font-weight: 500;
+
+    background-color: white;
+    color: #30924a;
+
+    transition: 0.2s;
+
+    &:hover {
+      background-color: #44a35d;
+      color: #ffffff;
+    }
+  }
+  & > button:first-child {
+    margin-right: 30px;
+  }
+`
+
+const EditInputForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  
+  width: 70%;
+  
+  margin: 0 auto 50px;
+  padding: 50px 100px;
+  
+  border-radius: 30px;
+  background-color: #cae2f0;
+
+  & > p {
+    margin-bottom: 20px;
+    font-size: 22px;
+    font-weight: 600;
+    color: #4d75cc;
+  }
+
+  & > label {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 10px 0px 5px;
+  }
+
+  & > input {
+    width: 500px;
+    height: 40px;
+    padding: 0 20px;
+
+    border: none;
+    border-radius: 15px;
+    font-size: 16px;
+    color: #666;
+
+    &::placeholder {
+      color: #aeaeae;
+    }
+  }
+
+  & > textarea {
+    width: 500px;
+    height: 120px;
+    padding: 15px 20px;
+    margin-bottom: 10px;
+
+    border: none;
+    border-radius: 10px;
+
+    font-size: 16px;
+    line-height: 1.6;
+    color: #666;
+
+    overflow: auto;
+    resize: none;
+    
+    &::placeholder {
+      color: #aeaeae;
+    }
+  }
+
+  & > button {
+    width: 100px;
+    height: 35px;
+
+    border-radius: 18px;
+
+    font-size: 16px;
+    font-weight: 500;
+
+    background-color: white;
+    color: #4d75cc;
+
+    transition: 0.2s;
+
+    &:hover {
+      background-color: #4d75cc;
+      color: #ffffff;
+    }
+  }
+`
 
 export default DetailContentsList;

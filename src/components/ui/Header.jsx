@@ -66,7 +66,9 @@ const Header = () => {
           <HeaderInnerRightBox>
             <UserProfile to={`/profile/${currentUser.userId}`}>
               { currentUser.userPic &&<img src={currentUser.userPic} width="50px" height="50px"/>}
-              <UserName to={`/profile/${currentUser.userId}`}>{currentUser.userName}</UserName>님 환영합니다!
+              <UserInfo>
+              <UserName to={`/profile/${currentUser.userId}`}>{currentUser.userName}</UserName> 님 환영합니다!
+              </UserInfo>
             </UserProfile>
             <Button onClick={handleLogoutClick}>로그아웃</Button>
           </HeaderInnerRightBox>
@@ -166,16 +168,30 @@ const Button = styled.button`
 
 const UserProfile = styled(Link)`
   display: flex;
-  gap: 15px;
   align-items: center;
-`;
+
+  & > img {
+    margin-right: 15px;
+    border-radius: 50%;
+  }
+`
+
+const UserInfo = styled.p`
+margin-right: 10px;
+  font-size: 16px;
+  word-break: keep-all;
+  line-height: 1.4;
+`
 
 const UserName = styled(Link)`
+  font-size: 17px;
+  font-weight: 500;
   text-decoration: underline;
   transition: 0.2s;
+  color: #0e4792;
 
   &:hover {
-    color: #fff;
+    color: #80afce;
   }
 `
 

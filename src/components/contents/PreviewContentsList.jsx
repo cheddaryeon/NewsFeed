@@ -106,7 +106,7 @@ const PreviewContentsList = () => {
                 <p>새로운 결재요청건</p>
 
                 {/* 이미지 태그 */}
-                <img src={content.downloadURL} alt="이미지 없음" />
+                <img src={content.downloadURL} alt="이미지 없음" width="150px" height="150px" />
                 {/*  */}
 
                 <p>

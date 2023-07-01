@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import ChangeProfile from "components/profile/ChangeProfile";
-
-import { styled } from "styled-components";
 import MyContents from "components/profile/MyContents";
 import MyComments from "components/profile/MyComments";
+import ChangeProfile from "components/profile/ChangeProfile";
+import { styled } from "styled-components";
 
 const MyProfile = () => {
   const [showChangeForm, setShowChangeForm] = useState(false);

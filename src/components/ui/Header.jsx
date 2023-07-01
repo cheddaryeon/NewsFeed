@@ -110,7 +110,7 @@ const HeaderWrapper = styled.header`
   position: fixed;
   width: 100%;
   min-width: 800px;
-  height: 10px;
+  height: 100px;
   margin: 0 auto;
   background-color: #c6ebfa;
 

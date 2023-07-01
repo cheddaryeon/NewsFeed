@@ -44,12 +44,12 @@ const MyContents = () => {
                   {content.wishItemText}
                 </MyContentsTitle>
               </Link>
-              {content.contentsDate.toDate().toDateString()}
+              {content.contentsDate}
             </MyConentsBox>
           ))}
         </MyContentsSection>
       ) : (
-        "등록된 게시물이 없습니다."
+        <p>등록된 게시물이 없습니다.</p>
       )}
     </>
   );
@@ -75,15 +75,14 @@ const MyConentsBox = styled.div`
   border-radius: 20px;
   margin: 10px;
   padding: 30px;
-
-  transition: 0.2s;
-
-  &:hover {
-    text-decoration: underline;
-    text-decoration-color: #3ac4a1;
-  }
 `;
 
 const MyContentsTitle = styled.h3`
   color: #3ac4a1;
+  transition: 0.2s;
+
+&:hover {
+  text-decoration: underline;
+  text-decoration-color: #3ac4a1;
+}
 `;

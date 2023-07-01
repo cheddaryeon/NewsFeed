@@ -45,7 +45,14 @@ const DetailContentsList = () => {
 
   //❸ Update
   const editModeHandler = () => {
+    //로그인 안된 상태에서 수정버튼 누를 경우, return되게 하는 로직 (설정 안해주면 Cannot read properties of null (reading 'userId') error뜸)
+    if (!currentUser) {
+      alert("로그인 먼저 해주세요!");
+      return;
+    }
     console.log(currentUser);
+
+    //현재 로그인 유저 !== 글쓴이의 로그인 유저가 다를 경우 return되고 <-> ===일 경우에 setEditing enable되는 로직
     if (targetContent.contentsWriterId !== currentUser.userId) {
       alert("수정 권한이 없습니다.");
       return;
@@ -57,6 +64,11 @@ const DetailContentsList = () => {
   //❹ Delete
   //여기서 payload는 삭제할 게시글의 id를 의미
   const deleteHandler = async (payload) => {
+    if (!currentUser) {
+      alert("로그인 먼저 해주세요!");
+      return;
+    }
+
     if (targetContent.contentsWriterId !== currentUser.userId) {
       alert("삭제 권한이 없습니다.");
       return;

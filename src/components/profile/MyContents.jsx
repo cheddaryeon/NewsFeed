@@ -1,14 +1,15 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { query, getDocs, collection, where, orderBy } from "firebase/firestore";
 import { dbService } from "fbase";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
+import { setMyContents } from "redux/modules/myprofile";
 
 const MyContents = () => {
+  const dispatch = useDispatch();
+  const myContents = useSelector((state) => state.myprofile.myContents)
   const currentUser = useSelector((state) => state.auth.user);
-  const [myContents, setMyContents] = useState([]);
-
   // console.log("MyContents.jsx 현재 사용자 정보 => ", currentUser);
 
   const getMyContents = async () => {
@@ -24,12 +25,12 @@ const MyContents = () => {
       id: doc.id,
       ...doc.data(),
     }));
-    setMyContents(myContentsArr);
+    dispatch(setMyContents(myContentsArr));
   }
 
   useEffect(() => {
     getMyContents();
-  }, [])
+  }, []);
 
   // console.log("fb 서버에서 쿼리로 게시글 받아지는지 확인 => ", myContents)
 

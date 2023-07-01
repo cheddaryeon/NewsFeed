@@ -18,7 +18,6 @@ const ChangeProfile = () => {
     newUserPic: "",
   });
   const [imgFileUrl, setImgFileUrl] = useState(currentUser.userPic);
-  const [fileUploaded, setFileUploaded] = useState(false); 
   const [pwError, setPwError] = useState(false);
   const [pwCheckTxt, setPwCheckTxt] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
@@ -72,15 +71,20 @@ const ChangeProfile = () => {
   }
 
   // x버튼 누르면 이미지 미리보기 -> 다시 현재 프로필 이미지로
-  const onClearImgFile = () => setImgFileUrl(currentUser.userPic);
+  const onClearImgFile = () => {
+    if (imgFileUrl === currentUser.userPic) {
+      window.alert("변경할 프로필 이미지를 선택해주세요!");
+      return;
+    }
+    setImgFileUrl(currentUser.userPic);
+  };
+
+  // console.log(currentUser.userPic)
+  // console.log(imgFileUrl);
 
   // 변경된 프로필 사진 등록
   const handleChangeUserPic = async (e) => {
     e.preventDefault();
-    if (!imgFileUrl) {
-      window.alert("변경할 프로필 이미지를 선택해주세요!");
-      return;
-    }
     let imageUrl = "";
     if (imgFileUrl !== currentUser.userPic) {
       const ok = window.confirm("프로필 이미지를 변경하시겠어요?");
@@ -88,20 +92,20 @@ const ChangeProfile = () => {
         const changedImgRef = ref(storageService, `profile_img/${uuid()}`);
         const response = await uploadString(changedImgRef, imgFileUrl, "data_url");
         imageUrl = await getDownloadURL(response.ref);
-      }
-      try {
-        await updateProfile(authService.currentUser, { photoURL: imageUrl });
-        dispatch(
-          setUserInfo({
-            ...currentUser,
-            userPic: imageUrl,
-          })
-        );
-        window.alert("프로필 이미지가 정상적으로 변경되었습니다.");
-        setImgFileUrl(imageUrl);
-      } catch (error) {
-        console.log("Profile img update error => ", error);
-        window.alert("프로필 이미지 업데이트에 실패했습니다. 다시 시도해주세요. 🥲");
+        try {
+          await updateProfile(authService.currentUser, { photoURL: imageUrl });
+          dispatch(
+            setUserInfo({
+              ...currentUser,
+              userPic: imageUrl,
+            })
+          );
+          window.alert("프로필 이미지가 정상적으로 변경되었습니다.");
+          setImgFileUrl(imageUrl);
+        } catch (error) {
+          console.log("Profile img update error => ", error);
+          window.alert("프로필 이미지 업데이트에 실패했습니다. 다시 시도해주세요. 🥲");
+        }
       }
     }
   };

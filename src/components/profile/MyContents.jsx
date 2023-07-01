@@ -70,7 +70,7 @@ const MyConentsBox = styled.div`
   display: flex;
   justify-content: space-between;
 
-  width: 50%;
+  width: 100%;
 
   border: 1px solid black;
   border-radius: 20px;

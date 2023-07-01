@@ -52,50 +52,7 @@ const AddContents = () => {
   const navigate = useNavigate();
 
   //
-
-  //❶Create
-  const onClickHandler = async (event) => {
-    //
-    event.preventDefault();
-
-    //
-    const newContents = {
-      contentsWriterId,
-      contentsWriterName,
-      contentsDate,
-      wishItemText,
-      itemPriceText,
-      wishReasonText,
-      downloadURL,
-    };
-
-    //
-    const collectionRef = collection(dbService, "contents");
-    const { id } = await addDoc(collectionRef, newContents); //fB에서 가져온 데이터의 속성 중, 구조분해할당으로 id값만 따로 받겠다는 뜻
-
-    //
-    dispatch(
-      addContents({
-        id,
-        wishItemText,
-        itemPriceText,
-        wishReasonText,
-        contentsWriterId,
-        contentsWriterName,
-        contentsDate,
-        downloadURL,
-      })
-    );
-
-    setWishItemText("");
-    setItemPriceText("");
-    setWishReasonText("");
-
-    //
-    navigate("/");
-  };
-
-  //
+  //❷Create 이미지
   const uploadImage = async (event) => {
     //
     event.preventDefault();
@@ -117,6 +74,59 @@ const AddContents = () => {
     //
     setDownloadURL(downloadURL);
   };
+
+  //❶Create 게시글
+  const onClickHandler = async (event) => {
+    if (downloadURL) {
+      //
+      event.preventDefault();
+
+      //
+      const newContents = {
+        contentsWriterId,
+        contentsWriterName,
+        contentsDate,
+        wishItemText,
+        itemPriceText,
+        wishReasonText,
+        downloadURL,
+      };
+
+      //
+      const collectionRef = collection(dbService, "contents");
+      const { id } = await addDoc(collectionRef, newContents); //fB에서 가져온 데이터의 속성 중, 구조분해할당으로 id값만 따로 받겠다는 뜻
+
+      //
+      dispatch(
+        addContents({
+          id,
+          wishItemText,
+          itemPriceText,
+          wishReasonText,
+          contentsWriterId,
+          contentsWriterName,
+          contentsDate,
+          downloadURL,
+        })
+      );
+
+      setWishItemText("");
+      setItemPriceText("");
+      setWishReasonText("");
+
+      //
+      // navigate("/");
+    }
+  };
+
+  const handleButtonClick = async (event) => {
+    if (imageUpload) {
+      await uploadImage(event);
+    }
+    await onClickHandler(event);
+  };
+
+  //uploadImage가 실행되어야 onClickHandler가 실행되도록
 
   //
 
@@ -169,7 +179,7 @@ const AddContents = () => {
           />
           <ButtonBox>
             <button>취소</button>
-            <button onClick={onClickHandler}>등록</button>
+            <button onClick={(event) => handleButtonClick(event)}>등록</button>
           </ButtonBox>
         </InputForm>
       </InputFormWrapper>

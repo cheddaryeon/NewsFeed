@@ -89,7 +89,9 @@ const DetailContentsList = () => {
         newWishReasonText &&
         showUpdatedContent ? (
           <ul className="updated_DetailListsWrapper">
-            <li style={{ border: "solid", marginTop: "30px", padding: "20px" }}>
+            <li
+              style={{ border: "solid", marginTop: "30px", padding: "100px" }}
+            >
               <div>
                 <p>
                   결재요청자: <span>{targetContent?.contentsWriterName}</span>
@@ -103,7 +105,9 @@ const DetailContentsList = () => {
           </ul>
         ) : (
           <ul className="DetailListsWrapper">
-            <li style={{ border: "solid", marginTop: "30px", padding: "20px" }}>
+            <li
+              style={{ border: "solid", marginTop: "30px", padding: "100px" }}
+            >
               <div>
                 <p>
                   결재요청자: <span>{targetContent?.contentsWriterName}</span>

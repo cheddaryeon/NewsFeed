@@ -1,7 +1,7 @@
 import uuid from "react-uuid";
 import { useState } from 'react';
 import { authService, storageService } from "fbase";
-import { updateProfile, updatePassword } from "firebase/auth";
+import { EmailAuthProvider, updateProfile, updatePassword, reauthenticateWithCredential } from "firebase/auth";
 import { setUserInfo } from "redux/modules/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { styled } from "styled-components";
@@ -12,13 +12,15 @@ const ChangeProfile = () => {
   const currentUser = useSelector((state) => state.auth.user);
   const [inputs, setInputs] = useState({
     newUserName: currentUser.userName,
+    currentPw: "",
     newPw: "",
     newPwCheck: "",
     newUserPic: "",
   });
+  const [imgFileUrl, setImgFileUrl] = useState(currentUser.userPic);
   const [pwError, setPwError] = useState(false);
   const [pwCheckTxt, setPwCheckTxt] = useState("");
-  const [imgFileUrl, setImgFileUrl] = useState(currentUser.userPic);
+  const [errorMsg, setErrorMsg] = useState("");
 
   console.log("ChangeProfile.jsx 현재 img url state => ", imgFileUrl);
 
@@ -29,23 +31,23 @@ const ChangeProfile = () => {
       [name]: value,
     }));
   
-    // 비밀번호 유효성 검사
+    // 변경 비밀번호 유효성 검사
     const { newPw, newPwCheck } = { ...inputs, [name]: value };
   
     if (name === "newPw" && newPwCheck.length > 0) {
       if (newPw !== newPwCheck) {
-        setPwCheckTxt("비밀번호와 확인이 일치하지 않습니다.");
+        setPwCheckTxt(`변경할 비밀번호와 확인이 일치하지 않습니다.`);
         setPwError(true);
       } else {
-        setPwCheckTxt("비밀번호와 확인이 일치합니다.");
+        setPwCheckTxt(`변경할 비밀번호와 확인이 일치합니다.`);
         setPwError(false);
       }
     } else if (name === "newPwCheck") {
       if (newPw !== newPwCheck) {
-        setPwCheckTxt("비밀번호와 확인이 일치하지 않습니다.");
+        setPwCheckTxt(`변경할 비밀번호와 확인이 일치하지 않습니다.`);
         setPwError(true);
       } else {
-        setPwCheckTxt("비밀번호와 확인이 일치합니다.");
+        setPwCheckTxt(`변경할 비밀번호와 확인이 일치합니다.`);
         setPwError(false);
       }
     }
@@ -67,6 +69,8 @@ const ChangeProfile = () => {
     // 4. readAsDataURL API로 사진을 얻는다.
     imgFileReader.readAsDataURL(theFile);
   }
+
+  // x버튼 누르면 이미지 미리보기 -> 다시 현재 프로필 이미지로
   const onClearImgFile = () => setImgFileUrl(currentUser.userPic);
 
   // 변경된 프로필 사진 등록
@@ -114,29 +118,63 @@ const ChangeProfile = () => {
               userName: newUserName,
             })
           );
-          window.alert("닉네임이 정상적으로 변경되었습니다.");
+          window.alert(`닉네임이 정상적으로 변경되었습니다.`);
         } catch (error) {
           window.alert(error);
           console.log(error);
         }
       }
     } else {
-      alert("닉네임 변경사항이 없습니다.");
+      alert(`닉네임 변경사항이 없습니다.`);
     }
   };
+
+  // firebase error에서 `auth/~` 부분만 추출하는 함수
+  const extractErrorCode = (error) => {
+    const regex = /\((.*?)\)/;
+    const match = error.match(regex);
+    const errorText = match ? match[1] : "";
+    return errorText;
+  }; 
 
   // 비밀번호 변경
   const handleChangePw = async (e) => {
     e.preventDefault();
-    if (!pwError) {
+    const currentEmail = currentUser.userEmail;
+    const currentPassword = inputs.currentPw;
+    const newPassword = inputs.newPw;
+    if (!pwError && currentPassword !== newPassword) {
       try {
-        const newPassword = inputs.newPw;
+        // 사용자 재인증
+        const credential = EmailAuthProvider.credential(currentEmail, currentPassword);
+        await reauthenticateWithCredential(authService.currentUser, credential);
+
+        // 비밀번호 업데이트
         await updatePassword(authService.currentUser, newPassword);
+
         window.alert("비밀번호가 정상적으로 변경되었습니다.");
+
       } catch (error) {
-        window.alert(error);
-        console.log(error);
+        const errorCode = extractErrorCode(error.message);
+        console.log("firebase login error => ", errorCode);
+        switch (errorCode) {
+          case "auth/invalid-credential":
+            setErrorMsg("비밀번호 변경에 실패하였습니다. 다시 시도해주세요.");
+            break;
+          case "auth/wrong-password":
+            setErrorMsg("현재 비밀번호가 일치하지 않습니다.");
+            break;
+          case "auth/too-many-requests":
+            setErrorMsg("변경 시도 횟수가 초과하였습니다. 잠시 후 다시 시도해주세요.");
+            break;
+          default:
+            setErrorMsg("비밀번호 변경에 실패했습니다. 다시 시도해주세요.");
+            break;
+        }
+        window.alert(errorMsg);
       }
+    } else if (currentPassword === newPassword) {
+      window.alert("현재 비밀번호와 변경된 비밀번호가 같습니다. 비밀번호를 새로 변경해주세요!")
     }
   };
   
@@ -187,7 +225,17 @@ const ChangeProfile = () => {
         ""
       ) : (
         <>
-          <form onSubmit={handleChangePw}>
+            <form onSubmit={handleChangePw}>
+            <label htmlFor="inPw">현재 비밀번호</label>
+            <input
+              name="currentPw"
+              id="inPw"
+              type="password"
+              placeholder="현재 비밀번호 입력"
+              value={inputs.currentPw}
+              onChange={onChange}
+            />
+            <br />
             <label htmlFor="inNewPw">비밀번호 변경</label>
             <input
               name="newPw"

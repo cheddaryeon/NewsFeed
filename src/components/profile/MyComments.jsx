@@ -2,7 +2,7 @@ import React from 'react'
 
 const MyComments = () => {
   return (
-    <div>MyComments</div>
+    <div>내가 작성한 댓글 목록</div>
   )
 }
 

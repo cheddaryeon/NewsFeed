@@ -104,20 +104,14 @@ const PreviewContentsList = () => {
             <ContentsList>
               <ContentPreview key={content?.id}>
                 <p>새로운 결재요청건</p>
-
                 {/* 이미지 태그 */}
                 <img src={content.downloadURL} alt="이미지 없음" width="150px" height="150px" />
                 {/*  */}
-
-                <p>
-                  결재요청자: <span>{content.contentsWriterName}</span>
-                </p>
-                <p>
-                  결재 품목: <span>{content.wishItemText}</span>
-                </p>
-                <p>
-                  결재 요청 사유: <span>{content.wishReasonText}</span>
-                </p>
+                <p>결재 요청 일시: <span>{content.contentsDate}</span></p>
+                <p>결재요청자: <span>{content.contentsWriterName}</span></p>
+                <p>결재 품목: <span>{content.wishItemText}</span></p>
+                <p>가격: <span>{content.itemPriceText}</span></p>
+                <p>결재 요청 사유: <span>{content.wishReasonText}</span></p>
                 <p>결재를 검토하시겠습니까?</p>
                 <DetailContentButton onClick={() => onCommentClick(content.id)}>
                   결재 검토하기
@@ -167,7 +161,11 @@ const NewContentButton = styled.button`
   }
 `;
 
-const ContentsList = styled.li``;
+const ContentsList = styled.li`
+  &:last-child {
+    margin-bottom: 100px;
+  }
+`
 
 const ContentPreview = styled.div`
   padding: 30px 50px;
@@ -194,9 +192,9 @@ const ContentPreview = styled.div`
   & > p:first-child {
     margin-bottom: 40px;
     font-size: 22px;
-    font-weight: 600;
+    font-weight: 600
   }
-  & > p:nth-child(5) {
+  & > p:nth-child(6) {
     margin-bottom: 50px;
   }
 
@@ -237,26 +235,26 @@ const DetailContentButton = styled(Link)`
 const TopButton = styled.button`
   position: fixed;
   bottom: 50px;
-  right: 50px;
+  right: 5%;
 
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
 
   border-radius: 50%;
-  box-shadow: 3px 3px 3px #ddd;
+  box-shadow: 3px 3px 3px #acaf6d;
 
   font-size: 25px;
   font-weight: 800;
-  line-height: 65px;
+  line-height: 55px;
 
-  background-color: rgb(201, 232, 255);
-  color: #517a99;
+  background-color: #f8e9a5;
+  color: #c2a421;
 
   transition: 0.2s;
 
   &:hover {
     transform: scale(1.1);
-    background-color: rgb(163, 207, 240);
+    background-color: #f1df8f;
   }
 `;
 

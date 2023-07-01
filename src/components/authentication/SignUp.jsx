@@ -100,7 +100,6 @@ const SignUp = ({handleCloseClick}) => {
   return (
     <SignUpWrapper>
       <p>알뜰살뜰 살말에 처음이세요?</p>
-      {/* <span>이메일로 가입하기</span> */}
         <SignUpForm onSubmit={onSubmit}>
           <input
             name="email"
@@ -110,8 +109,6 @@ const SignUp = ({handleCloseClick}) => {
             value={inputs.email}
             onChange={onChange}
           />
-          <button>중복 확인</button>
-          <br />
           <input
             name="userName"
             type="text"
@@ -120,7 +117,6 @@ const SignUp = ({handleCloseClick}) => {
             value={inputs.userName}
             onChange={onChange}
           />
-          <br />
           <input
             name="pw"
             type="password"
@@ -129,7 +125,6 @@ const SignUp = ({handleCloseClick}) => {
             value={inputs.pw}
             onChange={onChange}
           />
-          <br />
           <input
             name="pwCheck"
             type="password"
@@ -138,16 +133,13 @@ const SignUp = ({handleCloseClick}) => {
             value={inputs.pwCheck}
             onChange={onChange}
           />
-          <br />
-          <p>{inputs.pwCheck && pwCheckTxt}</p>
-          <p>{errorMsg}</p>
+          <ErrorMsg>{pwError ? inputs.pwCheck && pwCheckTxt : errorMsg ? errorMsg : ""}</ErrorMsg>
           <input type="submit" value={"회원가입"} />
         </SignUpForm>
         <button onClick={handleCloseClick}>닫기</button>
     </SignUpWrapper>
   )
 }
-
 
 const SignUpWrapper = styled.div`
   width: 100%;
@@ -221,6 +213,12 @@ const SignUpForm = styled.form`
     box-shadow: none;
   }
 }
+`
+
+const ErrorMsg = styled.p`
+  margin-top: 15px;
+  margin-bottom: 10px;
+  color: #c44c4c;
 `
 
 export default SignUp

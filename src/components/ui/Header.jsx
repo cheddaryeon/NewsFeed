@@ -146,11 +146,16 @@ const Button = styled.button`
 
 const UserProfile = styled(Link) `
   display: flex;
-  gap: 15px;
   align-items: center;
+
+  & > img {
+    margin-right: 15px;
+    border-radius: 50%;
+  }
 `
 
 const UserInfo = styled.p`
+margin-right: 10px;
   font-size: 16px;
   word-break: keep-all;
   line-height: 1.4;

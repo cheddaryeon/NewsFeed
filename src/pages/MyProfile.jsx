@@ -40,8 +40,8 @@ const MyProfile = () => {
       <ProfileBtn onClick={handleChangeForm}>프로필 변경하기 ▼</ProfileBtn>
       {showChangeForm && <ChangeProfile />}
       <br />
-      <button onClick={onClickMyContentsList}>내 작성 게시글</button>
-      <button onClick={onClickMyCommentsList}>내 작성 댓글</button>
+      <button onClick={onClickMyContentsList}>내가 쓴 글</button>
+      <button onClick={onClickMyCommentsList}>내가 쓴 댓글</button>
       {showContentsList && <MyContents />}
       {showCommentsList && <MyComments />}
     </>

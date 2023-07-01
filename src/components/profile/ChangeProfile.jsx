@@ -36,18 +36,18 @@ const ChangeProfile = () => {
   
     if (name === "newPw" && newPwCheck.length > 0) {
       if (newPw !== newPwCheck) {
-        setPwCheckTxt("변경할 비밀번호와 확인이 일치하지 않습니다.");
+        setPwCheckTxt(`변경할 비밀번호와 확인이 일치하지 않습니다.`);
         setPwError(true);
       } else {
-        setPwCheckTxt("변경할 비밀번호와 확인이 일치합니다.");
+        setPwCheckTxt(`변경할 비밀번호와 확인이 일치합니다.`);
         setPwError(false);
       }
     } else if (name === "newPwCheck") {
       if (newPw !== newPwCheck) {
-        setPwCheckTxt("변경할 비밀번호와 확인이 일치하지 않습니다.");
+        setPwCheckTxt(`변경할 비밀번호와 확인이 일치하지 않습니다.`);
         setPwError(true);
       } else {
-        setPwCheckTxt("변경할 비밀번호와 확인이 일치합니다.");
+        setPwCheckTxt(`변경할 비밀번호와 확인이 일치합니다.`);
         setPwError(false);
       }
     }
@@ -118,14 +118,14 @@ const ChangeProfile = () => {
               userName: newUserName,
             })
           );
-          window.alert("닉네임이 정상적으로 변경되었습니다.");
+          window.alert(`닉네임이 정상적으로 변경되었습니다.`);
         } catch (error) {
           window.alert(error);
           console.log(error);
         }
       }
     } else {
-      alert("닉네임 변경사항이 없습니다.");
+      alert(`닉네임 변경사항이 없습니다.`);
     }
   };
 

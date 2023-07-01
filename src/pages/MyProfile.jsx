@@ -34,10 +34,14 @@ const MyProfile = () => {
         <ProfileBtn onClick={handleChangeForm}>프로필 변경하기 ▼</ProfileBtn>
         {/* 뭔가 버튼 없어도 괜찮을 것 같은 느낌!! */}
         {showChangeForm && <ChangeProfile />}
-        <button onClick={onClickMyContentsList}>내가 쓴 글</button>
-        <button onClick={onClickMyCommentsList}>내가 쓴 댓글</button>
-        {showContentsList && <MyContents />}
-        {showCommentsList && <MyComments />}
+        <MyListButtons>
+          <button onClick={onClickMyContentsList}>내가 쓴 글</button>
+          <button onClick={onClickMyCommentsList}>내가 쓴 댓글</button>
+        </MyListButtons>
+        <MyList>
+          {showContentsList && <MyContents />}
+          {showCommentsList && <MyComments />}
+        </MyList>
       </ProfileInner>
       <TopButton onClick={handleScrollToTop}> ▲ </TopButton>
     </ProfileWrapper>
@@ -87,6 +91,40 @@ const ProfileBtn = styled.button`
     background-color: #39c4a1;
     color: #fff;
   }
+`
+
+const MyListButtons = styled.div`
+  display: flex;
+  margin-top: 50px;
+  gap: 20px;
+  
+  & > button {
+    width: 120px;
+    height: 40px;
+
+    border-radius: 20px;
+    border: none;
+
+    font-weight: 500;
+
+    background-color: white;
+    color: #5798c4;
+
+    transition: 0.2s;
+
+    &:hover {
+      background-color: #59afd1;
+      color: #ffffff;
+      box-shadow: none;
+    }
+  }
+`
+
+const MyList = styled.button`
+  width: 500px;
+  margin-top: 30px;
+  border-radius: 30px;
+  background-color: #fff;
 `
 
 const TopButton = styled.button`

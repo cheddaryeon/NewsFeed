@@ -39,17 +39,15 @@ const MyContents = () => {
         <MyContentsSection>
           {myContents.map((content) => (
             <MyConentsBox key={content.id}>
-              <Link to={`/detail/${content.id}`}>
-                <MyContentsTitle>
-                  {content.wishItemText}
-                </MyContentsTitle>
-              </Link>
-              {content.contentsDate}
+              <MyContentsTitle to={`/detail/${content.id}`}>
+                {content.wishItemText}
+              </MyContentsTitle>
+              <WriteDateTitle>{content.contentsDate}</WriteDateTitle>
             </MyConentsBox>
           ))}
         </MyContentsSection>
       ) : (
-        <p>등록된 게시물이 없습니다.</p>
+        <NoContentsTitle>등록된 게시물이 없습니다.</NoContentsTitle>
       )}
     </>
   );
@@ -58,31 +56,63 @@ const MyContents = () => {
 export default MyContents;
 
 const MyContentsSection = styled.section`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  margin-top: 30px;
+  width: 100%;
+  padding: 30px;
 `
 
 const MyConentsBox = styled.div`
+  position: relative;
   display: flex;
   justify-content: space-between;
 
-  width: 50%;
+  width: 100%;
+  padding: 10px 0;
 
-  border: 1px solid black;
   border-radius: 20px;
-  margin: 10px;
-  padding: 30px;
+
+  font-size: 14px;
+  
+  &::after{
+    content: "";
+    position: absolute;
+    top: 40px;
+
+    display: block;
+    width: 435px;
+    height: 1px;
+    background-color: #eee;
+  }
+
+  &:last-of-type::after {
+    width: 0px;
+  }
 `;
 
-const MyContentsTitle = styled.h3`
+const MyContentsTitle = styled(Link)`
+  display: inline-block;
+  width: 60%;
+  font-weight: 500;
+  text-align: left;
+  
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
   color: #3ac4a1;
-  transition: 0.2s;
 
 &:hover {
+  color: #23ac89;
   text-decoration: underline;
-  text-decoration-color: #3ac4a1;
 }
 `;
+
+const WriteDateTitle = styled.p`
+  flex-shrink: 0;
+  width: 35%;
+  font-size: 13px;
+  text-align: right;
+`
+
+const NoContentsTitle = styled.p`
+  padding: 30px;
+`

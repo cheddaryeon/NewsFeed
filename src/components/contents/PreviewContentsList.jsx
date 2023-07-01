@@ -105,7 +105,7 @@ const PreviewContentsList = () => {
               <ContentPreview key={content?.id}>
                 <p>새로운 결재요청건</p>
                 {/* 이미지 태그 */}
-                <img src={content.downloadURL} alt="이미지 없음" width="150px" height="150px" />
+                <img src={content.downloadURL} alt="이미지 없음" />
                 {/*  */}
                 <p>결재 요청 일시: <span>{content.contentsDate}</span></p>
                 <p>결재요청자: <span>{content.contentsWriterName}</span></p>
@@ -113,10 +113,7 @@ const PreviewContentsList = () => {
                 <p>가격: <span>{content.itemPriceText}</span></p>
                 <p>결재 요청 사유: <span>{content.wishReasonText}</span></p>
                 <p>결재를 검토하시겠습니까?</p>
-                <DetailContentButton onClick={() => onCommentClick(content.id)}>
-                  결재 검토하기
-                </DetailContentButton>
-                <Link to={`/detail/${content.id}`}>결제 검토하기</Link>
+                <DetailContentButton to={`/detail/${content.id}`}>결재 검토하기</DetailContentButton>
               </ContentPreview>
             </ContentsList>
           );
@@ -194,7 +191,7 @@ const ContentPreview = styled.div`
     font-size: 22px;
     font-weight: 600
   }
-  & > p:nth-child(6) {
+  & > p:nth-child(7) {
     margin-bottom: 50px;
   }
 
@@ -203,6 +200,13 @@ const ContentPreview = styled.div`
     font-size: 19px;
     font-weight: 600;
     color: #244eaa;
+  }
+
+  & > img {
+    width: 300px;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 30px;
   }
 `;
 

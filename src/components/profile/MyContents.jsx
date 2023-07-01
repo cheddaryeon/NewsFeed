@@ -9,13 +9,13 @@ const MyContents = () => {
   const currentUser = useSelector((state) => state.auth.user);
   const [myContents, setMyContents] = useState([]);
 
-  console.log("MyContents.jsx 현재 사용자 정보 => ", currentUser);
+  // console.log("MyContents.jsx 현재 사용자 정보 => ", currentUser);
 
   const getMyContents = async () => {
     const q = query(
+      // firebase는 noSQL DB라서 pre-made query를 만들어줘야 함
       collection(dbService, "contents"),
       where("contentsWriterId", "==", currentUser.userId),
-      // firebase는 noSQL DB라서 pre-made query를 만들어주어야 함
       orderBy("contentsDate", "desc"),
     );
     
@@ -31,7 +31,7 @@ const MyContents = () => {
     getMyContents();
   }, [])
 
-  console.log("fb 서버에서 쿼리로 게시글 받아지는지 확인 => ", myContents)
+  // console.log("fb 서버에서 쿼리로 게시글 받아지는지 확인 => ", myContents)
 
   return (
     <>

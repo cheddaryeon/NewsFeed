@@ -94,7 +94,7 @@ const ProfileBtn = styled.button`
 const TopButton = styled.button`
   position: fixed;
   bottom: 50px;
-  right: 50px;
+  right: 5%;
 
   width: 60px;
   height: 60px;

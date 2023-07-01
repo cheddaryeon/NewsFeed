@@ -19,20 +19,20 @@ const Header = () => {
   const handleLoginClick = () => {
     setShowLoginForm(true);
     setShowSignUpForm(false);
-  }
+  };
 
   const handleSignUpClick = () => {
     setShowSignUpForm(true);
     setShowLoginForm(false);
-  }
+  };
 
   const handleCloseClick = () => {
     setShowSignUpForm(false);
     setShowLoginForm(false);
-  }
+  };
 
   const handleLogoutClick = () => {
-    const confirmLogout = window.confirm("로그아웃 하시겠어요?")
+    const confirmLogout = window.confirm("로그아웃 하시겠어요?");
     if (confirmLogout) {
       authService.signOut();
       setShowLoginForm(false);
@@ -48,11 +48,20 @@ const Header = () => {
         <HeaderInner>
           <HeaderInnerLeftBox>
             <Link to="/">
-              <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fpl44k%2FbtslLgoXEsh%2FpUi5OkyfnZUy9pHGJKvW61%2Fimg.png" width="auto" height="40px"/>
+              <img
+                src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fpl44k%2FbtslLgoXEsh%2FpUi5OkyfnZUy9pHGJKvW61%2Fimg.png"
+                width="auto"
+                height="40px"
+              />
             </Link>
-            </HeaderInnerLeftBox>
+          </HeaderInnerLeftBox>
           <HeaderInnerBox>
-            <img src="https://firebasestorage.googleapis.com/v0/b/buy-or-not-unlucky7.appspot.com/o/assets%2Fbuyornot_logo.png?alt=media&token=d92ac44f-a857-4f76-a2e2-d9c03c41c371" alt="로고" width="auto" height="80px"/>
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/buy-or-not-unlucky7.appspot.com/o/assets%2Fbuyornot_logo.png?alt=media&token=d92ac44f-a857-4f76-a2e2-d9c03c41c371"
+              alt="로고"
+              width="auto"
+              height="80px"
+            />
           </HeaderInnerBox>
           <HeaderInnerRightBox>
             <UserProfile to={`/profile/${currentUser.userId}`}>
@@ -64,36 +73,49 @@ const Header = () => {
         </HeaderInner>
       ) : (
         <HeaderInner>
-            <HeaderInnerLeftBox>
-              <Link to="/">
-                <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fpl44k%2FbtslLgoXEsh%2FpUi5OkyfnZUy9pHGJKvW61%2Fimg.png" width="auto" height="40px"/>
-              </Link>
-            </HeaderInnerLeftBox>
-            <HeaderInnerBox>
-              <img src="https://firebasestorage.googleapis.com/v0/b/buy-or-not-unlucky7.appspot.com/o/assets%2Fbuyornot_logo.png?alt=media&token=d92ac44f-a857-4f76-a2e2-d9c03c41c371" alt="로고" width="auto" height="80px"/>
-              </HeaderInnerBox>
+          <HeaderInnerLeftBox>
+            <Link to="/">
+              <img
+                src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2Fpl44k%2FbtslLgoXEsh%2FpUi5OkyfnZUy9pHGJKvW61%2Fimg.png"
+                width="auto"
+                height="40px"
+              />
+            </Link>
+          </HeaderInnerLeftBox>
+          <HeaderInnerBox>
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/buy-or-not-unlucky7.appspot.com/o/assets%2Fbuyornot_logo.png?alt=media&token=d92ac44f-a857-4f76-a2e2-d9c03c41c371"
+              alt="로고"
+              width="auto"
+              height="80px"
+            />
+          </HeaderInnerBox>
           <HeaderInnerRightBox>
             <Button onClick={handleLoginClick}>로그인</Button>
             <Button onClick={handleSignUpClick}>회원가입</Button>
           </HeaderInnerRightBox>
         </HeaderInner>
       )}
-      {currentUser === null && showLoginForm && <Login handleCloseClick={handleCloseClick}/>}
-      {currentUser === null && showSignUpForm && <SignUp handleCloseClick={handleCloseClick}/>} 
+      {currentUser === null && showLoginForm && (
+        <Login handleCloseClick={handleCloseClick} />
+      )}
+      {currentUser === null && showSignUpForm && (
+        <SignUp handleCloseClick={handleCloseClick} />
+      )}
     </HeaderWrapper>
   );
 };
 
 const HeaderWrapper = styled.header`
-position: fixed;
+  position: fixed;
   width: 100%;
   min-width: 800px;
-  height: 100px;
+  height: 10px;
   margin: 0 auto;
   background-color: #c6ebfa;
 
   z-index: 999;
-`
+`;
 
 const HeaderInner = styled.div`
   display: flex;
@@ -102,24 +124,24 @@ const HeaderInner = styled.div`
   width: 80%;
   height: 100%;
   margin: 0 auto;
-`
+`;
 const HeaderInnerLeftBox = styled.div`
   width: 33.333%;
   text-align: left;
-`
+`;
 
 const HeaderInnerBox = styled.div`
   width: 33.333%;
-`
+`;
 
 const HeaderInnerRightBox = styled.div`
   display: flex;
   gap: 10px;
   justify-content: flex-end;
   align-items: center;
-  
+
   width: 33.333%;
-`
+`;
 
 const Button = styled.button`
   width: 100px;
@@ -140,13 +162,13 @@ const Button = styled.button`
     color: #ffffff;
     box-shadow: none;
   }
-`
+`;
 
-const UserProfile = styled(Link) `
+const UserProfile = styled(Link)`
   display: flex;
   gap: 15px;
   align-items: center;
-`
+`;
 
 const UserName = styled(Link)`
   text-decoration: underline;

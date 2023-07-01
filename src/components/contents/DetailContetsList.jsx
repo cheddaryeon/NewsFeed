@@ -245,6 +245,12 @@ const DetailList = styled.div`
     font-weight: 600;
     color: #1d7735;
   }
+  & > img {
+    width: 400px;
+    height: auto;
+    margin-bottom: 30px;
+    border-radius: 10px;
+  }
 `
 
 const ButtonBox = styled.div`

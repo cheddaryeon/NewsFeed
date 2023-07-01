@@ -27,24 +27,24 @@ const TopButton = styled.button`
   bottom: 50px;
   right: 50px;
 
-  width: 70px;
-  height: 70px;
+  width: 60px;
+  height: 60px;
 
   border-radius: 50%;
-  box-shadow: 3px 3px 3px #ddd;
+  box-shadow: 3px 3px 3px #acaf6d;
 
   font-size: 25px;
   font-weight: 800;
-  line-height: 65px;
+  line-height: 55px;
 
-  background-color: rgb(201, 232, 255);
-  color: #517a99;
+  background-color: #f8e9a5;
+  color: #c2a421;
 
   transition: 0.2s;
 
   &:hover {
     transform: scale(1.1);
-    background-color: rgb(163, 207, 240);
+    background-color: #f1df8f;
   }
 `
 

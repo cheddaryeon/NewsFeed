@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { addDoc, collection, getDocs, query } from "firebase/firestore";
+import firebase from "firebase/app";
+import {
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  serverTimestamp,
+} from "firebase/firestore";
 import { db, dbService } from "fbase";
 import { useDispatch, useSelector } from "react-redux";
 import { addContents, fetchContents } from "redux/modules/contents";
@@ -13,9 +20,11 @@ import {
   ref,
   uploadBytes,
   uploadString,
+  orderBy,
 } from "firebase/storage";
 
 const AddContents = () => {
+  //UseSelector
   const currentUser = useSelector((state) => state.auth.user);
   console.log("Add Contents User => ", currentUser);
 
@@ -25,7 +34,6 @@ const AddContents = () => {
   const [contentsWriterName, setContentsWriterName] = useState(
     currentUser.userName
   );
-
   const [imageUpload, setImageUpload] = useState(null);
   const [imageList, setImageList] = useState([]);
   const [downloadURL, setDownloadURL] = useState([null]);
@@ -61,6 +69,7 @@ const AddContents = () => {
     //
     // if (imageUpload == null) return;
 
+    //collection ref
     const imageRef = ref(
       storageService,
       `${authService.currentUser.uid}/${imageUpload.name}`
@@ -91,6 +100,7 @@ const AddContents = () => {
         itemPriceText,
         wishReasonText,
         downloadURL,
+        createdAt: serverTimestamp(), //Date.now()로 해도 되고, serverTimestamp()로 해도 됨
       };
 
       //
@@ -108,6 +118,7 @@ const AddContents = () => {
           contentsWriterName,
           contentsDate,
           downloadURL,
+          createdAt: serverTimestamp(),
         })
       );
 
@@ -263,7 +274,6 @@ const InputForm = styled.form`
     border-radius: 10px;
 
     font-size: 16px;
-    line-height: 1.6;
     color: #666;
 
     overflow: auto;

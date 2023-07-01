@@ -5,42 +5,56 @@ import { useDispatch, useSelector } from "react-redux";
 import { addContents, fetchContents } from "redux/modules/contents";
 import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
+//
+import { storageService, authService } from "fbase";
+import {
+  getDownloadURL,
+  listAll,
+  ref,
+  uploadBytes,
+  uploadString,
+} from "firebase/storage";
 
 const AddContents = () => {
   const currentUser = useSelector((state) => state.auth.user);
   console.log("Add Contents User => ", currentUser);
-  //❶Create
 
-  //
+  //UseStates
+  //user용
   const [contentsWriterId, setContentsWriterId] = useState(currentUser.userId);
   const [contentsWriterName, setContentsWriterName] = useState(
     currentUser.userName
   );
 
-  let today = new Date();
-  let time = {
-    year: today.getFullYear(),
-    month: today.getMonth()+1,
-    date: today.getDate(),
-    hours: today.getHours(),
-    minutes: today.getMinutes(),
-  }
-  let timestring = `${time.year}년 ${time.month}월 ${time.date}일 ${time.hours}시${time.minutes}분`
+  const [imageUpload, setImageUpload] = useState(null);
+  const [imageList, setImageList] = useState([]);
+  const [downloadURL, setDownloadURL] = useState([null]);
 
-  const [contentsDate, setContentsDate] = useState(timestring);
-
-  //
+  //input창용
   const [wishItemText, setWishItemText] = useState("");
   const [itemPriceText, setItemPriceText] = useState("");
   const [wishReasonText, setWishReasonText] = useState("");
 
-  //
-  const dispatch = useDispatch();
+  //contentsDate 정의
+  let today = new Date();
+  let time = {
+    year: today.getFullYear(),
+    month: today.getMonth() + 1,
+    date: today.getDate(),
+    hours: today.getHours(),
+    minutes: today.getMinutes(),
+  };
+  let timestring = `${time.year}년 ${time.month}월 ${time.date}일 ${time.hours}시${time.minutes}분`;
+  const [contentsDate, setContentsDate] = useState(timestring);
 
-  //
+  //---------------------------------------------------------------------------------------------------//
+  //hooks
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   //
+
+  //❶Create
   const onClickHandler = async (event) => {
     //
     event.preventDefault();
@@ -53,6 +67,7 @@ const AddContents = () => {
       wishItemText,
       itemPriceText,
       wishReasonText,
+      downloadURL,
     };
 
     //
@@ -69,19 +84,9 @@ const AddContents = () => {
         contentsWriterId,
         contentsWriterName,
         contentsDate,
+        downloadURL,
       })
     );
-
-    // dispatch(
-    //   {
-    //     type: "ADD_CONTENTS",
-    //     payload: {
-    //       wishItemText,
-    //   itemPriceText,
-    //   wishReasonText,
-    //     }
-    //   }
-    // )
 
     setWishItemText("");
     setItemPriceText("");
@@ -90,6 +95,31 @@ const AddContents = () => {
     //
     navigate("/");
   };
+
+  //
+  const uploadImage = async (event) => {
+    //
+    event.preventDefault();
+
+    //
+    // if (imageUpload == null) return;
+
+    const imageRef = ref(
+      storageService,
+      `${authService.currentUser.uid}/${imageUpload.name}`
+    );
+    await uploadBytes(imageRef, imageUpload).then(() =>
+      alert("이미지 업로드 완료!")
+    );
+
+    const downloadURL = await getDownloadURL(imageRef);
+    console.log(downloadURL);
+
+    //
+    setDownloadURL(downloadURL);
+  };
+
+  //
 
   //------------------------------------------------//
 
@@ -107,7 +137,8 @@ const AddContents = () => {
               const { value } = event.target;
               setWishItemText(value);
             }}
-          />{" "}
+          />
+          {/* ----------------------------------------------- */}
           <label>품목 가격</label>
           <input
             type="text"
@@ -117,9 +148,17 @@ const AddContents = () => {
               const { value } = event.target;
               setItemPriceText(value);
             }}
-          />{" "}
+          />
+          {/* ----------------------------------------------- */}
           <label>품목 사진</label>
-          <button>이미지 업로드</button>
+          <input
+            type="file"
+            onChange={(event) => {
+              setImageUpload(event.target.files[0]);
+            }}
+          />
+          <button onClick={uploadImage}>Upload</button>
+          {/* ----------------------------------------------- */}
           <label>결재 요청 사유</label>
           <textarea
             value={wishReasonText}
@@ -144,22 +183,22 @@ const Container = styled.div`
   width: 70%;
   margin: 0 auto;
   text-align: center;
-`
+`;
 
 const InputFormWrapper = styled.div`
   padding: 50px 100px;
 
   border-radius: 30px;
   background-color: #caf0d4;
-  
+
   box-shadow: 5px 5px 10px #eee;
-   & > p {
+  & > p {
     margin-bottom: 40px;
     font-size: 24px;
     font-weight: 600;
     color: #30924a;
   }
-`
+`;
 const InputForm = styled.form`
   display: flex;
   flex-direction: column;
@@ -219,12 +258,12 @@ const InputForm = styled.form`
 
     overflow: auto;
     resize: none;
-    
+
     &::placeholder {
       color: #aeaeae;
     }
   }
-`
+`;
 const ButtonBox = styled.form`
   margin-top: 50px;
 
@@ -250,6 +289,6 @@ const ButtonBox = styled.form`
   & > button:first-child {
     margin-right: 30px;
   }
-`
+`;
 
 export default AddContents;

@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import ChangeProfile from "components/profile/ChangeProfile";
-
-import { styled } from "styled-components";
 import MyContents from "components/profile/MyContents";
 import MyComments from "components/profile/MyComments";
+import ChangeProfile from "components/profile/ChangeProfile";
+import { styled } from "styled-components";
 
 const MyProfile = () => {
   const [showChangeForm, setShowChangeForm] = useState(false);
@@ -63,7 +62,6 @@ const ProfileInner = styled.div `
   box-shadow: 5px 5px 10px #b7d6ce;
   background-color: #cae9e1;
 `
-
 const ProfileBtn = styled.button`
   display: inline-block;
   width: 150px;
@@ -108,7 +106,6 @@ const TopButton = styled.button`
 
   background-color: #f8e9a5;
   color: #c2a421;
-
   transition: 0.2s;
 
   &:hover {

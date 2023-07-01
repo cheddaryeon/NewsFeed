@@ -27,6 +27,9 @@ const DetailContentsList = () => {
 
   console.log("3. targetContent => ", targetContent);
 
+  //
+  const currentUser = useSelector((state) => state.auth.user);
+
   //----------------------------------------------------------------------//
   //hooks
   const dispatch = useDispatch();
@@ -43,13 +46,22 @@ const DetailContentsList = () => {
 
   //❸ Update
   const editModeHandler = () => {
-    //목) 추후 로그인정보 일치할 경우에만 가능한 로직 추가
-    setEditing((prev) => !prev);
+    console.log(currentUser);
+    if (targetContent.contentsWriterId !== currentUser.userId) {
+      alert("수정 권한이 없습니다.");
+      return;
+    } else {
+      setEditing((prev) => !prev);
+    }
   };
 
   //❹ Delete
   //여기서 payload는 삭제할 게시글의 id를 의미
   const deleteHandler = async (payload) => {
+    if (targetContent.contentsWriterId !== currentUser.userId) {
+      alert("삭제 권한이 없습니다.");
+      return;
+    }
     const contentsRef = doc(dbService, "contents", payload);
     await deleteDoc(contentsRef);
 
@@ -67,8 +79,6 @@ const DetailContentsList = () => {
     navigate("/");
   };
 
-
-
   return (
     <>
       {/*-------- 1. 상세게시글 랜더링 부분 --------*/}
@@ -84,6 +94,7 @@ const DetailContentsList = () => {
             <DetailListsInner>
               <DetailList>
                 <p>결재 요청자: <span>{targetContent?.contentsWriterName}</span></p>
+                <p>요청일시: {targetContent?.contentsDate}</p>
                 <p>결재 품목: <span>{targetContent?.newWishItemText}</span></p>
                 <p>가격: <span>{targetContent?.newItemPriceText}</span></p>
                 <p>결재 요청 사유: <span>{targetContent?.newWishReasonText}</span></p>
@@ -96,6 +107,10 @@ const DetailContentsList = () => {
             <DetailListsInner>
               <DetailList>
                 <p>결재 요청자: <span>{targetContent?.contentsWriterName}</span></p>
+                <p>요청일시: {targetContent?.contentsDate}</p>
+                {/* 이미지 태그 */}
+                <img src={targetContent?.downloadURL} alt="이미지 없음" />
+                {/*  */}
                 <p>결재 품목: <span>{targetContent?.wishItemText}</span></p>
                 <p>가격: <span>{targetContent?.itemPriceText}</span></p>
                 <p>결재 요청 사유: <span>{targetContent?.wishReasonText}</span></p>

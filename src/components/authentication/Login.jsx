@@ -9,7 +9,7 @@ import {
 import { authService } from "fbase";
 import { styled } from "styled-components";
 
-const Login = ({handleCloseClick}) => {
+const Login = ({ handleCloseClick }) => {
   const dispatch = useDispatch();
   const [inputs, setInputs] = useState({
     email: "",
@@ -44,6 +44,7 @@ const Login = ({handleCloseClick}) => {
       dispatch(
         setUserInfo({
           userId: user.uid,
+          userEmail: user.email,
           userName: user.displayName,
           userPic: user.photoURL,
         })
@@ -82,16 +83,13 @@ const Login = ({handleCloseClick}) => {
     let provider;
     try {
       provider = new GoogleAuthProvider();
-      await signInWithPopup(authService, provider);
+      const result = await signInWithPopup(authService, provider);
       // sign in 이후 user 정보를 받아와서 store에 전달
-      const { user } = await signInWithPopup(
-        authService,
-        inputs.email,
-        inputs.password
-      );
+      const { user } = result;
       dispatch(
         setUserInfo({
           userId: user.uid,
+          userEmail: user.email,
           userName: user.displayName,
           userPic: user.photoURL,
         })
@@ -121,13 +119,18 @@ const Login = ({handleCloseClick}) => {
           value={inputs.password}
           onChange={onChange}
         />
+        {errorMsg ? <ErrorMsg>{errorMsg}</ErrorMsg> : ""}
         <input type="submit" value={"로그인"} />
       </EmailLoginForm>
-      <p>{errorMsg}</p>
       <GoogleLogin>
         <span>다른 방법으로 로그인하기</span>
         <button onClick={onSocialClick} name="google">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/588px-Google_%22G%22_Logo.svg.png?20230305195327" alt="구글로고" width="auto" height="25px" />
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/588px-Google_%22G%22_Logo.svg.png?20230305195327"
+            alt="구글로고"
+            width="auto"
+            height="25px"
+          />
           <span>Continue with Google</span>
         </button>
       </GoogleLogin>
@@ -154,7 +157,7 @@ const LoginWrapper = styled.div`
       color: #999;
     }
   }
-`
+`;
 
 const EmailLoginForm = styled.form`
   display: flex;
@@ -177,7 +180,7 @@ const EmailLoginForm = styled.form`
   & > input:last-child {
     width: 100px;
     height: 40px;
-    margin-top: 10px;
+    margin-top: 20px;
 
     background-color: #fff;
     color: #333;
@@ -190,10 +193,10 @@ const EmailLoginForm = styled.form`
     transition: 0.3s;
 
     &:hover {
-    background-color: #59afd1;
-    color: #ffffff;
-    box-shadow: none;
-  }
+      background-color: #59afd1;
+      color: #ffffff;
+      box-shadow: none;
+    }
   }
 
   &::after {
@@ -203,7 +206,7 @@ const EmailLoginForm = styled.form`
     margin: 30px 0;
     background-color: #ddd;
   }
-`
+`;
 
 const GoogleLogin = styled.div`
   display: flex;
@@ -234,11 +237,16 @@ const GoogleLogin = styled.div`
     transition: 0.3s;
 
     &:hover {
-    background-color: #59afd1;
-    color: #ffffff;
-    box-shadow: none;
+      background-color: #59afd1;
+      color: #ffffff;
+      box-shadow: none;
     }
   }
+`;
+
+const ErrorMsg = styled.p`
+  margin-top: 20px;
+  color: #c44c4c;
 `
 
 export default Login;

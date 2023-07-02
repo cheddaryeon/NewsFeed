@@ -70,12 +70,6 @@ const MyListButton = styled.button`
   color: #5798c4;
 
   transition: 0.2s;
-
-  &:hover {
-    background-color: #59afd1;
-    color: #ffffff;
-    box-shadow: none;
-  }
 `
 
 const TopButton = styled.button`

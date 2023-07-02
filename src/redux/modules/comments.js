@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  getDocs,
-  query,
-} from "firebase/firestore";
+import { addDoc, collection } from "firebase/firestore";
 import { dbService } from "fbase";
 
 //action value
@@ -29,7 +23,7 @@ const comments = (state = initialState, action) => {
 
   switch (action.type) {
     case ADD_COMMENT:
-      return [...state, action.payload];
+      addDoc(collection(dbService, "comments"), action.payload); //이렇게만 하면, promise객체만 반환
 
     default:
       return state;

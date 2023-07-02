@@ -107,13 +107,25 @@ const PreviewContentsList = () => {
                 {/* 이미지 태그 */}
                 <img src={content.downloadURL} alt="이미지 없음" />
                 {/*  */}
-                <p>결재 요청 일시: <span>{content.contentsDate}</span></p>
-                <p>결재요청자: <span>{content.contentsWriterName}</span></p>
-                <p>결재 품목: <span>{content.wishItemText}</span></p>
-                <p>가격: <span>{content.itemPriceText}</span></p>
-                <p>결재 요청 사유: <span>{content.wishReasonText}</span></p>
+                <p>
+                  결재 요청 일시: <span>{content.contentsDate}</span>
+                </p>
+                <p>
+                  결재요청자: <span>{content.contentsWriterName}</span>
+                </p>
+                <p>
+                  결재 품목: <span>{content.wishItemText}</span>
+                </p>
+                <p>
+                  가격: <span>{content.itemPriceText}</span>
+                </p>
+                <p>
+                  결재 요청 사유: <span>{content.wishReasonText}</span>
+                </p>
                 <p>결재를 검토하시겠습니까?</p>
-                <DetailContentButton to={`/detail/${content.id}`}>결재 검토하기</DetailContentButton>
+                <DetailContentButton to={`/detail/${content.id}`}>
+                  결재 검토하기
+                </DetailContentButton>
               </ContentPreview>
             </ContentsList>
           );
@@ -162,7 +174,7 @@ const ContentsList = styled.li`
   &:last-child {
     margin-bottom: 100px;
   }
-`
+`;
 
 const ContentPreview = styled.div`
   padding: 30px 50px;
@@ -189,7 +201,7 @@ const ContentPreview = styled.div`
   & > p:first-child {
     margin-bottom: 40px;
     font-size: 22px;
-    font-weight: 600
+    font-weight: 600;
   }
   & > p:nth-child(7) {
     margin-bottom: 50px;

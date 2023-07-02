@@ -8,7 +8,7 @@ import DetailContentsList from "components/contents/DetailContetsList";
 import { styled } from "styled-components";
 
 const handleScrollToTop = () => {
-  window.scrollTo({top:0, behavior: 'smooth'});
+  window.scrollTo({ top: 0, behavior: "smooth" });
 };
 
 const Detail = () => {
@@ -46,6 +46,6 @@ const TopButton = styled.button`
     transform: scale(1.1);
     background-color: #f1df8f;
   }
-`
+`;
 
 export default Detail;

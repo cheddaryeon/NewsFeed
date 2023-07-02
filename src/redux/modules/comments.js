@@ -1,35 +1,47 @@
+import { element } from "prop-types";
 import React from "react";
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  getDocs,
-  query,
-} from "firebase/firestore";
-import { dbService } from "fbase";
 
 //action value
-const ADD_COMMENT = "ADD_COMMENT";
-//action creator
-export const addComment = (payload) => {
-  return { type: ADD_COMMENT, payload };
-};
+const ADD_COMMENTS = "ADD_COMMENTS";
+const DELETE_COMMENTS = "DELETE_COMMENTS";
+// const FETCH_COMMENTS = "FETCH_COMMENTS";
+//cosnt UPDATE_COMMENTS = ""UPDATE_COMMENTS";
 
-//초기값
+//action creator
+export const addcomments = (payload) => {
+  return { type: ADD_COMMENTS, payload };
+};
+export const deleteComments = (payload) => {
+  return { type: DELETE_COMMENTS, payload };
+};
+// export const fetchComments = (payload) => {
+//   return { type: FETCH_COMMENTS, payload };
+// };
+// export const updateComments = (payload) => {
+//   return { type: UPDATE_COMMENTS, payload };
+// };
+
 const initialState = [
   {
-    commentsBody: "(데이터 아님)가격이 합리적인 것 같음.",
+    commentsOpinion: "초기값",
+    commentsBody: "초기값",
   },
 ];
 
 //reducer
 const comments = (state = initialState, action) => {
-  // console.log("state값", state);
-
   switch (action.type) {
-    case ADD_COMMENT:
-      addDoc(collection(dbService, "comments"), action.payload); //이렇게만 하면, promise객체만 반환
+    case ADD_COMMENTS:
       return [...state, action.payload];
+
+    case DELETE_COMMENTS:
+      const left_comments_list = state.filter(
+        (element) => element.id !== action.payload
+      );
+      return left_comments_list;
+
+    // case FETCH_COMMENTS:
+    //   return action.payload;
 
     default:
       return state;

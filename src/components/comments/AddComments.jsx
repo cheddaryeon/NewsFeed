@@ -1,99 +1,113 @@
-import { collection } from "@firebase/firestore";
+import { addComments } from "@babel/types";
+import { addDoc, collection } from "@firebase/firestore";
 import { dbService } from "fbase";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import comments, { addComment } from "redux/modules/comments";
-import styled from "styled-components";
+import { useNavigate } from "react-router";
+import { styled } from "styled-components";
 
 const AddComments = () => {
-  //❶Create
-
-  //
-  const dispatch = useDispatch();
-
-  // const [commentsWriter, setCommentsWriter] = useState("");
+  const currentUser = useSelector((state) => state.auth.user);
+  const options = ["허가", "거절"];
+  //useState
+  //user
+  const [commentsWriterId, setCommentsWriterId] = useState(currentUser.userId);
+  const [commentsWriterName, setCommentsWriterName] = useState(
+    currentUser.userName
+  );
+  //input
   const [commentsBody, setCommentsBody] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [commentsOpinion, setCommentsOpinion] = useState(null);
 
-  const { contentsId } = useParams();
-  console.log("contentsId2 =>", contentsId);
+  let today = new Date();
+  let time = {
+    year: today.getFullYear(),
+    month: today.getMonth() + 1,
+    date: today.getDate(),
+    hours: today.getHours(),
+    minutes: today.getMinutes(),
+  };
+  let timestring = `${time.year}년 ${time.month}월 ${time.date}일 ${time.hours}시${time.minutes}분`;
+  const [commentsDate, setCommentsDate] = useState(timestring);
 
-  //
-  const onSubmitHandler = (e) => {
-    e.preventDefault();
+  //hook
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    dispatch(
-      addComment({
-        selectedOption,
+  //등록
+  const onClickHandler = async (event) => {
+    event.preventDefault();
+
+    const newComments = {
+      commentsWriterId,
+      commentsWriterName,
+      commentsDate,
+      commentsOpinion,
+      commentsBody,
+    };
+
+    const collectionRef = collection(dbService, "comments");
+    const { id } = await addDoc(collectionRef, newComments);
+
+    dispatch({
+      type: "ADD_COMMENT",
+      payload: {
+        id: id,
+        commentsWriterId,
+        commentsWriterName,
+        commentsDate,
+        commentsOpinion,
         commentsBody,
-        contentsId,
-      })
-    );
-
-    // dispatch({
-    //   type: "ADD_COMMENT",
-    //   payload: {
-    //     commentsWriter,
-    //     commentsBody,
-    //     // contentsId,
-    //   },
-    // });
+      },
+    });
 
     setCommentsBody("");
   };
 
   //select
-  const options = ["허가", "거절"];
-
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
-
-  const handleOptionClick = (option) => {
-    setSelectedOption(option);
+  const selectClickHandler = (event) => {
+    setCommentsOpinion(event);
     setIsOpen(false);
   };
 
   return (
     <CommentWrapper>
       <label>결재 의견 등록하기</label>
-      <CommentInner onSubmit={onSubmitHandler}>
-        {/* <p>결재자</p>
-        <input
-          name="이름"
-          value={commentsWriter}
-          onChange={(e) => {
-            setCommentsWriter(e.target.value);
-          }}
-        ></input>
-        <p>여기에 SELECT추가</p> */}
-          <DropdownWrapper>
-            <DropdownHeader onClick={() => {setIsOpen((prev)=> !prev);}}>
-              {selectedOption || "결재 의견 선택▼"}
-            </DropdownHeader>
-            {isOpen && (
-              <DropdownList>
-                {options.map((option) => (
-                  <DropdownItem
-                    key={option}
-                    onClick={() => {
-                      handleOptionClick(option);
-                    }}
-                  >
-                    {option}
-                  </DropdownItem>
-                ))}
-              </DropdownList>
-            )}
-          </DropdownWrapper>
-          <textarea
-            name="내용"
-            placeholder="상세한 결재 의견을 입력해 주세요 &#13;&#10; ex) 예쁜 쓰레기가 될 것이 뻔해 보여서 결재 거절함!"
-            value={commentsBody}
-            onChange={(e) => {
-              setCommentsBody(e.target.value);
+      <CommentInner>
+        <DropdownWrapper>
+          <DropdownHeader
+            onClick={() => {
+              setIsOpen((prev) => !prev);
             }}
-          ></textarea>
-          <button type="submit">등록</button>
+          >
+            {commentsOpinion || "결재 의견 선택▼"}
+          </DropdownHeader>
+          {isOpen && (
+            <DropdownList>
+              {options.map((option) => (
+                <DropdownItem
+                  key={option}
+                  onClick={() => {
+                    selectClickHandler(option);
+                  }}
+                >
+                  {option}
+                </DropdownItem>
+              ))}
+            </DropdownList>
+          )}
+        </DropdownWrapper>
+        <textarea
+          name="내용"
+          placeholder="상세한 결재 의견을 입력해 주세요 &#13;&#10; ex) 예쁜 쓰레기가 될 것이 뻔해 보여서 결재 거절함!"
+          value={commentsBody}
+          onChange={(e) => {
+            const { value } = e.target;
+            setCommentsBody(value);
+          }}
+        ></textarea>
+        <button onClick={onClickHandler}>등록</button>
       </CommentInner>
     </CommentWrapper>
   );
@@ -117,7 +131,7 @@ const CommentWrapper = styled.div`
     font-weight: 600;
     color: #d8521d;
   }
-`
+`;
 
 const CommentInner = styled.form`
   display: flex;
@@ -139,7 +153,7 @@ const CommentInner = styled.form`
 
     overflow: auto;
     resize: none;
-    
+
     &::placeholder {
       color: #aeaeae;
     }
@@ -164,7 +178,7 @@ const CommentInner = styled.form`
       color: #ffffff;
     }
   }
-`
+`;
 
 const DropdownWrapper = styled.div`
   width: 200px;
@@ -176,7 +190,6 @@ const DropdownWrapper = styled.div`
   color: #ee7a4c;
   transition: 0.2s;
 
-  
   &:hover {
     background-color: #f0b8a2;
     color: #fff;

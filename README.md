@@ -68,12 +68,16 @@
 ![2 login](https://github.com/cheddaryeon/NewsFeed/assets/124491335/c25be533-d2c3-43d3-a84d-e3619a107e12)
 ![3 signup](https://github.com/cheddaryeon/NewsFeed/assets/124491335/9b4486cb-6345-45b2-946b-6d86ae9e7302)
 
-### 3-3) 게시글 상세페이지
+### 3-3) 게시글 상세페이지 (수정, 삭제 가능)
 ![4 content](https://github.com/cheddaryeon/NewsFeed/assets/124491335/601f852c-ede3-41bc-98ba-a667b6f242e5)
 
-### 3-4) 댓글 작성 및 해당글에 달린 댓글 목록 조회
+### 3-4) 게시글 등록, 수정 Form
+![4-1 add content](https://github.com/cheddaryeon/NewsFeed/assets/124491335/ef63c408-e973-4d1d-b118-e0b24d631020)
+![4-2 edit content](https://github.com/cheddaryeon/NewsFeed/assets/124491335/58a62def-2d04-4161-91fb-d31caa234a26)
+
+### 3-5) 댓글 작성 및 해당 글에 달린 댓글 목록 조회
 ![5 comment](https://github.com/cheddaryeon/NewsFeed/assets/124491335/247d94f9-2e6a-49e3-b92b-4826c8e5dbf8)
 
-### 3-5) 마이 프로필
+### 3-6) 마이 프로필
 ![6 myprofile1](https://github.com/cheddaryeon/NewsFeed/assets/124491335/c2871bce-fea3-40d2-b335-efdb81ef8648)
 ![6 myprofile2](https://github.com/cheddaryeon/NewsFeed/assets/124491335/06a16742-f8d0-4ab2-a55f-f5a92f9a6f36)

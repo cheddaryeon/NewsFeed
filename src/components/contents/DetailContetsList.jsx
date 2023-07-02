@@ -263,6 +263,7 @@ const DetailList = styled.div`
     margin-bottom: 20px;
     font-size: 18px;
     font-weight: 500;
+    line-height: 1.4;
     letter-spacing: -0.7px;
     color: #333;
   }

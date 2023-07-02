@@ -19,7 +19,7 @@ const MyProfile = () => {
           <ChangeProfileImg />
           <ChangeUserNameAndPw />
         </ChangeProfileImgWrapper>
-        <h3>내가 쓴 글</h3>
+        <MyListButton>내가 쓴 글</MyListButton>
         <MyContents />
       </ProfileInner>
       <TopButton onClick={handleScrollToTop}> ▲ </TopButton>
@@ -28,16 +28,6 @@ const MyProfile = () => {
 }
 
 export default MyProfile;
-
-const ChangeProfileImgWrapper = styled.div`
-box-sizing: content-box;
-  width: 300px;
-  padding: 50px 70px;
-  border-radius: 30px;
-  box-shadow: 5px 5px 10px #c6dfd8;
-  
-  background-color: #fff;
-`
 
 const ProfileWrapper = styled.div `
   margin: 0 auto 50px;
@@ -56,70 +46,36 @@ const ProfileInner = styled.div `
   background-color: #cae9e1;
 `
 
-const ProfileBtnContainer = styled.div`
-  display: flex;
-  gap: 10px;
-  margin-top: 100px;
-`;
-
-const ProfileBtn = styled.button`
-  display: inline-block;
-  width: 120px;
-  height: 50px;
-
-  font-size: 14px;
-  font-weight: 500;
-  letter-spacing: -0.4px;
-  line-height: 50px;
-  text-align: center;
+const ChangeProfileImgWrapper = styled.div`
+box-sizing: content-box;
+  width: 300px;
+  padding: 50px 70px;
+  border-radius: 30px;
+  box-shadow: 5px 5px 10px #c6dfd8;
   
-  border-radius: 25px;
-  box-shadow: 3px 3px 5px #80c2b1;
+  background-color: #fff;
+`
 
-  background-color: #5aceb1;
-  color: #fff;
+const MyListButton = styled.button`
+  margin-top: 50px;
+  width: 120px;
+  height: 40px;
+
+  border-radius: 20px;
+  border: none;
+
+  font-weight: 500;
+
+  background-color: white;
+  color: #5798c4;
 
   transition: 0.2s;
 
   &:hover {
-    transform: scale(1.05);
-    background-color: #39c4a1;
-    color: #fff;
+    background-color: #59afd1;
+    color: #ffffff;
+    box-shadow: none;
   }
-`
-
-const MyListButtons = styled.div`
-  display: flex;
-  margin-top: 50px;
-  gap: 20px;
-  
-  & > button {
-    width: 120px;
-    height: 40px;
-
-    border-radius: 20px;
-    border: none;
-
-    font-weight: 500;
-
-    background-color: white;
-    color: #5798c4;
-
-    transition: 0.2s;
-
-    &:hover {
-      background-color: #59afd1;
-      color: #ffffff;
-      box-shadow: none;
-    }
-  }
-`
-
-const MyList = styled.button`
-  width: 500px;
-  margin-top: 30px;
-  border-radius: 30px;
-  background-color: #fff;
 `
 
 const TopButton = styled.button`

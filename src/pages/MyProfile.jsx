@@ -1,9 +1,7 @@
-import React, { useState } from 'react';
-import { useSelector } from "react-redux/es/hooks/useSelector";
+import React from 'react';
 import ChangeProfileImg from "components/profile/ChangeProfileImg";
 import ChangeUserNameAndPw from "components/profile/ChangeUserNameAndPw";
 import MyContents from "components/profile/MyContents";
-import MyComments from "components/profile/MyComments";
 import { styled } from "styled-components";
 
 const MyProfile = () => {

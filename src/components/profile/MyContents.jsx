@@ -116,4 +116,4 @@ const WriteDateTitle = styled.p`
 
 const NoContentsTitle = styled.p`
   padding: 30px;
-
+`

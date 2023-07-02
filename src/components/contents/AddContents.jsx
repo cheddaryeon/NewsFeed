@@ -157,7 +157,7 @@ const AddContents = () => {
           <label>품목 가격</label>
           <input
             type="text"
-            placeholder="ex) 18000원"
+            placeholder="숫자로만 입력해 주세요 ex) 18000 "
             value={itemPriceText}
             onChange={(event) => {
               const value = event.target.value;

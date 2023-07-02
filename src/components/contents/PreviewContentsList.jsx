@@ -194,25 +194,29 @@ const ContentPreview = styled.div`
 
   & > p {
     margin-bottom: 20px;
-    font-size: 18px;
+    font-size: 20px;
     font-weight: 500;
     letter-spacing: -0.7px;
   }
 
   & > p:first-child {
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     font-size: 22px;
-    font-weight: 600;
+    font-weight: 500;
   }
-  & > p:nth-child(7) {
-    margin-bottom: 50px;
+  & > p:nth-child(3) {
+    margin-bottom: 30px;
   }
 
   & > p > span {
     margin-left: 5px;
-    font-size: 19px;
+    font-size: 20px;
     font-weight: 600;
     color: #244eaa;
+  }
+
+  & > p:first-child > span {
+    font-size: 22px;
   }
 
   & > img {

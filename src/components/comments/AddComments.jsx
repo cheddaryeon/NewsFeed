@@ -1,112 +1,87 @@
-import uuid from "react-uuid";
-import React, { useEffect, useState } from "react";
+import { addComments } from "@babel/types";
+import { addDoc, collection } from "@firebase/firestore";
+import { dbService } from "fbase";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-
-import { dbService, storageService } from "fbase";
-import { addDoc, collection } from "firebase/firestore";
-
-import comments, { addComment } from "redux/modules/comments";
-import styled from "styled-components";
+import { useParams, useNavigate } from "react-router";
+import { styled } from "styled-components";
 
 const AddComments = () => {
-  //
   const { contentsId } = useParams();
-
-  //hooks
-  const dispatch = useDispatch();
-
-  //UseSelectors
+  console.log("AddComments.jsx => 게시글 아이디 ", contentsId)
   const currentUser = useSelector((state) => state.auth.user);
-
-  //UseStates
+  const options = ["허가", "거절"];
+  //useState
+  //user
   const [commentsWriterId, setCommentsWriterId] = useState(currentUser.userId);
   const [commentsWriterName, setCommentsWriterName] = useState(
     currentUser.userName
   );
+  //input
   const [commentsBody, setCommentsBody] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [commentsOpinion, setCommentsOpinion] = useState(null);
 
-  //
-  const onSubmitComment = async (e) => {
-    //
-    e.preventDefault();
+  let today = new Date();
+  let time = {
+    year: today.getFullYear(),
+    month: today.getMonth() + 1,
+    date: today.getDate(),
+    hours: today.getHours(),
+    minutes: today.getMinutes(),
+  };
+  let timestring = `${time.year}년 ${time.month}월 ${time.date}일 ${time.hours}시${time.minutes}분`;
+  const [commentsDate, setCommentsDate] = useState(timestring);
 
-    //
-    const newComments = {
-      contentsId,
-      commentsWriterId,
-      commentsWriterName,
-      commentsBody,
-    };
+  //hook
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    //
-    const collectionRef = collection(dbService, "comments");
-    const { id } = await addDoc(collectionRef, newComments); //fB에서 가져온 데이터의 속성 중, 구조분해할당으로 id값만 따로 받겠다는 뜻
+  //등록
+  const onClickHandler = async (event) => {
+    event.preventDefault();
 
-    //
-    dispatch(
-      addComment({
-        id,
-        commentsWriterId,
-        commentsWriterName,
-        commentsBody,
-      })
-    );
+    const ok = window.confirm("댓글을 등록하시겠어요?");
+    if (ok) {
+      try {
+        const newComments = {
+          contentsId,
+          commentsWriterId,
+          commentsWriterName,
+          commentsDate,
+          commentsOpinion,
+          commentsBody,
+        };
 
+        dispatch({
+          type: "ADD_COMMENT",
+          payload: newComments,
+        });
+      } catch (error) {
+        alert("댓글이 정상적으로 등록되지 않았습니다. 다시 시도해주세요.");
+        console.log("댓글 등록 에러 : ", error);
+      }
+    }
     setCommentsBody("");
-
-    // const ok = window.confirm("댓글을 등록하시겠어요?");
-    // if (ok) {
-    //   try {
-    //     // 댓글 등록 -> fb firestore 서버에 전송
-    //     // 순서대로 댓글작성자 uid, 닉네임, 댓글내용, 작성시간
-    //     await addDoc(collection(dbService, "comments"), {
-    //       contentsId,
-    //       commentsWriterId: currentUser.userId,
-    //       commentsWriter: currentUser.userName,
-    //       commentsOpinion: selectedOption,
-    //       commentsBody,
-    //       commentsDate: Date.now(),
-    //     })
-    //   } catch (error) {
-    //     alert("댓글이 정상적으로 등록되지 않았습니다. 다시 시도해주세요.")
-    //     console.log("댓글 등록 에러 : ", error);
-    //   }
-    // }
-    // setCommentsBody("");
   };
 
   //select
-  const options = ["허가", "거절"];
-
-  const [isOpen, setIsOpen] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(null);
-
-  const handleOptionClick = (option) => {
-    setSelectedOption(option);
+  const selectClickHandler = (event) => {
+    setCommentsOpinion(event);
     setIsOpen(false);
   };
 
   return (
     <CommentWrapper>
       <label>결재 의견 등록하기</label>
-      <CommentInner onSubmit={onSubmitComment}>
-        {/* <p>결재자</p>
-        <input
-          name="이름"
-          value={commentsWriter}
-          onChange={(e) => {
-            setCommentsWriter(e.target.value);
-          }}
-        ></input>
-        <p>여기에 SELECT추가</p> */}
+      <CommentInner>
         <DropdownWrapper>
           <DropdownHeader
             onClick={() => {
               setIsOpen((prev) => !prev);
             }}
           >
-            {selectedOption || "그뤠잇/스튜핏 v"}
+            {commentsOpinion || "결재 의견 선택▼"}
           </DropdownHeader>
           {isOpen && (
             <DropdownList>
@@ -114,7 +89,7 @@ const AddComments = () => {
                 <DropdownItem
                   key={option}
                   onClick={() => {
-                    handleOptionClick(option);
+                    selectClickHandler(option);
                   }}
                 >
                   {option}
@@ -128,10 +103,11 @@ const AddComments = () => {
           placeholder="상세한 결재 의견을 입력해 주세요 &#13;&#10; ex) 예쁜 쓰레기가 될 것이 뻔해 보여서 결재 거절함!"
           value={commentsBody}
           onChange={(e) => {
-            setCommentsBody(e.target.value);
+            const { value } = e.target;
+            setCommentsBody(value);
           }}
         ></textarea>
-        <button type="submit">등록</button>
+        <button onClick={onClickHandler}>등록</button>
       </CommentInner>
     </CommentWrapper>
   );

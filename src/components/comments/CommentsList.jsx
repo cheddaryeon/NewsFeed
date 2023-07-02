@@ -1,43 +1,53 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import AddComments from "./AddComments";
-import comments from "redux/modules/comments";
+
+import { dbService } from "fbase";
+import { query, getDocs, collection, where, orderBy } from "firebase/firestore";
+
 import { useParams } from "react-router-dom";
 import { styled } from "styled-components";
 
 const CommentsList = () => {
-  // ❷Read
-  //useParams로 filteredComments 셋팅
   const { contentsId } = useParams();
-  const filteredComments = comments.filter((comment) => {
-    return comment.contentsId === contentsId;
-  });
+  // console.log("CommentsList.jsx 현재 게시글 id => ", contentsId)
 
-  //useStates
-
-  //UseSelectors
-  const comments = useSelector((state) => state.comments);
-
-  //-----------------------------------------------------------------//
-  return filteredComments.map((comment) => {
-    return (
-      <CommentsWrapper key={comment?.contentsId}>
-        <span>
-          결재자: <span>결재자이름삽입</span>
-        </span>
-        <p>
-          결재: <span>{comment?.selectedOption}</span>
-        </p>
-        <p>
-          결재 의견: <span>{comment?.commentsBody}</span>
-        </p>
-        <ButtonBox>
-          <button>수정</button>
-          <button>삭제</button>
-        </ButtonBox>
-      </CommentsWrapper>
+  const [cmtList, setCmtList] = useState([]);
+  const getCommentsQuery = async () => {
+    const q = query(
+      collection(dbService, "comments"),
+      where("contentsId", "==", contentsId),
+      orderBy("commentsDate", "desc"),
     );
-  });
+
+    const querySnapshot = await getDocs(q);
+    const commentsList = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    // useState로 불러온 commentsList state에 담아서 렌더링
+    setCmtList(commentsList);
+  }
+
+  useEffect(() => {
+    getCommentsQuery();
+  }, [cmtList]);
+
+  return (
+    <>
+      {cmtList.length > 0 ? (
+        cmtList.map((comment) => (
+          <CommentsWrapper key={comment?.id}>
+            <span>결재자: <span>{comment.commentsWriterName}</span></span>
+            <span>결재 시간: <span>{comment.commentsDate}</span></span>
+            <p>결재 여부: <span>{comment.commentsOpinion}</span></p>
+            <p>결재 의견: <span>{comment.commentsBody}</span></p>
+          </CommentsWrapper>
+        ))
+      ) : (
+        <NoComments>등록된 댓글이 없습니다.</NoComments>
+      )}
+    </>
+  )  
 };
 
 const CommentsWrapper = styled.div`
@@ -58,13 +68,20 @@ const CommentsWrapper = styled.div`
   & > span {
     position: absolute;
     top: 20px;
-    left: 30px;
     padding: 10px 20px;
     border-radius: 21px;
     background-color: #fff;
 
     font-size: 18px;
     font-weight: 500;
+  }
+
+  & > span:first-child {
+    left: 30px;
+  }
+
+  & > span:nth-child(2) {
+    right: 30px;
   }
 
   & > span > span {
@@ -79,6 +96,10 @@ const CommentsWrapper = styled.div`
     color: #333;
   }
 
+  & > p:first-of-type {
+    margin-top: 30px;
+  }
+
   & > p > span {
     margin-left: 5px;
     font-size: 19px;
@@ -87,34 +108,8 @@ const CommentsWrapper = styled.div`
   }
 `;
 
-const ButtonBox = styled.form`
-  position: absolute;
-  top: -10px;
-  right: 20px;
-  margin-top: 30px;
-
-  & > button {
-    width: 60px;
-    height: 30px;
-
-    border-radius: 15px;
-
-    font-size: 14px;
-    font-weight: 500;
-
-    background-color: white;
-    color: #df7951;
-
-    transition: 0.2s;
-
-    &:hover {
-      background-color: #df7951;
-      color: #ffffff;
-    }
-  }
-  & > button:first-child {
-    margin-right: 10px;
-  }
-`;
+const NoComments = styled.p`
+  margin-bottom: 50px;
+`
 
 export default CommentsList;

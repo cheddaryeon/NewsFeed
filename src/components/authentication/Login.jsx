@@ -5,6 +5,7 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { authService } from "fbase";
 import { styled } from "styled-components";
@@ -14,6 +15,7 @@ const Login = ({ handleCloseClick }) => {
   const [inputs, setInputs] = useState({
     email: "",
     password: "",
+    emailForFindPw: "",
   });
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -79,6 +81,19 @@ const Login = ({ handleCloseClick }) => {
     });
   };
 
+  const onFindPasswordClick = async (e) => {
+    e.preventDefault();
+    try {
+      await sendPasswordResetEmail(authService, inputs.emailForFindPw)
+      window.alert("✅ 이메일을 확인해주세요!")
+    } catch (error) {
+      window.alert("🚫 등록되지 않은 이메일입니다.")
+    };
+    setInputs({
+      emailForFindPw: "",
+    })
+  }
+
   const onSocialClick = async () => {
     let provider;
     try {
@@ -122,6 +137,18 @@ const Login = ({ handleCloseClick }) => {
         {errorMsg ? <ErrorMsg>{errorMsg}</ErrorMsg> : ""}
         <input type="submit" value={"로그인"} />
       </EmailLoginForm>
+      <FindPwForm onSubmit={onFindPasswordClick}>
+        <span>비밀번호를 잊으셨나요?</span>
+        <input
+          name="emailForFindPw"
+          type="email"
+          placeholder="가입한 E-mail 주소"
+          value={inputs.emailForFindPw}
+          onChange={onChange}
+          required
+        />
+        <input type="submit" value={"비밀번호 찾기"} />
+      </FindPwForm>
       <GoogleLogin>
         <span>다른 방법으로 로그인하기</span>
         <button onClick={onSocialClick} name="google">
@@ -169,6 +196,55 @@ const EmailLoginForm = styled.form`
   & > span {
     margin-bottom: 10px;
     font-size: 18px;
+    color: #1a7aa0;
+  }
+
+  & > input {
+    width: 200px;
+    height: 30px;
+  }
+
+  & > input:last-child {
+    width: 100px;
+    height: 40px;
+    margin-top: 20px;
+
+    background-color: #fff;
+    color: #333;
+
+    border: 1px solid #eee;
+    border-radius: 20px;
+    box-shadow: 2px 2px 5px #ddd;
+
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+      background-color: #59afd1;
+      color: #ffffff;
+      box-shadow: none;
+    }
+  }
+
+  &::after {
+    content: "";
+    width: 500px;
+    height: 1px;
+    margin: 30px 0;
+    background-color: #ddd;
+  }
+`;
+
+const FindPwForm = styled.form`
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  & > span {
+    margin-bottom: 10px;
+    font-size: 16px;
     color: #1a7aa0;
   }
 

@@ -1,9 +1,12 @@
-import React from 'react'
+import PreviewContentsList from "components/contents/PreviewContentsList";
+import React from "react";
 
 const Main = () => {
   return (
-    <div>Main</div>
-  )
-}
+    <>
+      <PreviewContentsList />
+    </>
+  );
+};
 
-export default Main
+export default Main;

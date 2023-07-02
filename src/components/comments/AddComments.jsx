@@ -3,10 +3,12 @@ import { addDoc, collection } from "@firebase/firestore";
 import { dbService } from "fbase";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { styled } from "styled-components";
 
 const AddComments = () => {
+  const { contentsId } = useParams();
+  console.log("AddComments.jsx => 게시글 아이디 ", contentsId)
   const currentUser = useSelector((state) => state.auth.user);
   const options = ["허가", "거절"];
   //useState
@@ -43,6 +45,7 @@ const AddComments = () => {
     if (ok) {
       try {
         const newComments = {
+          contentsId,
           commentsWriterId,
           commentsWriterName,
           commentsDate,
@@ -50,19 +53,9 @@ const AddComments = () => {
           commentsBody,
         };
 
-        const collectionRef = collection(dbService, "comments");
-        const { id } = await addDoc(collectionRef, newComments);
-
         dispatch({
           type: "ADD_COMMENT",
-          payload: {
-            id: id,
-            commentsWriterId,
-            commentsWriterName,
-            commentsDate,
-            commentsOpinion,
-            commentsBody,
-          },
+          payload: newComments,
         });
       } catch (error) {
         alert("댓글이 정상적으로 등록되지 않았습니다. 다시 시도해주세요.");

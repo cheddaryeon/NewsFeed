@@ -12,10 +12,9 @@ const MyContents = () => {
   const currentUser = useSelector((state) => state.auth.user);
   // console.log("MyContents.jsx 현재 사용자 정보 => ", currentUser);
 
-  // fb firestore 서버에서 내가 쓴 게시물 가져오기
+  // fb firestore 내가 쓴 게시글 가져오기
   const getMyContentsQuery = async () => {
     const q = query(
-      // firebase는 noSQL DB라서 pre-made query를 만들어줘야 함
       // 내가 쓴 글 where 조건문으로 필터링해서 query 생성
       collection(dbService, "contents"),
       where("contentsWriterId", "==", currentUser.userId),
@@ -33,9 +32,7 @@ const MyContents = () => {
 
   useEffect(() => {
     getMyContentsQuery();
-  }, [myContents]);
-
-  // console.log("fb 서버에서 쿼리로 게시글 받아지는지 확인 => ", myContents)
+  }, []);
 
   return (
     <>

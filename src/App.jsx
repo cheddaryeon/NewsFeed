@@ -29,7 +29,7 @@ const App = () => {
       }
       setInit(true);
     });
-  },[dispatch]);
+  },[]);
 
   console.log("fb 서버에서 받아온 현재 사용자 데이터 => ", authService.currentUser)
   console.log("App.jsx console.log store에 저장해 둔 현재 사용자 데이터", useSelector((state)=>state.auth.user))

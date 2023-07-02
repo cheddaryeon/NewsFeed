@@ -75,4 +75,5 @@
 ![5 comment](https://github.com/cheddaryeon/NewsFeed/assets/124491335/247d94f9-2e6a-49e3-b92b-4826c8e5dbf8)
 
 ### 3-5) 마이 프로필
-![6 myprofile](https://github.com/cheddaryeon/NewsFeed/assets/124491335/897dfa95-6fe1-4c03-88b9-e9dde785a539)
+![6 myprofile1](https://github.com/cheddaryeon/NewsFeed/assets/124491335/c2871bce-fea3-40d2-b335-efdb81ef8648)
+![6 myprofile2](https://github.com/cheddaryeon/NewsFeed/assets/124491335/06a16742-f8d0-4ab2-a55f-f5a92f9a6f36)

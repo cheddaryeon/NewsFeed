@@ -1,37 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 import { dbService } from "fbase";
-import { query, getDocs, collection, where, orderBy } from "firebase/firestore";
+import { query, onSnapshot, collection, where, orderBy } from "firebase/firestore";
 
 import { useParams } from "react-router-dom";
 import { styled } from "styled-components";
 
 const CommentsList = () => {
   const { contentsId } = useParams();
-  // console.log("CommentsList.jsx 현재 게시글 id => ", contentsId)
 
   const [cmtList, setCmtList] = useState([]);
-  const getCommentsQuery = async () => {
+
+  const getCommentsQuery = useCallback(() => {
     const q = query(
       collection(dbService, "comments"),
       where("contentsId", "==", contentsId),
       orderBy("commentsDate", "desc"),
     );
 
-    const querySnapshot = await getDocs(q);
-    const commentsList = querySnapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const commentsList = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
 
-    // useState로 불러온 commentsList state에 담아서 렌더링
-    setCmtList(commentsList);
-  }
+      setCmtList(commentsList);
+    });
 
-  // Fetch 무한루프 추정 원인 : [cmtList] -> [contentsId]
-  useEffect(() => {
-    getCommentsQuery();
+    return unsubscribe;
   }, [contentsId]);
+
+  useEffect(() => {
+    const unsubscribe = getCommentsQuery();
+    return () => unsubscribe();
+  }, [getCommentsQuery]);
 
   return (
     <>

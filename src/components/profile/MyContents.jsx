@@ -83,7 +83,7 @@ const MyConentsBox = styled.div`
     top: 40px;
 
     display: block;
-    width: 510px;
+    width: 100%;
     height: 1px;
     background-color: #eee;
   }
@@ -116,6 +116,10 @@ const WriteDateTitle = styled.p`
   width: 35%;
   font-size: 13px;
   text-align: right;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `
 
 const NoContentsTitle = styled.p`

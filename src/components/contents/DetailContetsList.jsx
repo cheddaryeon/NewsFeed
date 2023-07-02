@@ -11,7 +11,6 @@ import {
 } from "redux/modules/contents";
 import { styled } from "styled-components";
 
-
 const DetailContentsList = () => {
   //❷ Read
   //contentsId값 잘 넘어오고 있나 확인
@@ -46,7 +45,14 @@ const DetailContentsList = () => {
 
   //❸ Update
   const editModeHandler = () => {
+    //로그인 안된 상태에서 수정버튼 누를 경우, return되게 하는 로직 (설정 안해주면 Cannot read properties of null (reading 'userId') error뜸)
+    if (!currentUser) {
+      alert("로그인 먼저 해주세요!");
+      return;
+    }
     console.log(currentUser);
+
+    //현재 로그인 유저 !== 글쓴이의 로그인 유저가 다를 경우 return되고 <-> ===일 경우에 setEditing enable되는 로직
     if (targetContent.contentsWriterId !== currentUser.userId) {
       alert("수정 권한이 없습니다.");
       return;
@@ -58,6 +64,11 @@ const DetailContentsList = () => {
   //❹ Delete
   //여기서 payload는 삭제할 게시글의 id를 의미
   const deleteHandler = async (payload) => {
+    if (!currentUser) {
+      alert("로그인 먼저 해주세요!");
+      return;
+    }
+
     if (targetContent.contentsWriterId !== currentUser.userId) {
       alert("삭제 권한이 없습니다.");
       return;
@@ -93,11 +104,20 @@ const DetailContentsList = () => {
             <RequestTitle>요청된 결재건</RequestTitle>
             <DetailListsInner>
               <DetailList>
-                <p>결재 요청자: <span>{targetContent?.contentsWriterName}</span></p>
+                <p>
+                  결재 요청자: <span>{targetContent?.contentsWriterName}</span>
+                </p>
                 <p>요청일시: {targetContent?.contentsDate}</p>
-                <p>결재 품목: <span>{targetContent?.newWishItemText}</span></p>
-                <p>가격: <span>{targetContent?.newItemPriceText}</span></p>
-                <p>결재 요청 사유: <span>{targetContent?.newWishReasonText}</span></p>
+                <p>
+                  결재 품목: <span>{targetContent?.newWishItemText}</span>
+                </p>
+                <p>
+                  가격: <span>{targetContent?.newItemPriceText}</span>
+                </p>
+                <p>
+                  결재 요청 사유:{" "}
+                  <span>{targetContent?.newWishReasonText}</span>
+                </p>
               </DetailList>
             </DetailListsInner>
           </DetailListsWrapper>
@@ -106,14 +126,22 @@ const DetailContentsList = () => {
             <RequestTitle>요청된 결재건</RequestTitle>
             <DetailListsInner>
               <DetailList>
-                <p>결재 요청자: <span>{targetContent?.contentsWriterName}</span></p>
+                <p>
+                  결재 요청자: <span>{targetContent?.contentsWriterName}</span>
+                </p>
                 <p>요청일시: {targetContent?.contentsDate}</p>
                 {/* 이미지 태그 */}
                 <ContentPic src={targetContent?.downloadURL} alt="이미지 없음" />
                 {/*  */}
-                <p>결재 품목: <span>{targetContent?.wishItemText}</span></p>
-                <p>가격: <span>{targetContent?.itemPriceText}</span></p>
-                <p>결재 요청 사유: <span>{targetContent?.wishReasonText}</span></p>
+                <p>
+                  결재 품목: <span>{targetContent?.wishItemText}</span>
+                </p>
+                <p>
+                  가격: <span>{targetContent?.itemPriceText}</span>
+                </p>
+                <p>
+                  결재 요청 사유: <span>{targetContent?.wishReasonText}</span>
+                </p>
               </DetailList>
               <ButtonBox>
                 <button onClick={editModeHandler}>수정</button>
@@ -204,15 +232,14 @@ const DetailListsWrapper = styled.ul`
   width: 70%;
   margin: 0 auto;
   text-align: center;
-`
+`;
 
 const RequestTitle = styled.p`
   margin-bottom: 50px;
   font-size: 24px;
   font-weight: 600;
   color: #1d7735;
-
-`
+`;
 
 const DetailListsInner = styled.li`
   padding: 50px 100px;
@@ -228,7 +255,7 @@ const DetailListsInner = styled.li`
     font-weight: 600;
     color: #30924a;
   }
-`
+`;
 
 const DetailList = styled.div`
   & > p {
@@ -251,7 +278,7 @@ const DetailList = styled.div`
     margin-bottom: 30px;
     border-radius: 10px;
   }
-`
+`;
 
 const ButtonBox = styled.div`
   margin-top: 50px;
@@ -278,19 +305,19 @@ const ButtonBox = styled.div`
   & > button:first-child {
     margin-right: 30px;
   }
-`
+`;
 
 const EditInputForm = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  
+
   width: 70%;
-  
+
   margin: 0 auto 50px;
   padding: 50px 100px;
-  
+
   border-radius: 30px;
   background-color: #cae2f0;
 
@@ -337,7 +364,7 @@ const EditInputForm = styled.form`
 
     overflow: auto;
     resize: none;
-    
+
     &::placeholder {
       color: #aeaeae;
     }
@@ -362,7 +389,7 @@ const EditInputForm = styled.form`
       color: #ffffff;
     }
   }
-`
+`;
 
 export default DetailContentsList;
 

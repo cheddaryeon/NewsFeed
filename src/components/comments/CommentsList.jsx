@@ -21,19 +21,24 @@ const CommentsList = () => {
 
   return filteredComments.map((comment) => {
     return (
-        <CommentsWrapper key={comment?.contentsId}>
-          <span>결재자: <span>결재자이름삽입</span></span>
-          <p>결재: <span>{comment.selectedOption}</span></p>
-          <p>결재 의견: <span>{comment.commentsBody}</span></p>
-          <ButtonBox>
-            <button>수정</button>
-            <button>삭제</button>
-          </ButtonBox>
-       </CommentsWrapper>
+      <CommentsWrapper key={comment?.contentsId}>
+        <span>
+          결재자: <span>결재자이름삽입</span>
+        </span>
+        <p>
+          결재: <span>{comment.selectedOption}</span>
+        </p>
+        <p>
+          결재 의견: <span>{comment.commentsBody}</span>
+        </p>
+        <ButtonBox>
+          <button>수정</button>
+          <button>삭제</button>
+        </ButtonBox>
+      </CommentsWrapper>
     );
   });
 };
-
 
 const CommentsWrapper = styled.div`
   position: relative;
@@ -80,8 +85,7 @@ const CommentsWrapper = styled.div`
     font-weight: 600;
     color: #df7951;
   }
-
-`
+`;
 
 const ButtonBox = styled.form`
   position: absolute;
@@ -111,6 +115,6 @@ const ButtonBox = styled.form`
   & > button:first-child {
     margin-right: 10px;
   }
-`
+`;
 
 export default CommentsList;

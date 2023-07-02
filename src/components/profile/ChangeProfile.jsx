@@ -55,23 +55,32 @@ const ChangeProfile = () => {
 
   // '파일 선택' img file 변경감지
   const onImgFileChange = (e) => {
-    // Uncaught TypeError: Failed to execute 'readAsDataURL' on 'FileReader': parameter 1 is not of type 'Blob'. 오류 발생
     const files = e.target?.files;
-
-    // fileReader API
-    const theFile = files[0];
-    const imgFileReader = new FileReader();
-    imgFileReader.onloadend = (finishedEvent) => {
-      const { currentTarget: { result }
-        , } = finishedEvent;
-      setImgFileUrl(result);
+    if (files) {
+      // fileReader API
+      const theFile = files[0];
+      const imgFileReader = new FileReader();
+      imgFileReader.onloadend = (finishedEvent) => {
+        const { currentTarget: { result } } = finishedEvent;
+        setImgFileUrl(result);
+      }
+      if (theFile) {
+        imgFileReader.readAsDataURL(theFile);
+      }
     }
-    // 4. readAsDataURL API로 사진을 얻는다.
-    imgFileReader.readAsDataURL(theFile);
   }
 
   // x버튼 누르면 이미지 미리보기 -> 다시 현재 프로필 이미지로
-  const onClearImgFile = () => setImgFileUrl(currentUser.userPic);
+  const onClearImgFile = () => {
+    if (imgFileUrl === currentUser.userPic) {
+      window.alert("변경할 프로필 이미지를 선택해주세요!");
+      return;
+    }
+    setImgFileUrl(currentUser.userPic);
+  };
+
+  // console.log(currentUser.userPic)
+  // console.log(imgFileUrl);
 
   // 변경된 프로필 사진 등록
   const handleChangeUserPic = async (e) => {
@@ -83,23 +92,21 @@ const ChangeProfile = () => {
         const changedImgRef = ref(storageService, `profile_img/${uuid()}`);
         const response = await uploadString(changedImgRef, imgFileUrl, "data_url");
         imageUrl = await getDownloadURL(response.ref);
+        try {
+          await updateProfile(authService.currentUser, { photoURL: imageUrl });
+          dispatch(
+            setUserInfo({
+              ...currentUser,
+              userPic: imageUrl,
+            })
+          );
+          window.alert("프로필 이미지가 정상적으로 변경되었습니다.");
+          setImgFileUrl(imageUrl);
+        } catch (error) {
+          console.log("Profile img update error => ", error);
+          window.alert("프로필 이미지 업데이트에 실패했습니다. 다시 시도해주세요. 🥲");
+        }
       }
-      try {
-        await updateProfile(authService.currentUser, { photoURL: imageUrl });
-        dispatch(
-          setUserInfo({
-            ...currentUser,
-            userPic: imageUrl,
-          })
-        );
-        window.alert("프로필 이미지가 정상적으로 변경되었습니다.");
-        setImgFileUrl(imageUrl);
-      } catch (error) {
-        console.log("Profile img update error => ", error);
-        window.alert("프로필 이미지 업데이트에 실패했습니다. 다시 시도해주세요. 🥲");
-      }
-    } else {
-      window.alert("변경할 프로필 이미지를 선택해주세요!");
     }
   };
 
@@ -312,6 +319,8 @@ const ProfileImgForm = styled.form`
   }
 
   & > input:last-of-type {
+    width: 150px;
+    margin: 0 auto;
     margin-top: 10px;
     padding: 5px;
     font-size: 14px;

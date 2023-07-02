@@ -14,7 +14,7 @@ const CommentsList = () => {
   const getCommentsQuery = async () => {
     const q = query(
       collection(dbService, "comments"),
-      where("contentsId", "==", contentsId),
+      where("id", "==", contentsId),
       orderBy("commentsDate", "desc"),
     );
 
@@ -44,7 +44,7 @@ const CommentsList = () => {
           </CommentsWrapper>
         ))
       ) : (
-        <p>등록된 댓글이 없습니다.</p>
+        <NoComments>등록된 댓글이 없습니다.</NoComments>
       )}
     </>
   )  
@@ -96,5 +96,9 @@ const CommentsWrapper = styled.div`
     color: #df7951;
   }
 `;
+
+const NoComments = styled.p`
+  margin-bottom: 50px;
+`
 
 export default CommentsList;

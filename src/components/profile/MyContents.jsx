@@ -1,21 +1,24 @@
-import { useState, useEffect } from "react";
-import { query, getDocs, collection, where, orderBy } from "firebase/firestore";
+import { useEffect } from "react";
 import { dbService } from "fbase";
-import { useSelector } from "react-redux";
+import { query, getDocs, collection, where, orderBy } from "firebase/firestore";
+import { useSelector, useDispatch } from "react-redux";
+import { setMyContents } from "redux/modules/myprofile";
 import { Link } from "react-router-dom";
 import { styled } from "styled-components";
 
 const MyContents = () => {
+  const dispatch = useDispatch();
+  const myContents = useSelector((state) => state.myprofile.myContents)
   const currentUser = useSelector((state) => state.auth.user);
-  const [myContents, setMyContents] = useState([]);
+  // console.log("MyContents.jsx 현재 사용자 정보 => ", currentUser);
 
-  console.log("MyContents.jsx 현재 사용자 정보 => ", currentUser);
-
-  const getMyContents = async () => {
+  // fb firestore 서버에서 내가 쓴 게시물 가져오기
+  const getMyContentsQuery = async () => {
     const q = query(
+      // firebase는 noSQL DB라서 pre-made query를 만들어줘야 함
+      // 내가 쓴 글 where 조건문으로 필터링해서 query 생성
       collection(dbService, "contents"),
       where("contentsWriterId", "==", currentUser.userId),
-      // firebase는 noSQL DB라서 pre-made query를 만들어주어야 함
       orderBy("contentsDate", "desc"),
     );
     
@@ -24,14 +27,15 @@ const MyContents = () => {
       id: doc.id,
       ...doc.data(),
     }));
-    setMyContents(myContentsArr);
+    // 서버에서 불러온 내가 쓴 게시물 redux store에 저장
+    dispatch(setMyContents(myContentsArr));
   }
 
   useEffect(() => {
-    getMyContents();
-  }, [])
+    getMyContentsQuery();
+  }, [myContents]);
 
-  console.log("fb 서버에서 쿼리로 게시글 받아지는지 확인 => ", myContents)
+  // console.log("fb 서버에서 쿼리로 게시글 받아지는지 확인 => ", myContents)
 
   return (
     <>
@@ -69,7 +73,7 @@ const MyConentsBox = styled.div`
   display: flex;
   justify-content: space-between;
 
-  width: 50%;
+  width: 100%;
 
   border: 1px solid black;
   border-radius: 20px;

@@ -1,7 +1,7 @@
 # 🛒 Buy Or Not - 알뜰살뜰 살말 사이트 (2023. 7)
 - 내 게시물을 포함한 모든 게시물을 볼 수 있는 공간인 <b>뉴스피드</b>를 구현하는 프로젝트
-- ⚒️ 사용 스택: `React.js`, `Firebase`, `React-Redux`, `React-Router-DOM`, `Styled-components`
 
+- <img src="https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=React&logoColor=black"> <img src="https://img.shields.io/badge/Firebase-FFCA28?style=for-the-badge&logo=firebase&logoColor=black"> <img src="https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=redux&logoColor=white"> <img src="https://img.shields.io/badge/styled components-DB7093?style=for-the-badge&logo=styledcomponents&logoColor=white"> <img src="https://img.shields.io/badge/React Router-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white">
 <br />
 
 # 👩‍👩‍👧‍👧 Unluncky7(7조) 팀원 소개

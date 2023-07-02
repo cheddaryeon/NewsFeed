@@ -166,8 +166,9 @@ const AddContents = () => {
             placeholder="ex) 18000원"
             value={itemPriceText}
             onChange={(event) => {
-              const { value } = event.target;
-              setItemPriceText(value);
+              const value = event.target.value;
+              const onlyNumberValue = Number(value.replaceAll(",", ""));
+              setItemPriceText(onlyNumberValue.toLocaleString());
             }}
           />
           {/* ----------------------------------------------- */}

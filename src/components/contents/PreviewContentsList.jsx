@@ -111,25 +111,18 @@ const PreviewContentsList = () => {
           return (
             <ContentsList>
               <ContentPreview key={content?.id}>
-                <p>새로운 결재요청건</p>
-                {/* 이미지 태그 */}
+                <p>
+                  <span>{content.contentsDate}</span> 결재요청건
+                </p>
                 <img src={content.downloadURL} alt="이미지 없음" />
-                {/*  */}
                 <p>
-                  결재 요청 일시: <span>{content.contentsDate}</span>
+                  결재 품목 :{" "}
+                  <span>
+                    {content.wishItemText} ({content.itemPriceText})원에 대한
+                    결재요청건이 있습니다.
+                  </span>
                 </p>
-                <p>
-                  결재요청자: <span>{content.contentsWriterName}</span>
-                </p>
-                <p>
-                  결재 품목: <span>{content.wishItemText}</span>
-                </p>
-                <p>
-                  가격: <span>{content.itemPriceText}</span>
-                </p>
-                <p>
-                  결재 요청 사유: <span>{content.wishReasonText}</span>
-                </p>
+
                 <p>결재를 검토하시겠습니까?</p>
                 <DetailContentButton to={`/detail/${content.id}`}>
                   결재 검토하기

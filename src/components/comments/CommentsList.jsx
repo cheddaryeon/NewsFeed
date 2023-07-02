@@ -14,7 +14,7 @@ const CommentsList = () => {
   const getCommentsQuery = async () => {
     const q = query(
       collection(dbService, "comments"),
-      where("id", "==", contentsId),
+      where("contentsId", "==", contentsId),
       orderBy("commentsDate", "desc"),
     );
 

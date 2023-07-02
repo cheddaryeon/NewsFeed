@@ -4,7 +4,7 @@ import React from "react";
 //action value
 const ADD_COMMENTS = "ADD_COMMENTS";
 const DELETE_COMMENTS = "DELETE_COMMENTS";
-// const FETCH_COMMENTS = "FETCH_COMMENTS";
+const FETCH_COMMENTS = "FETCH_COMMENTS";
 //cosnt UPDATE_COMMENTS = ""UPDATE_COMMENTS";
 
 //action creator
@@ -14,9 +14,9 @@ export const addcomments = (payload) => {
 export const deleteComments = (payload) => {
   return { type: DELETE_COMMENTS, payload };
 };
-// export const fetchComments = (payload) => {
-//   return { type: FETCH_COMMENTS, payload };
-// };
+export const fetchComments = (payload) => {
+  return { type: FETCH_COMMENTS, payload };
+};
 // export const updateComments = (payload) => {
 //   return { type: UPDATE_COMMENTS, payload };
 // };
@@ -40,8 +40,8 @@ const comments = (state = initialState, action) => {
       );
       return left_comments_list;
 
-    // case FETCH_COMMENTS:
-    //   return action.payload;
+    case FETCH_COMMENTS:
+      return action.payload;
 
     default:
       return state;

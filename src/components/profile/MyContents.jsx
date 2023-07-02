@@ -57,8 +57,11 @@ const MyContents = () => {
 export default MyContents;
 
 const MyContentsSection = styled.section`
+  margin-top: 50px;
   width: 100%;
   padding: 30px;
+  border-radius: 30px;
+  background-color: #fff;
 `
 
 const MyConentsBox = styled.div`
@@ -72,6 +75,7 @@ const MyConentsBox = styled.div`
   border-radius: 20px;
 
   font-size: 14px;
+  line-height: 20px;
   
   &::after{
     content: "";
@@ -79,7 +83,7 @@ const MyConentsBox = styled.div`
     top: 40px;
 
     display: block;
-    width: 435px;
+    width: 510px;
     height: 1px;
     background-color: #eee;
   }

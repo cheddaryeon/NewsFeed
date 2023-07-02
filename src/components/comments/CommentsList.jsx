@@ -28,9 +28,10 @@ const CommentsList = () => {
     setCmtList(commentsList);
   }
 
+  // Fetch 무한루프 추정 원인 : [cmtList] -> [contentsId]
   useEffect(() => {
     getCommentsQuery();
-  }, [cmtList]);
+  }, [contentsId]);
 
   return (
     <>

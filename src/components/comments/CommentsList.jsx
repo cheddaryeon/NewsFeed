@@ -59,6 +59,7 @@ const CommentsWrapper = styled.div`
   width: 70%;
   margin: 0 auto 30px;
   padding: 60px 100px 50px;
+  line-height: 1.4;
   border-radius: 30px;
   background-color: #ffeee6;
 

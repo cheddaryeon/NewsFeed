@@ -7,13 +7,12 @@ const firebaseConfig = {
   // 환경변수에 실제 Key값 넣어놓고 숨기기
   // 완벽하게 숨겨지는 것은 아님 -> react가 web에서 실행되면 결국 노출은 되지만
   // key값을 직접적으로 github에 업로드 하고 싶지 않아서 환경변수 설정해줌
-  apiKey: process.env.REACT_APP_API_KEY,
-  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-  projectId: process.env.REACT_APP_PROJECT_ID,
-  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
-  appId: process.env.REACT_APP_APP_ID,
-  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
+  apiKey: "AIzaSyBhNL0y3cizqTqTHJvzILnaeCiErASDSTM",
+  authDomain: "buy-or-not2-ddaec.firebaseapp.com",
+  projectId: "buy-or-not2-ddaec",
+  storageBucket: "buy-or-not2-ddaec.appspot.com",
+  messagingSenderId: "677238433519",
+  appId: "1:677238433519:web:70b3bd73226a614f321d1a",
 };
 
 // Initialize Firebase

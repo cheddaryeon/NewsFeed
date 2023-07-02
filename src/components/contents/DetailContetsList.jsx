@@ -130,10 +130,9 @@ const DetailContentsList = () => {
                   결재 요청자: <span>{targetContent?.contentsWriterName}</span>
                 </p>
                 <p>요청일시: {targetContent?.contentsDate}</p>
-                <ContentPic
-                  src={targetContent?.downloadURL}
-                  alt="이미지 없음"
-                />
+                {/* 이미지 태그 */}
+                <img src={targetContent?.downloadURL} alt="이미지 없음" />
+                {/*  */}
                 <p>
                   결재 품목 : <span>{targetContent?.wishItemText}</span>&nbsp;
                   가격: <span>{targetContent?.itemPriceText}원</span>
@@ -394,10 +393,3 @@ const EditInputForm = styled.form`
 `;
 
 export default DetailContentsList;
-
-const ContentPic = styled.img`
-  width: 300px;
-  height: 300px;
-  object-fit: cover;
-  border: 1px solid lightgray;
-`;

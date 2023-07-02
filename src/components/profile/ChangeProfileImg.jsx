@@ -80,18 +80,20 @@ const ChangeProfileImg = () => {
     <>
       <MyProfileTitle>My Profile</MyProfileTitle>
       <UserPicPreview src={imgFileUrl} width="150px" height="150px" />
-      <ProfileImgForm onSubmit={handleChangeUserPic}>
-        <label htmlFor="inUserPic">프로필 사진 변경</label>
-        <input
-          name="userPic"
-          id="inUserPic"
-          type="file"
-          accept="image/*"
-          onChange={onImgFileChange}
-        />
-        <input type="submit" value={"변경된 이미지 등록"} />
-      </ProfileImgForm>
-      <ImgClearBtn onClick={onClearImgFile}>✖️</ImgClearBtn>
+      <ProfileImgContainer>
+        <ProfileImgForm onSubmit={handleChangeUserPic}>
+          <label htmlFor="inUserPic">프로필 사진 변경</label>
+          <input
+            name="userPic"
+            id="inUserPic"
+            type="file"
+            accept="image/*"
+            onChange={onImgFileChange}
+          />
+          <input type="submit" value={"변경된 이미지 등록"} />
+        </ProfileImgForm>
+        <ImgClearBtn onClick={onClearImgFile}>✖️</ImgClearBtn>
+      </ProfileImgContainer>
     </>
   );
 }
@@ -113,8 +115,11 @@ const UserPicPreview = styled.img`
   border-radius: 50%;
 `;
 
-const ProfileImgForm = styled.form`
+const ProfileImgContainer = styled.div`
   position: relative;
+`
+
+const ProfileImgForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -153,8 +158,8 @@ const ProfileImgForm = styled.form`
 
 const ImgClearBtn = styled.button`
   position: absolute;
-  top: 530px;
-  right: 370px;
+  top: 48px;
+  right: 0px;
   font-size: 10px;
   line-height: 20px;
   border-radius: 3px;

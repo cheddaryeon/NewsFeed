@@ -10,6 +10,7 @@ import { dbService } from "fbase";
 
 //action value
 const ADD_COMMENT = "ADD_COMMENT";
+
 //action creator
 export const addComment = (payload) => {
   return { type: ADD_COMMENT, payload };
@@ -28,7 +29,6 @@ const comments = (state = initialState, action) => {
 
   switch (action.type) {
     case ADD_COMMENT:
-      addDoc(collection(dbService, "comments"), action.payload); //이렇게만 하면, promise객체만 반환
       return [...state, action.payload];
 
     default:

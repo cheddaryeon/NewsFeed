@@ -10,36 +10,70 @@ import comments, { addComment } from "redux/modules/comments";
 import styled from "styled-components";
 
 const AddComments = () => {
-  const dispatch = useDispatch();
-  const currentUser = useSelector((state) => state.auth.user);
+  //
   const { contentsId } = useParams();
 
+  //hooks
+  const dispatch = useDispatch();
+
+  //UseSelectors
+  const currentUser = useSelector((state) => state.auth.user);
+
+  //UseStates
+  const [commentsWriterId, setCommentsWriterId] = useState(currentUser.userId);
+  const [commentsWriterName, setCommentsWriterName] = useState(
+    currentUser.userName
+  );
   const [commentsBody, setCommentsBody] = useState("");
 
-  console.log("AddComments.jsx 현재 로그인 유저 => ", currentUser)
-  console.log("AddComments.jsx 게시글 id => ", contentsId);
-
+  //
   const onSubmitComment = async (e) => {
+    //
     e.preventDefault();
-    const ok = window.confirm("댓글을 등록하시겠어요?");
-    if (ok) {
-      try {
-        // 댓글 등록 -> fb firestore 서버에 전송
-        // 순서대로 댓글작성자 uid, 닉네임, 댓글내용, 작성시간
-        await addDoc(collection(dbService, "comments"), {
-          contentsId,
-          commentsWriterId: currentUser.userId,
-          commentsWriter: currentUser.userName,
-          commentsOpinion: selectedOption,
-          commentsBody,
-          commentsDate: Date.now(),
-        })
-      } catch (error) {
-        alert("댓글이 정상적으로 등록되지 않았습니다. 다시 시도해주세요.")
-        console.log("댓글 등록 에러 : ", error);
-      }
-    }
+
+    //
+    const newComments = {
+      contentsId,
+      commentsWriterId,
+      commentsWriterName,
+      commentsBody,
+    };
+
+    //
+    const collectionRef = collection(dbService, "comments");
+    const { id } = await addDoc(collectionRef, newComments); //fB에서 가져온 데이터의 속성 중, 구조분해할당으로 id값만 따로 받겠다는 뜻
+
+    //
+    dispatch(
+      addComment({
+        id,
+        commentsWriterId,
+        commentsWriterName,
+        commentsBody,
+      })
+    );
+
     setCommentsBody("");
+
+    // const ok = window.confirm("댓글을 등록하시겠어요?");
+    // if (ok) {
+    //   try {
+    //     // 댓글 등록 -> fb firestore 서버에 전송
+    //     // 순서대로 댓글작성자 uid, 닉네임, 댓글내용, 작성시간
+    //     await addDoc(collection(dbService, "comments"), {
+    //       contentsId,
+    //       commentsWriterId: currentUser.userId,
+    //       commentsWriter: currentUser.userName,
+    //       commentsOpinion: selectedOption,
+    //       commentsBody,
+    //       commentsDate: Date.now(),
+    //     })
+    //   } catch (error) {
+    //     alert("댓글이 정상적으로 등록되지 않았습니다. 다시 시도해주세요.")
+    //     console.log("댓글 등록 에러 : ", error);
+    //   }
+    // }
+    // setCommentsBody("");
   };
 
   //select
@@ -66,38 +100,38 @@ const AddComments = () => {
           }}
         ></input>
         <p>여기에 SELECT추가</p> */}
-          <DropdownWrapper>
-            <DropdownHeader
-              onClick={() => {
-                setIsOpen((prev) => !prev);
-              }}
-            >
-              {selectedOption || "그뤠잇/스튜핏 v"}
-            </DropdownHeader>
-            {isOpen && (
-              <DropdownList>
-                {options.map((option) => (
-                  <DropdownItem
-                    key={option}
-                    onClick={() => {
-                      handleOptionClick(option);
-                    }}
-                  >
-                    {option}
-                  </DropdownItem>
-                ))}
-              </DropdownList>
-            )}
-          </DropdownWrapper>
-          <textarea
-            name="내용"
-            placeholder="상세한 결재 의견을 입력해 주세요 &#13;&#10; ex) 예쁜 쓰레기가 될 것이 뻔해 보여서 결재 거절함!"
-            value={commentsBody}
-            onChange={(e) => {
-              setCommentsBody(e.target.value);
+        <DropdownWrapper>
+          <DropdownHeader
+            onClick={() => {
+              setIsOpen((prev) => !prev);
             }}
-          ></textarea>
-          <button type="submit">등록</button>
+          >
+            {selectedOption || "그뤠잇/스튜핏 v"}
+          </DropdownHeader>
+          {isOpen && (
+            <DropdownList>
+              {options.map((option) => (
+                <DropdownItem
+                  key={option}
+                  onClick={() => {
+                    handleOptionClick(option);
+                  }}
+                >
+                  {option}
+                </DropdownItem>
+              ))}
+            </DropdownList>
+          )}
+        </DropdownWrapper>
+        <textarea
+          name="내용"
+          placeholder="상세한 결재 의견을 입력해 주세요 &#13;&#10; ex) 예쁜 쓰레기가 될 것이 뻔해 보여서 결재 거절함!"
+          value={commentsBody}
+          onChange={(e) => {
+            setCommentsBody(e.target.value);
+          }}
+        ></textarea>
+        <button type="submit">등록</button>
       </CommentInner>
     </CommentWrapper>
   );
@@ -121,7 +155,7 @@ const CommentWrapper = styled.div`
     font-weight: 600;
     color: #d8521d;
   }
-`
+`;
 
 const CommentInner = styled.form`
   display: flex;
@@ -143,7 +177,7 @@ const CommentInner = styled.form`
 
     overflow: auto;
     resize: none;
-    
+
     &::placeholder {
       color: #aeaeae;
     }
@@ -168,7 +202,7 @@ const CommentInner = styled.form`
       color: #ffffff;
     }
   }
-`
+`;
 
 const DropdownWrapper = styled.div`
   width: 200px;
@@ -180,7 +214,6 @@ const DropdownWrapper = styled.div`
   color: #ee7a4c;
   transition: 0.2s;
 
-  
   &:hover {
     background-color: #f0b8a2;
     color: #fff;

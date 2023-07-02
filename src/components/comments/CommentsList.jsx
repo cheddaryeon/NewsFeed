@@ -6,34 +6,39 @@ import { useParams } from "react-router-dom";
 import { styled } from "styled-components";
 
 const CommentsList = () => {
-  //
+  // ❷Read
+  //useParams로 filteredComments 셋팅
   const { contentsId } = useParams();
-  // console.log("contentsId2 =>", contentsId);
-
-  //
-  const comments = useSelector((state) => state.comments);
-  // console.log("state.comments의 값", comments);
-
   const filteredComments = comments.filter((comment) => {
     return comment.contentsId === contentsId;
   });
-  // console.log("흠", filteredComments);
 
+  //useStates
+
+  //UseSelectors
+  const comments = useSelector((state) => state.comments);
+
+  //-----------------------------------------------------------------//
   return filteredComments.map((comment) => {
     return (
-        <CommentsWrapper key={comment?.contentsId}>
-          <span>결재자: <span>결재자이름삽입</span></span>
-          <p>결재: <span>{comment.selectedOption}</span></p>
-          <p>결재 의견: <span>{comment.commentsBody}</span></p>
-          <ButtonBox>
-            <button>수정</button>
-            <button>삭제</button>
-          </ButtonBox>
-       </CommentsWrapper>
+      <CommentsWrapper key={comment?.contentsId}>
+        <span>
+          결재자: <span>결재자이름삽입</span>
+        </span>
+        <p>
+          결재: <span>{comment?.selectedOption}</span>
+        </p>
+        <p>
+          결재 의견: <span>{comment?.commentsBody}</span>
+        </p>
+        <ButtonBox>
+          <button>수정</button>
+          <button>삭제</button>
+        </ButtonBox>
+      </CommentsWrapper>
     );
   });
 };
-
 
 const CommentsWrapper = styled.div`
   position: relative;
@@ -80,8 +85,7 @@ const CommentsWrapper = styled.div`
     font-weight: 600;
     color: #df7951;
   }
-
-`
+`;
 
 const ButtonBox = styled.form`
   position: absolute;
@@ -111,6 +115,6 @@ const ButtonBox = styled.form`
   & > button:first-child {
     margin-right: 10px;
   }
-`
+`;
 
 export default CommentsList;

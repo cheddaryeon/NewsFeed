@@ -60,31 +60,6 @@ const AddContents = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  //
-  //❷Create 이미지
-  const uploadImage = async (event) => {
-    //
-    event.preventDefault();
-
-    //
-    // if (imageUpload == null) return;
-
-    //collection ref
-    const imageRef = ref(
-      storageService,
-      `${authService.currentUser.uid}/${imageUpload.name}`
-    );
-    await uploadBytes(imageRef, imageUpload).then(() =>
-      alert("이미지 업로드 완료!")
-    );
-
-    const downloadURL = await getDownloadURL(imageRef);
-    console.log(downloadURL);
-
-    //
-    setDownloadURL(downloadURL);
-  };
-
   //❶Create 게시글
   const onClickHandler = async (event) => {
     if (downloadURL) {
@@ -127,18 +102,37 @@ const AddContents = () => {
       setWishReasonText("");
 
       //
+      alert("댓글이 등록되었습니다!");
+
+      //
       // navigate("/");
     }
   };
 
-  const handleButtonClick = async (event) => {
-    if (imageUpload) {
-      await uploadImage(event);
-    }
-    await onClickHandler(event);
-  };
+  //
+  //❷Create 이미지
+  const uploadImage = async (event) => {
+    //
+    event.preventDefault();
 
-  //uploadImage가 실행되어야 onClickHandler가 실행되도록
+    //
+    // if (imageUpload == null) return;
+
+    //collection ref
+    const imageRef = ref(
+      storageService,
+      `${authService.currentUser.uid}/${imageUpload.name}`
+    );
+    await uploadBytes(imageRef, imageUpload).then(() =>
+      alert("이미지 업로드 완료!")
+    );
+
+    const downloadURL = await getDownloadURL(imageRef);
+    console.log(downloadURL);
+
+    //
+    setDownloadURL(downloadURL);
+  };
 
   //
 
@@ -192,7 +186,7 @@ const AddContents = () => {
           />
           <ButtonBox>
             <button>취소</button>
-            <button onClick={(event) => handleButtonClick(event)}>등록</button>
+            <button onClick={onClickHandler}>등록</button>
           </ButtonBox>
         </InputForm>
       </InputFormWrapper>

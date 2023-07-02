@@ -37,8 +37,8 @@ const CommentsList = () => {
       {cmtList.length > 0 ? (
         cmtList.map((comment) => (
           <CommentsWrapper key={comment?.id}>
-            <span>결재자: {comment.commentsWriter}</span>
-            <span>결재 시간: {comment.commentsDate}</span>
+            <span>결재자: <span>{comment.commentsWriterName}</span></span>
+            <span>결재 시간: <span>{comment.commentsDate}</span></span>
             <p>결재 여부: <span>{comment.commentsOpinion}</span></p>
             <p>결재 의견: <span>{comment.commentsBody}</span></p>
           </CommentsWrapper>
@@ -68,13 +68,20 @@ const CommentsWrapper = styled.div`
   & > span {
     position: absolute;
     top: 20px;
-    left: 30px;
     padding: 10px 20px;
     border-radius: 21px;
     background-color: #fff;
 
     font-size: 18px;
     font-weight: 500;
+  }
+
+  & > span:first-child {
+    left: 30px;
+  }
+
+  & > span:nth-child(2) {
+    right: 30px;
   }
 
   & > span > span {
@@ -87,6 +94,10 @@ const CommentsWrapper = styled.div`
     font-weight: 500;
     letter-spacing: -0.7px;
     color: #333;
+  }
+
+  & > p:first-of-type {
+    margin-top: 30px;
   }
 
   & > p > span {

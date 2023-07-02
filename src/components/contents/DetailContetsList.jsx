@@ -130,14 +130,13 @@ const DetailContentsList = () => {
                   결재 요청자: <span>{targetContent?.contentsWriterName}</span>
                 </p>
                 <p>요청일시: {targetContent?.contentsDate}</p>
-                {/* 이미지 태그 */}
-                <ContentPic src={targetContent?.downloadURL} alt="이미지 없음" />
-                {/*  */}
+                <ContentPic
+                  src={targetContent?.downloadURL}
+                  alt="이미지 없음"
+                />
                 <p>
-                  결재 품목: <span>{targetContent?.wishItemText}</span>
-                </p>
-                <p>
-                  가격: <span>{targetContent?.itemPriceText}</span>
+                  결재 품목 : <span>{targetContent?.wishItemText}</span>&nbsp;
+                  가격: <span>{targetContent?.itemPriceText}원</span>
                 </p>
                 <p>
                   결재 요청 사유: <span>{targetContent?.wishReasonText}</span>
@@ -175,9 +174,12 @@ const DetailContentsList = () => {
                 placeholder={targetContent?.itemPriceText}
                 value={newItemPriceText}
                 onChange={(e) => {
-                  setNewItemPriceText(e.target.value);
+                  const { value } = e.target;
+                  const onlyNumberValue = Number(value.replaceAll(",", ""));
+                  setNewItemPriceText(onlyNumberValue.toLocaleString());
                 }}
               />
+
               <label>결재 요청 사유</label>
               <textarea
                 type="text"

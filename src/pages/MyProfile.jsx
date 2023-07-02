@@ -7,36 +7,20 @@ import MyComments from "components/profile/MyComments";
 import { styled } from "styled-components";
 
 const MyProfile = () => {
-  const [showContentsList, setShowContentsList] = useState(true);
-  const [showCommentsList, setShowCommentsList] = useState(false);
-
-  const onClickMyContentsList = () => {
-    setShowContentsList(true);
-    setShowCommentsList(false);
-  }
-
-  const onClickMyCommentsList = () => {
-    setShowCommentsList(true);
-    setShowContentsList(false);
-  }
 
   const handleScrollToTop = () => {
     window.scrollTo({top:0, behavior: 'smooth'});
   };
 
   return (
-    <ProfileWrapper>
+     <ProfileWrapper>
       <ProfileInner>
         <ChangeProfileImgWrapper>
           <ChangeProfileImg />
           <ChangeUserNameAndPw />
         </ChangeProfileImgWrapper>
-        <ProfileBtnContainer>
-          <ProfileBtn onClick={onClickMyContentsList}>내가 쓴 글</ProfileBtn>
-          <ProfileBtn onClick={onClickMyCommentsList}>내가 쓴 댓글</ProfileBtn>
-        </ProfileBtnContainer>
-        {showContentsList && <MyContents />}
-        {showCommentsList && <MyComments />}
+        <h3>내가 쓴 글</h3>
+        <MyContents />
       </ProfileInner>
       <TopButton onClick={handleScrollToTop}> ▲ </TopButton>
     </ProfileWrapper>
@@ -102,6 +86,40 @@ const ProfileBtn = styled.button`
     background-color: #39c4a1;
     color: #fff;
   }
+`
+
+const MyListButtons = styled.div`
+  display: flex;
+  margin-top: 50px;
+  gap: 20px;
+  
+  & > button {
+    width: 120px;
+    height: 40px;
+
+    border-radius: 20px;
+    border: none;
+
+    font-weight: 500;
+
+    background-color: white;
+    color: #5798c4;
+
+    transition: 0.2s;
+
+    &:hover {
+      background-color: #59afd1;
+      color: #ffffff;
+      box-shadow: none;
+    }
+  }
+`
+
+const MyList = styled.button`
+  width: 500px;
+  margin-top: 30px;
+  border-radius: 30px;
+  background-color: #fff;
 `
 
 const TopButton = styled.button`

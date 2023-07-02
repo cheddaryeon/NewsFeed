@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useSelector } from "react-redux/es/hooks/useSelector";
+import ChangeProfileImg from "components/profile/ChangeProfileImg";
+import ChangeUserNameAndPw from "components/profile/ChangeUserNameAndPw";
 import MyContents from "components/profile/MyContents";
 import MyComments from "components/profile/MyComments";
-import ChangeProfile from "components/profile/ChangeProfile";
 import { styled } from "styled-components";
 
 const MyProfile = () => {
@@ -25,7 +27,10 @@ const MyProfile = () => {
   return (
     <ProfileWrapper>
       <ProfileInner>
-        <ChangeProfile />
+        <ChangeProfileImgWrapper>
+          <ChangeProfileImg />
+          <ChangeUserNameAndPw />
+        </ChangeProfileImgWrapper>
         <ProfileBtnContainer>
           <ProfileBtn onClick={onClickMyContentsList}>내가 쓴 글</ProfileBtn>
           <ProfileBtn onClick={onClickMyCommentsList}>내가 쓴 댓글</ProfileBtn>
@@ -39,6 +44,16 @@ const MyProfile = () => {
 }
 
 export default MyProfile;
+
+const ChangeProfileImgWrapper = styled.div`
+box-sizing: content-box;
+  width: 300px;
+  padding: 50px 70px;
+  border-radius: 30px;
+  box-shadow: 5px 5px 10px #c6dfd8;
+  
+  background-color: #fff;
+`
 
 const ProfileWrapper = styled.div `
   margin: 0 auto 50px;

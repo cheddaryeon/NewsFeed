@@ -23,7 +23,7 @@ const comments = (state = initialState, action) => {
   switch (action.type) {
     case ADD_COMMENT:
       addDoc(collection(dbService, "comments"), action.payload); //이렇게만 하면, promise객체만 반환
-      break;
+      return [...state, action.payload]
 
     default:
       return state;

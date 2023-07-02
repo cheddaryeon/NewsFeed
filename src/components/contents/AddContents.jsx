@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from "react";
-import firebase from "firebase/app";
+import React, { useState } from "react";
 import {
   addDoc,
   collection,
-  getDocs,
-  query,
   serverTimestamp,
 } from "firebase/firestore";
-import { db, dbService } from "fbase";
+import { dbService } from "fbase";
 import { useDispatch, useSelector } from "react-redux";
 import { addContents, fetchContents } from "redux/modules/contents";
 import { styled } from "styled-components";
@@ -16,11 +13,8 @@ import { useNavigate } from "react-router-dom";
 import { storageService, authService } from "fbase";
 import {
   getDownloadURL,
-  listAll,
   ref,
   uploadBytes,
-  uploadString,
-  orderBy,
 } from "firebase/storage";
 
 const AddContents = () => {
@@ -35,7 +29,6 @@ const AddContents = () => {
     currentUser.userName
   );
   const [imageUpload, setImageUpload] = useState(null);
-  const [imageList, setImageList] = useState([]);
   const [downloadURL, setDownloadURL] = useState([null]);
 
   //input창용

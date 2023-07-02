@@ -5,14 +5,11 @@ import {
   getDocs,
   orderBy,
   query,
-  updateDoc,
 } from "firebase/firestore";
-import { dbService, storageService, authService } from "fbase";
+import { dbService } from "fbase";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchContents } from "redux/modules/contents";
-import { getDownloadURL, ref, listAll } from "firebase/storage";
 import { styled } from "styled-components";
-import Login from "components/authentication/Login";
 
 const PreviewContentsList = () => {
   //(리듀서에서 가져옴)

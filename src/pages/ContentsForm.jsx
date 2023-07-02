@@ -1,6 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { addDoc, collection, getDocs, query } from "firebase/firestore";
-import { db } from "fbase";
+import React from "react";
 import AddContents from "components/contents/AddContents";
 
 const ContentsForm = () => {

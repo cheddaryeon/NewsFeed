@@ -1,6 +1,3 @@
-import { addComments } from "@babel/types";
-import { addDoc, collection } from "@firebase/firestore";
-import { dbService } from "fbase";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate } from "react-router";

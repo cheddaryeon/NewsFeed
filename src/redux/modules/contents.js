@@ -1,7 +1,3 @@
-import React from "react";
-import { addDoc, collection, getDocs, query } from "firebase/firestore";
-import { db, dbService } from "fbase";
-
 //action value
 const ADD_CONTENTS = "ADD_CONTENTS";
 const FETCH_CONTENTS = "FETCH_CONTENTS";

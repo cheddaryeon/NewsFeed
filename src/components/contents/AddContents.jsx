@@ -21,7 +21,7 @@ const AddContents = () => {
     currentUser.userName
   );
   const [imageUpload, setImageUpload] = useState(null);
-  const [downloadURL, setDownloadURL] = useState([null]);
+  const [downloadURL, setDownloadURL] = useState(null);
 
   //input창용
   const [wishItemText, setWishItemText] = useState("");
@@ -91,6 +91,8 @@ const AddContents = () => {
 
       //
       // navigate("/");
+    } else {
+      alert("이미지 등록부터 부탁드립니다!");
     }
   };
 

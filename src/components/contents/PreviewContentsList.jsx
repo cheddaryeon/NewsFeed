@@ -24,8 +24,6 @@ const PreviewContentsList = () => {
   //Usestates
   const [imageUpload, setImageUpload] = useState(null);
   const [imageList, setImageList] = useState([]);
-  // const [images, setImageUpload] = useState([]);
-  // const [imageUpload, setimageUpload] = useState("");
 
   //❷Read
   // 1. 게시글 불러오기
@@ -35,7 +33,7 @@ const PreviewContentsList = () => {
       //collection ref + queries
       const colRef = collection(dbService, "contents");
       //queries
-      const q = query(colRef, orderBy("contentsDate", "desc"));
+      const q = query(colRef, orderBy("createdAt", "desc"));
       const querySnapshot = await getDocs(q);
 
       const contents_list = [];
@@ -44,6 +42,9 @@ const PreviewContentsList = () => {
         const data = { id: doc.id, ...doc.data() }; // doc.data()를 실행하면 해당 document의 데이터를 가져올 수 있음
 
         console.log("2. getDocs로 내려지는 데이터 =>", data);
+        // useEffect(() => {
+        //   console.log("2. getDocs로 내려지는 데이터 =>", data);
+        // }, []);
         contents_list.push(data);
       });
 

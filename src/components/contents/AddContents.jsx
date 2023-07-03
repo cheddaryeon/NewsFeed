@@ -60,6 +60,7 @@ const AddContents = () => {
         itemPriceText,
         wishReasonText,
         downloadURL,
+        createdAt: serverTimestamp(),
       };
 
       //
@@ -77,6 +78,7 @@ const AddContents = () => {
           contentsWriterName,
           contentsDate,
           downloadURL,
+          createdAt: serverTimestamp(),
         })
       );
 

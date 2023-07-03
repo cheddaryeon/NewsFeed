@@ -13,13 +13,9 @@ import { styled } from "styled-components";
 
 const DetailContentsList = () => {
   //❷ Read
-  //contentsId값 잘 넘어오고 있나 확인
-  // const params = useParams();
-  // console.log({ params });
-  const { contentsId } = useParams();
-  // console.log("contentsId =>", contentsId);
 
   //contentsId에 해당하는 게시글을 이제부터 targetContent라고 하겠습니다.
+  const { contentsId } = useParams();
   const contents = useSelector((state) => state.contents);
   const targetContent = contents.filter((item) => item.id === contentsId)[0];
   // const targetContent1 = contents.find((item) => item.id === contentsId);
@@ -77,15 +73,6 @@ const DetailContentsList = () => {
     await deleteDoc(contentsRef);
 
     dispatch(deleteContents(payload));
-
-    // dispatch(
-    //   {
-    //     type: "DELETE_CONTENTS",
-    //     payload: {
-
-    //     }
-    //   }
-    // )
 
     navigate("/");
   };

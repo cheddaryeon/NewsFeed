@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import {
-  addDoc,
-  collection,
-  serverTimestamp,
-} from "firebase/firestore";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import { dbService } from "fbase";
 import { useDispatch, useSelector } from "react-redux";
 import { addContents, fetchContents } from "redux/modules/contents";
@@ -11,11 +7,7 @@ import { styled } from "styled-components";
 import { useNavigate } from "react-router-dom";
 //
 import { storageService, authService } from "fbase";
-import {
-  getDownloadURL,
-  ref,
-  uploadBytes,
-} from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const AddContents = () => {
   //UseSelector
@@ -68,7 +60,6 @@ const AddContents = () => {
         itemPriceText,
         wishReasonText,
         downloadURL,
-        createdAt: serverTimestamp(), //Date.now()로 해도 되고, serverTimestamp()로 해도 됨
       };
 
       //
@@ -86,7 +77,6 @@ const AddContents = () => {
           contentsWriterName,
           contentsDate,
           downloadURL,
-          createdAt: serverTimestamp(),
         })
       );
 

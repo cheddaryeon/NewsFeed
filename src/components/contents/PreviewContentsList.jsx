@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import {
-  collection,
-  getDocs,
-  orderBy,
-  query,
-} from "firebase/firestore";
+import { collection, getDocs, orderBy, query } from "firebase/firestore";
 import { dbService } from "fbase";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchContents } from "redux/modules/contents";
@@ -40,7 +35,7 @@ const PreviewContentsList = () => {
       //collection ref + queries
       const colRef = collection(dbService, "contents");
       //queries
-      const q = query(colRef, orderBy("createdAt", "desc"));
+      const q = query(colRef, orderBy("contentsDate", "desc"));
       const querySnapshot = await getDocs(q);
 
       const contents_list = [];

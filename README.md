@@ -82,7 +82,7 @@
 ### 2-3) 새로운 결재 요청하기
 - form/input/button 태그를 이용해 데이터를 입력, 제출한 후 `Firebase`에 저장
 - 이미지 저장 기능
-- (~여기 추가해 주세요~) 글 작성 시 Id, Writer Name, Contents Number 등을 `Firebase`에 자동 저장
+- 글 작성 시 Id, Writer Name, Contents Number와 함께 입력폼 내용 & 이미지를 `Firebase`에 자동 저장
 ### 2-4) 결재 검토하기
 - 글 작성시 `Firebase`에 저장된 데이터를 불러와 같은 id를 가진 상세페이지를 조회
 - 글쓴이가 입력한 결재 품목 / 가격 / 결재 희망 사유를 불러옴

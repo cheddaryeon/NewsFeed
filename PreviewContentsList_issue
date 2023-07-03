@@ -1,0 +1,51 @@
+const onCommentClick = (contentId) => {
+    // navigate("/abc"); //얘도 안됨
+    console.log("콘솔콘솔"); //애도 들어오고
+    if (currentUser) {
+      console.log(currentUser); //얘도 들어오고
+      console.log(contentId); //얘도 들어오는데 뭐가 문제지
+     
+      navigate(`/detail/${contentId}`);
+
+    } else {
+      alert("로그인 해주세요!");
+      // 로그인 창 띄우기 추가
+    }
+  };
+
+  //--------------------------------------------------------------------------//
+  return (
+    <Container>
+      <NewContentButton onClick={onAddContentsClick}>
+        새로운 결재 요청하기
+      </NewContentButton>
+      <ul>
+        {/* 가져온 DB data 클라이언트쪽에 보여주기 */}
+        {contents.map((content) => {
+          return (
+            <ContentsList>
+              <ContentPreview key={content?.id}>
+                <p>
+                  <span>{content.contentsDate}</span> 결재요청건
+                </p>
+                <img src={content.downloadURL} alt="이미지 없음" />
+                <p>
+                  결재 품목 :{" "}
+                  <span>
+                    {content.wishItemText} ({content.itemPriceText})원에 대한
+                    결재요청건이 있습니다.
+                  </span>
+                </p>
+
+                <p>결재를 검토하시겠습니까?</p>
+                <DetailContentButton onClick={() => onCommentClick(content.id)}>
+                  결재 검토하기
+                </DetailContentButton>
+              </ContentPreview>
+            </ContentsList>
+          );
+        })}
+      </ul>
+      <TopButton onClick={handleScrollToTop}> ▲ </TopButton>
+    </Container>
+  );

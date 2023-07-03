@@ -5,14 +5,14 @@ import { styled } from "styled-components";
 
 const AddComments = () => {
   const { contentsId } = useParams();
-  console.log("AddComments.jsx => 게시글 아이디 ", contentsId)
+  console.log("AddComments.jsx => 게시글 아이디 ", contentsId);
   const currentUser = useSelector((state) => state.auth.user);
   const options = ["허가", "거절"];
   //useState
   //user
-  const [commentsWriterId, setCommentsWriterId] = useState(currentUser.userId);
+  const [commentsWriterId, setCommentsWriterId] = useState(currentUser?.userId);
   const [commentsWriterName, setCommentsWriterName] = useState(
-    currentUser.userName
+    currentUser?.userName
   );
   //input
   const [commentsBody, setCommentsBody] = useState("");
